@@ -28,11 +28,12 @@ const register = async (req, resp) => {
       error: "confirm password not matchded",
     });
   }
+
   if (password.length < 6) {
     return resp.status(422).json({
       status: 422,
       success: false,
-      error: "password should be more than 6 characters",
+      error: "password should be at least 6 characters",
     });
   }
 
@@ -106,25 +107,44 @@ const login = async (req, resp) => {
     const user = await userModel.findOne({ email: email });
 
     if (user) {
+      console.log("Provided password:", password);
+
       const isMatch = await bcrypt.compare(String(password), user.password);
+      console.log("Hashed password from the database:", user.password);
+      console.log("Is password match?", isMatch);
 
       if (!isMatch) {
         resp.status(422).send({
           status: 422,
           success: false,
-          message: "user not found",
+          message: "something incorrect",
         });
       } else {
-        resp.status(200).send({
+        // generateAuthToken is defined in the user schema
+        const token = await user.generateAuthToken();
+        console.log("Generated token:", token);
+
+        // storing token in browser cookies
+        resp.cookie("userCookie", token, {
+          expires: new Date(Date.now() + 90000000),
+          httpOnly: true,
+        });
+
+        const result = {
+          user,
+          token,
+        };
+
+        return resp.status(200).send({
           status: 200,
           success: true,
           message: "user found",
-          data: user,
+          data: result,
         });
       }
     }
   } catch (error) {
-    console.log(">>>>>>>>>>>error in finding user,", error.message);
+    console.log("error in finding user,", error.message);
     resp.status(401).send({
       status: 401,
       success: false,
