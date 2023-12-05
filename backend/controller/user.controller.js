@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const userdb = require("../model/user.model");
 const userModel = userdb.User;
 
@@ -31,7 +32,7 @@ const register = async (req, resp) => {
     return resp.status(422).json({
       status: 422,
       success: false,
-      error: "password should be more than 7 characters",
+      error: "password should be more than 6 characters",
     });
   }
 
@@ -59,60 +60,76 @@ const register = async (req, resp) => {
         status: 201,
         success: true,
         message: "Registration successful",
-        data:storeData
+        data: storeData,
       });
     }
-  } 
-  catch (error) {
-    if (error.name === 'ValidationError') {
+  } catch (error) {
+    if (error.name === "ValidationError") {
       // Mongoose validation error occurred
       const validationErrors = {};
       for (const key in error.errors) {
         validationErrors[key] = error.errors[key].message;
       }
 
-      console.error('Validation error:', validationErrors);
+      console.error("Validation error:", validationErrors);
       resp.status(422).json({
         status: 422,
         success: false,
-        error: 'Validation error',
+        error: "Validation error",
         validationErrors,
       });
     } else {
       // Other unexpected errors
-      console.error('Error in saving data to db', error);
+      console.error("Error in saving data to db", error);
       resp.status(500).json({
         status: 500,
         success: false,
-        error: 'Internal Server Error',
+        error: "Internal Server Error",
       });
     }
   }
 };
 
-
-
-
 //login
 const login = async (req, resp) => {
   const { email, password } = req.body;
+
+  if (!email || !password) {
+    resp.status(422).send({
+      status: 422,
+      success: false,
+      message: "email or password missing",
+    });
+  }
 
   try {
     const user = await userModel.findOne({ email: email });
 
     if (user) {
-      if (password === user.password) {
-        resp.send({
-          message: "user found",
-          user: user,
+      const isMatch = await bcrypt.compare(String(password), user.password);
+
+      if (!isMatch) {
+        resp.status(422).send({
+          status: 422,
+          success: false,
+          message: "user not found",
         });
       } else {
-        resp.send({ message: "user didn't found" });
+        resp.status(200).send({
+          status: 200,
+          success: true,
+          message: "user found",
+          data: user,
+        });
       }
     }
   } catch (error) {
-    console.log(">>>>>>>>>>>error in finding", err);
-    resp.status(401).send({ message: "internal server error" });
+    console.log(">>>>>>>>>>>error in finding user,", error.message);
+    resp.status(401).send({
+      status: 401,
+      success: false,
+      message: "internal server error",
+    });
   }
 };
 
