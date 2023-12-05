@@ -9,6 +9,7 @@
   "author": "Deepak_Sumit",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "mongoose": "^8.0.2",
     "nodemon": "^3.0.1"
