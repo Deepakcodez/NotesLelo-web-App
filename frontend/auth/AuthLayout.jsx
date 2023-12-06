@@ -13,7 +13,7 @@ const AuthLayout = () => {
   // Render the Outlet if the user is not authenticated
   return (
     <>
-    <section className="flex flex-1 justify-center h-screen w-screen  items-center flex-col py-10">
+    <section className="flex flex-1 justify-center h-screen w-screen bgdark  items-center flex-col py-10">
 
       <Outlet />
     </section>

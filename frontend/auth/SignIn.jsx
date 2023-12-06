@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function SignIn() {
   return (
     <>
-      <div className=" w-[90%] sm:w-[30rem] text-center">
+      <div className=" w-[90%] sm:w-[30rem] text-center bg-transparent relative z-40">
         <h1 className="text-xl font-bold mb-6">📃Notes lelo</h1>
         <h3 className="text-2xl font-bold mb-1"> Log in to your account</h3>
         <h5 className="text-xs text-gray-400">
@@ -47,7 +47,7 @@ function SignIn() {
             </div>
           </div>
 
-          <button className="bg-blue-400 rounded md py-1.5 w-full mt-3 ">
+          <button className="bg-blue-400 rounded md py-1.5 w-full mt-3 hover:bg-blue-500 ">
             Login
           </button>
           <h5 className="mt-3 font-thin text-gray-400">
@@ -58,6 +58,8 @@ function SignIn() {
           </h5>
         </form>
       </div>
+      <div className="circle h-80 w-80 opacity-30  sm:opacity-50 rounded-full bg-blue-600 sm:bg-blue-600 absolute top-0 left-0 z-1  blur-3xl "></div>
+        <div className="circle h-80 w-80 opacity-5   rounded-full  sm:bg-red-400 absolute  left-0 z-1  blur-3xl "></div>
     </>
   );
 }
