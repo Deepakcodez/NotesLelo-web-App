@@ -8,7 +8,7 @@ function SignUp() {
         <h1 className="text-xl font-bold mb-6">📃Notes lelo</h1>
         <h3 className="text-2xl font-bold mb-1"> create a new account</h3>
         <h5 className="text-xs text-gray-400">
-          To use Notes lelo, Please enter your details
+          To use Notes lelo, Please enter your details.
         </h5>
         <form action="">
           {/* name input  */}
