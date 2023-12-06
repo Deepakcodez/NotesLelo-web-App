@@ -9,13 +9,15 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      min: 2,
+      minlength: 2,
       trim: true,
+      lowercase: true,
       required: true,
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "please enter email"],
+      unique: [true, "email already exist"],
       validate(value) {
         if (!validator.isEmail(value)) {
           throw new Error("not valid email");
@@ -24,13 +26,21 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      min: 6,
-      required: true,
+      minlength: [6, "password must be  at least 6 characters"],
+      required: [true, "please enter password"],
     },
     confirmPassword: {
       type: String,
-      minLength: 6,
-      required: true,
+      minlength: [6, "password must be  at least 6 characters"],
+      required: [true, "please enter valid  password"],
+    },
+    posts: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+    },
+    avatar: {
+      public_id: String,
+      url: String,
     },
     tokens: [
       {
