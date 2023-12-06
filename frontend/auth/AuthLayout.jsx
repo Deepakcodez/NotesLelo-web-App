@@ -1,7 +1,9 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate,useLocation } from "react-router-dom";
 
 const AuthLayout = () => {
   const navigate = useNavigate();
+  const location  = useLocation()
+  const urlLocation = location.pathname
   const isAuthenticated = false;
 
   // Redirect if the user is authenticated
@@ -17,10 +19,18 @@ const AuthLayout = () => {
 
       <Outlet />
     </section>
-    <img src="/assets/boy.jpg"
-     alt="boy img"
-     className=" hidden xl:block h-screen  w-1/2 object-cover  bg-no-repeat"
-      />
+    {
+      urlLocation==='/signUp'?
+
+      <img src="/assets/boy.jpg"
+       alt="boy img"
+       className=" hidden xl:block h-screen  w-1/2 object-cover  bg-no-repeat"
+        />:
+        <img src="/assets/girl.jpg"
+        alt="girl img"
+        className=" hidden xl:block h-screen  w-1/2 object-cover  bg-no-repeat"
+         />
+    }
     
 
 </>
