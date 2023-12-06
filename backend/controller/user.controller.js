@@ -57,8 +57,8 @@ const register = async (req, resp) => {
       const storeData = await user.save();
 
       console.log(">>>>>>>>>>> Register successful");
-      resp.status(201).json({
-        status: 201,
+      resp.status(200).json({
+        status: 200,
         success: true,
         message: "Registration successful",
         data: storeData,
@@ -76,7 +76,7 @@ const register = async (req, resp) => {
       resp.status(422).json({
         status: 422,
         success: false,
-        error: "Validation error",
+        message: "Validation error",
         validationErrors,
       });
     } else {
@@ -85,7 +85,7 @@ const register = async (req, resp) => {
       resp.status(500).json({
         status: 500,
         success: false,
-        error: "Internal Server Error",
+        message: "Internal Server Error",
       });
     }
   }
