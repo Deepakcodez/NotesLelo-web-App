@@ -9,3 +9,6 @@
     background: #161616;
 
 }
+::selection{
+    color: rgb(255, 179, 0);
+}

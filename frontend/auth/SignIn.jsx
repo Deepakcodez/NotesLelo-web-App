@@ -1,25 +1,24 @@
 import axios from "axios";
-import {useState} from "react";
-import {  NavLink } from "react-router-dom";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 function SignIn() {
-
   const [inputValue, setInputValue] = useState({
     email: "",
-    password: ""
+    password: "",
   });
-   
-const onchangeHandler=(e)=>{
-  const { name, value } = e.target;
-  setInputValue({
-    ...inputValue,
-    [name]: value,
-  });                    
-}
-const loginHandler=async(e)=>{
-  e.preventDefault();
-  const {  email, password} = inputValue;
-  if (email.trim() === "") {
+
+  const onchangeHandler = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
+  };
+  const loginHandler = async (e) => {
+    e.preventDefault();
+    const { email, password } = inputValue;
+    if (email.trim() === "") {
       alert("please enter email");
     } else if (!email.includes("@")) {
       alert("please enter valid email");
@@ -27,17 +26,21 @@ const loginHandler=async(e)=>{
       alert("please enter password");
     } else {
       try {
-        const response = await axios.post('http://localhost:8000/api/v1/user/login',inputValue);
-        console.log('>>>>>>>>>>>', response)
+        const response = await axios.post("http://localhost:8000/api/v1/user/login",inputValue);
+        if( response.status === 200){
+          localStorage.setItem("useDataToken", response.data.data.token);
+          setInputValue({ email: "", password: "" });
+        }
+        console.log(">>>>>>>>>>>response: ", response.data);
         alert(response.data.message);
-        setInputValue({ email: "", password: "" })
-
+       
       } catch (error) {
-        throw error.response ? error.response.data : { message: 'Network error' };
+        console.log(">>>>>>>>>>>Error:", error);
+        alert(error.response.data.message)
+        throw error.response? error.response.data: { message: "Network error" };
       }
     }
   };
-
 
   return (
     <>
@@ -47,9 +50,7 @@ const loginHandler=async(e)=>{
         <h5 className="text-xs text-gray-400">
           Welcome back, Please enter your details.
         </h5>
-        <form >
-         
-
+        <form>
           {/* email inout */}
           <label
             htmlFor="username"
@@ -90,11 +91,14 @@ const loginHandler=async(e)=>{
             </div>
           </div>
 
-          <button className="bg-blue-400 rounded md py-1.5 w-full mt-3 hover:bg-blue-500 " onClick={loginHandler}>
+          <button
+            className="bg-blue-400 rounded md py-1.5 w-full mt-3 hover:bg-blue-500 "
+            onClick={loginHandler}
+          >
             Login
           </button>
           <h5 className="mt-3 font-thin text-gray-400">
-             haven&apos;t any account ?{" "}
+            haven&apos;t any account ?{" "}
             <NavLink to="/signUp" className="text-blue-300">
               Create an account
             </NavLink>{" "}
@@ -102,7 +106,7 @@ const loginHandler=async(e)=>{
         </form>
       </div>
       <div className="circle h-80 w-80 opacity-30  sm:opacity-50 rounded-full bg-blue-600 sm:bg-blue-600 absolute top-0 left-0 z-1  blur-3xl "></div>
-        <div className="circle h-80 w-80 opacity-5   rounded-full  sm:bg-red-400 absolute  left-0 z-1  blur-3xl "></div>
+      <div className="circle h-80 w-80 opacity-5   rounded-full  sm:bg-red-400 absolute  left-0 z-1  blur-3xl "></div>
     </>
   );
 }

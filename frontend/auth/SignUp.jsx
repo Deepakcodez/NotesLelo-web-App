@@ -40,8 +40,8 @@ function SignUp() {
 try {
   const response = await axios.post('http://localhost:8000/api/v1/user/register',inputValue,{ headers: { 'Content-Type': 'application/json' }})
   if (response.status === 200) {
-    console.log(response.data.message); // Display success message
-    alert("submitted successfully");
+    console.log(response.data); 
+    alert("success",response.data.message);
     setInputValue({
       name: "",
       email: "",
