@@ -1,9 +1,11 @@
-import React from 'react'
+import { useEffect } from "react"
 
-function Home() {
+const Home=()=> {
+
+
   return (
     <>
-    <div>Home</div>
+    <div className="text-white">Home</div>
     </>
   )
 }

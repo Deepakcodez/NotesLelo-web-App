@@ -1,8 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function SignIn() {
+
+  const navigate = useNavigate();
+
+
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
@@ -30,6 +34,7 @@ function SignIn() {
         if( response.status === 200){
           localStorage.setItem("useDataToken", response.data.data.token);
           setInputValue({ email: "", password: "" });
+          navigate("/")
         }
         console.log(">>>>>>>>>>>response: ", response.data);
         alert(response.data.message);

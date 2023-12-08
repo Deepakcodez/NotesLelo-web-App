@@ -91,17 +91,6 @@ const register = async (req, resp) => {
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
 //login
 const login = async (req, resp) => {
   const { email, password } = req.body;
@@ -118,7 +107,6 @@ const login = async (req, resp) => {
     const user = await userModel.findOne({ email: email });
 
     if (user) {
-      
       const isMatch = await bcrypt.compare(String(password), user.password);
       // console.log("Provided password:", password);
       // console.log("Hashed password from the database:", user.password);
@@ -164,4 +152,26 @@ const login = async (req, resp) => {
   }
 };
 
-module.exports = { demo, register, login };
+const isVarify = async (req,resp) => {
+
+  try {
+    const user = await userModel.findOne({_id:req.userId});
+    console.log('>>>>>>>>>>>', user._id,"req id",req.userId)
+    resp.status(201).json({
+      status :201,
+      success:true,
+      message: "user authenticated",
+      data :user
+    })
+  } catch (error) {
+    resp.status(401).json({
+      status :401,
+      success:false,
+      message: "user unauthenticated",
+    
+    })
+  }
+
+};
+
+module.exports = { demo, register, login, isVarify };

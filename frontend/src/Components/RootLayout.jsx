@@ -1,10 +1,52 @@
-import React from 'react'
+import { useEffect, useState } from "react"
+import { Outlet, useNavigate } from "react-router-dom"
 
 function RootLayout() {
+   const [isLoading,setLoading] = useState(true)
+  const navigate = useNavigate()
+  
+  
+    useEffect(()=>{
+
+      const isAuthenticated = async () => {
+        try {
+          let token = localStorage.getItem("useDataToken");
+          // console.log('>>>>>>>>>>>', token);
+          const response =  await fetch("http://localhost:8000/api/v1/user/isVarify", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "authorization": token,
+            },
+          });
+          setLoading(false)
+          const data = await response.json();
+          console.log('>>>>>>>>>>>data', data);
+          if(data.status==401|| !data){
+            navigate("/signIn")
+          }
+        } catch (error) {
+          console.error('Error in isAuthenticated:', error);
+          setLoading(false)
+    
+          // Handle errors, such as redirecting to the login page
+        }
+      };
+
+      isAuthenticated()
+    },[]);
+  if(isLoading){
+    return(
+    <>
+         <h1 className="flex flex-1 justify-center h-screen w-screen bgdark  items-center flex-col py-10">Loading.........</h1>
+    </>)
+  }
   return (
     <>
-    <div className='text-black'>RootLayout</div>
-    </>
+<section className="flex flex-1 justify-center h-screen w-screen bgdark  items-center flex-col py-10">
+
+<Outlet />
+</section>    </>
   )
 }
 
