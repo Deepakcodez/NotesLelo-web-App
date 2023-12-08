@@ -91,6 +91,17 @@ const register = async (req, resp) => {
   }
 };
 
+
+
+
+
+
+
+
+
+
+
+
 //login
 const login = async (req, resp) => {
   const { email, password } = req.body;
@@ -107,11 +118,11 @@ const login = async (req, resp) => {
     const user = await userModel.findOne({ email: email });
 
     if (user) {
-      console.log("Provided password:", password);
-
+      
       const isMatch = await bcrypt.compare(String(password), user.password);
-      console.log("Hashed password from the database:", user.password);
-      console.log("Is password match?", isMatch);
+      // console.log("Provided password:", password);
+      // console.log("Hashed password from the database:", user.password);
+      // console.log("Is password match?", isMatch);
 
       if (!isMatch) {
         resp.status(422).send({
@@ -122,7 +133,7 @@ const login = async (req, resp) => {
       } else {
         // generateAuthToken is defined in the user schema
         const token = await user.generateAuthToken();
-        console.log("Generated token:", token);
+        // console.log("Generated token:", token);
 
         // storing token in browser cookies
         resp.cookie("userCookie", token, {
@@ -138,7 +149,7 @@ const login = async (req, resp) => {
         return resp.status(200).send({
           status: 200,
           success: true,
-          message: "user found",
+          message: "welcome",
           data: result,
         });
       }
