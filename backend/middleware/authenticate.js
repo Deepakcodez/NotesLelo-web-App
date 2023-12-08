@@ -5,18 +5,21 @@ const secretKey = "NotesLeloSecretKey";
 
 const authenticate = async (req, resp, next) => {
   try {
+
+    // take the data from the headers in token variable
     const token = req.headers.authorization;
 
-    // Verify the token
+    // Verify the token with secret key which we used in generating token in userModel page
     const decoded = jwt.verify(token, secretKey);
 
     // You can access the decoded payload
-    // console.log("Decoded Token:", decoded);  
 
+    // console.log("Decoded Token:", decoded);  
+     
     const user = await userModel.findOne({ _id: decoded._id });
 
     if (!user) throw new Error("user unavailable");
-
+//    sending below data to the req and capture it in isVarify function
     req.token=token;
     req.user = user;
     req.userId = user._id

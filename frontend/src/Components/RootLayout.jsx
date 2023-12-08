@@ -12,6 +12,7 @@ function RootLayout() {
         try {
           let token = localStorage.getItem("useDataToken");
           // console.log('>>>>>>>>>>>', token);
+          //from fetch send data in headers authorization:token to the /isVarify route  here i put a middleware called authenticate which verify the stored token in the browser to the secretkey  
           const response =  await fetch("http://localhost:8000/api/v1/user/isVarify", {
             method: "GET",
             headers: {

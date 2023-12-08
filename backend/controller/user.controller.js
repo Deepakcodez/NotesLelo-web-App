@@ -152,11 +152,16 @@ const login = async (req, resp) => {
   }
 };
 
+
+
+
+// is varify to authonenticate user 
+
 const isVarify = async (req,resp) => {
 
   try {
     const user = await userModel.findOne({_id:req.userId});
-    console.log('>>>>>>>>>>>', user._id,"req id",req.userId)
+    // console.log('>>>>>>>>>>>', user._id,"req id",req.userId)
     resp.status(201).json({
       status :201,
       success:true,
