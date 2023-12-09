@@ -50,8 +50,8 @@ function SignIn() {
   return (
     <>
       <div className=" w-[90%] sm:w-[30rem] text-center bg-transparent relative z-40">
-        <h1 className="text-xl font-bold mb-6">📃Notes lelo</h1>
-        <h3 className="text-2xl font-bold mb-1"> Log in to your account</h3>
+        <h1 className="text-xl font-bold mb-6 text-white">📃Notes lelo</h1>
+        <h3 className="text-2xl font-bold mb-1 text-white"> Log in to your account</h3>
         <h5 className="text-xs text-gray-400">
           Welcome back, Please enter your details.
         </h5>
@@ -70,7 +70,7 @@ function SignIn() {
                 name="email"
                 value={inputValue.email}
                 onChange={onchangeHandler}
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                className="block flex-1 border-0 text-white bg-transparent py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 placeholder="please enter valid email"
               />
             </div>
@@ -90,7 +90,7 @@ function SignIn() {
                 name="password"
                 value={inputValue.password}
                 onChange={onchangeHandler}
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                className="block flex-1 border-0 text-white bg-transparent py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 placeholder="enter strong password"
               />
             </div>

@@ -7,6 +7,7 @@ import SignUp from "../auth/SignUp";
 import AuthLayout from "../auth/AuthLayout";
 import RootLayout from "./Components/RootLayout";
 import './App.css'
+import PageNotFound from "./Components/PageNotFound";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route element={<RootLayout/>}>
           <Route path="/" element={<Home />}></Route>
           </Route>
+          <Route path="*" element={<PageNotFound/>}></Route>
         </Routes>
       </main>
     </>
