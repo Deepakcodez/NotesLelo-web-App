@@ -9,7 +9,7 @@ db.connectDB();
 // middlewares
 app.use(cors()); //for connection with react
 app.use(express.json()); //parse body content
-app.use(express.urlencoded()); //parse url encoded content
+app.use(express.urlencoded({ extended: true })); //parse url encoded content
 app.use(cookieParser()); //cookie parser middleware
 
 // routes
