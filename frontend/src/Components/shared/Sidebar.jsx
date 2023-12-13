@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
@@ -7,17 +7,20 @@ import { FcDocument } from "react-icons/fc";
 import { FcAdvertising } from "react-icons/fc";
 import { FcBookmark } from "react-icons/fc";
 
-function Sidebar() {
+function Sidebar(props) {
   const [isOpen, setOpen] = useState(true);
+
+   
+
   const clickHandler = () => {
     setOpen(!isOpen);
   };
   return (
     <>
-      <section className=" sidebar hidden  md:block  ">
+      <section className=" sidebar  hidden  md:block  ">
         <motion.div
           animate={{ width: isOpen ? "16rem" : "5rem" }}
-          className=" flex  h-full gap-3 py-4 flex-col px-3 bg-slate-600"
+          className=" flex shadow-md  h-full gap-3 py-4 flex-col px-3 bg-slate-600"
         >
           <div
             className={`flex ${
@@ -49,7 +52,7 @@ function Sidebar() {
           }}
           className="avatar flex items-center gap-3  rounded-md p-2 ">
             <div className="h-10 w-10 rounded-full bg-blue-300"></div>
-            {isOpen && <h1 className="text-white">Demo singh</h1>}
+            {isOpen && <h1 className="text-white">{props.userName}</h1>}
           </NavLink>
           {/* home */}
           <NavLink

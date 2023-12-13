@@ -7,6 +7,7 @@ import BottomBar from "./shared/BottomBar";
 function RootLayout() {
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [name,setName] = useState("Demo User")
 
   useEffect(() => {
     const isAuthenticated = async () => {
@@ -27,6 +28,8 @@ function RootLayout() {
         setLoading(false);
         const data = await response.json();
         console.log(">>>>>>>>>>>data", data);
+        setName(data.data.name)
+        // console.log('>>>>>>>>>>>', data.data.name)
         if (data.status == 401 || !data) {
           navigate("/signIn");
         }
@@ -53,7 +56,7 @@ function RootLayout() {
     <>
       <div className="w-full  md:flex">
         <Navbar />
-        <Sidebar />
+        <Sidebar  userName={name} />
     
 
       <section className=" flex flex-1 h-full ">
