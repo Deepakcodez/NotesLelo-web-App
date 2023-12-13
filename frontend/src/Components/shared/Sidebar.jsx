@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
@@ -9,8 +9,9 @@ import { FcBookmark } from "react-icons/fc";
 
 function Sidebar(props) {
   const [isOpen, setOpen] = useState(true);
-
-   
+console.log('>>>>>>>>>>>props', props)
+   const {name,email}=props.userDetail;   //destructure the props(object) inner object calles userDetail  
+  //  console.log('>>>>>>>>>>>', name)
 
   const clickHandler = () => {
     setOpen(!isOpen);
@@ -50,9 +51,13 @@ function Sidebar(props) {
           style={({ isActive }) => {
             return { background: isActive && "#556274" };
           }}
-          className="avatar flex items-center gap-3  rounded-md p-2 ">
+          className="avatar flex items-center gap-3  rounded-md  ">
             <div className="h-10 w-10 rounded-full bg-blue-300"></div>
-            {isOpen && <h1 className="text-white">{props.userName}</h1>}
+            <div>
+            {isOpen && <h1 className="text-white ">{name}</h1>}
+            {isOpen&&<p className="text-white text-[.7rem]">{email}</p>}
+            </div>
+         
           </NavLink>
           {/* home */}
           <NavLink

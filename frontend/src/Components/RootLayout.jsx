@@ -7,7 +7,7 @@ import BottomBar from "./shared/BottomBar";
 function RootLayout() {
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const [name,setName] = useState("Demo User")
+  const [userDetail,setUserDetail] = useState({}) //use for dynamiv value change in sidebar 
 
   useEffect(() => {
     const isAuthenticated = async () => {
@@ -28,8 +28,8 @@ function RootLayout() {
         setLoading(false);
         const data = await response.json();
         console.log(">>>>>>>>>>>data", data);
-        setName(data.data.name)
-        // console.log('>>>>>>>>>>>', data.data.name)
+        setUserDetail(data.data)
+    
         if (data.status == 401 || !data) {
           navigate("/signIn");
         }
@@ -56,7 +56,7 @@ function RootLayout() {
     <>
       <div className="w-full  md:flex">
         <Navbar />
-        <Sidebar  userName={name} />
+        <Sidebar  userDetail={userDetail} />
     
 
       <section className=" flex flex-1 h-full ">
