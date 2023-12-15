@@ -16,7 +16,7 @@ import Profile from "./Components/pages/Profile";
 function App() {
   return (
     <>
-      <main className="flex h-screen w-screen">
+      <main className="flex h-screen ">
         <Routes>
           {/* public routes  */}
 
