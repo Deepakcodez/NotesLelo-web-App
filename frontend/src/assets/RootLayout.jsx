@@ -56,9 +56,9 @@ function RootLayout() {
     <>
     {/* md:flex */}
       <div className="w-full   ">
-        <Navbar userDetail={userDetail} />
+        <Navbar />
         <div className="flex h-full">
-        <Sidebar   />
+        <Sidebar  userDetail={userDetail} />
     
       
       <section className=" flex flex-1 h-full ">
