@@ -54,14 +54,17 @@ function RootLayout() {
   }
   return (
     <>
-      <div className="w-full  md:flex">
+    {/* md:flex */}
+      <div className="w-full   ">
         <Navbar />
+        <div className="flex h-full">
         <Sidebar  userDetail={userDetail} />
     
-
+      
       <section className=" flex flex-1 h-full ">
         <Outlet />
       </section>
+      </div>
       <BottomBar/>
       </div>
     </>

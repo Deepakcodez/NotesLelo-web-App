@@ -1,16 +1,18 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
-import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
 import { FcHome } from "react-icons/fc";
 import { FcDocument } from "react-icons/fc";
 import { FcAdvertising } from "react-icons/fc";
 import { FcBookmark } from "react-icons/fc";
+import { FaAngleDoubleLeft } from "react-icons/fa";
+import { FaAngleDoubleRight } from "react-icons/fa";
+
 
 function Sidebar(props) {
   const [isOpen, setOpen] = useState(true);
-console.log('>>>>>>>>>>>props', props)
-   const {name,email}=props.userDetail;   //destructure the props(object) inner object calles userDetail  
+  console.log(">>>>>>>>>>>props", props);
+  const { name, email } = props.userDetail; //destructure the props(object) inner object calles userDetail
   //  console.log('>>>>>>>>>>>', name)
 
   const clickHandler = () => {
@@ -18,7 +20,7 @@ console.log('>>>>>>>>>>>props', props)
   };
   return (
     <>
-      <section className=" sidebar  hidden  md:block  ">
+      <section className=" sidebar h-full  hidden  md:inline-block  ">
         <motion.div
           animate={{ width: isOpen ? "16rem" : "5rem" }}
           className=" flex shadow-md  h-full gap-3 py-4 flex-col px-3 bg-slate-600"
@@ -28,37 +30,41 @@ console.log('>>>>>>>>>>>props', props)
               isOpen ? "justify-between " : ""
             } items-center  p-1 `}
           >
-            <NavLink to={"/"} className="font-bold text-xl text-white ">
+            {/* <NavLink to={"/"} className="font-bold text-xl text-white ">
               {isOpen && (
                 <img src="/public/assets/logo.png" className="h-[2rem]"></img>
               )}{" "}
-            </NavLink>
-            {isOpen ? (
-              <AiOutlineMenuFold
+            </NavLink>  */}
+
+              {isOpen ? 
+              <FaAngleDoubleLeft
                 className="text-white text-4xl bg-slate-500 rounded-full p-2 "
                 onClick={clickHandler}
               />
-            ) : (
-              <AiOutlineMenuUnfold
+             : 
+              <FaAngleDoubleRight
                 className="text-white text-4xl bg-slate-500 rounded-full p-2 "
                 onClick={clickHandler}
               />
-            )}
+            } 
           </div>
 
           {/* avatar  */}
-          <NavLink to={"/profile"}
-          style={({ isActive }) => {
-            return { background: isActive && "#556274" };
-          }}
-          className="avatar flex items-center gap-3  rounded-md  ">
+           <NavLink
+            to={"/profile"}
+            style={({ isActive }) => {
+              return { background: isActive && "#556274" };
+            }}
+            className="avatar flex items-center gap-3  rounded-md  "
+          >
             <div className="h-10 w-10 rounded-full bg-blue-300"></div>
             <div>
-            {isOpen && <h1 className="text-white ">{name}</h1>}
-            {isOpen&&<p className="text-white text-[.7rem]">{email}</p>}
+              {isOpen && <h1 className="text-white ">{name}</h1>}
+              {isOpen && <p className="text-white text-[.7rem]">{email}</p>}
             </div>
-         
-          </NavLink>
+          </NavLink> 
+
+
           {/* home */}
           <NavLink
             to={"/"}
