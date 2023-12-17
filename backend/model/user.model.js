@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Post",
     },
+    group:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Groups",
+    }],
     avatar: {
       public_id: String,
       url: String,
