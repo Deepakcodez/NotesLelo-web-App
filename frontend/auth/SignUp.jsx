@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../src/App.css";
 import axios from "axios";
 
 function SignUp() {
+  const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     name: "",
     email: "",
@@ -40,8 +41,9 @@ function SignUp() {
 try {
   const response = await axios.post('http://localhost:8000/api/v1/user/register',inputValue,{ headers: { 'Content-Type': 'application/json' }})
   if (response.status === 200) {
-    console.log(response.data.message); // Display success message
-    alert("submitted successfully");
+    console.log(response.data); 
+    alert("success",response.data.message);
+    navigate('/signIn')
     setInputValue({
       name: "",
       email: "",
@@ -65,8 +67,8 @@ alert(error.response.data.message)
   return (
     <>
       <div className=" w-[90%] sm:w-[30rem] text-center bg-transparent relative z-40">
-        <h1 className="text-xl font-bold mb-6 bg-transparent">📃Notes lelo</h1>
-        <h3 className="text-2xl font-bold mb-1 bg-transparent">
+        <h1 className="text-xl font-bold mb-6 bg-transparent text-white">📃Notes lelo</h1>
+        <h3 className="text-2xl font-bold mb-1 bg-transparent text-white">
           {" "}
           create a new account
         </h3>
@@ -88,7 +90,7 @@ alert(error.response.data.message)
                 name="name"
                 value={inputValue.name}
                 onChange={onchangeHandler}
-                className="block flex-1  border-0 bg-transparent py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                className="block flex-1 text-white border-0 bg-transparent py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 placeholder="enter your name"
               />
             </div>
@@ -108,7 +110,7 @@ alert(error.response.data.message)
                 name="email"
                 value={inputValue.email}
                 onChange={onchangeHandler}
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                className="block flex-1 text-white border-0 bg-transparent py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 placeholder="please enter valid email"
               />
             </div>
@@ -128,7 +130,7 @@ alert(error.response.data.message)
                 name="password"
                 value={inputValue.password}
                 onChange={onchangeHandler}
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                className="block flex-1 border-0 text-white bg-transparent py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 placeholder="enter strong password"
               />
             </div>
@@ -149,7 +151,7 @@ alert(error.response.data.message)
                 name="confirmPassword"
                 value={inputValue.confirmPassword}
                 onChange={onchangeHandler}
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                className="block flex-1 border-0 bg-transparent text-white py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 placeholder="Confirm your Password"
               />
             </div>

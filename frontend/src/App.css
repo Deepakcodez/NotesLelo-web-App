@@ -2,10 +2,17 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    color:white;
+    /* color:white; */
 
 }
 .bgdark{
     background: #161616;
 
+}
+
+::selection{
+    color: rgb(255, 179, 0);
+}
+body{
+    background: #334155;
 }

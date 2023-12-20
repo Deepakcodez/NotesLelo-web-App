@@ -22,11 +22,11 @@ const AuthLayout = () => {
     {
       urlLocation==='/signUp'?
 
-      <img src="/assets/boy.jpg"
+      <img src="/src/assets/boy.jpg"
        alt="boy img"
        className=" hidden xl:block h-screen  w-1/2 object-cover  bg-no-repeat"
         />:
-        <img src="/assets/girl.jpg"
+        <img src="/src/assets/girl.jpg"
         alt="girl img"
         className=" hidden xl:block h-screen  w-1/2 object-cover  bg-no-repeat"
          />
