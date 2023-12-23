@@ -7,6 +7,7 @@ import { GiBookmark } from "react-icons/gi";
 import { AiOutlineNotification } from "react-icons/ai";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import { FaAngleDoubleRight } from "react-icons/fa";
+import { LuLibrary } from "react-icons/lu";
 
 function Sidebar() {
   const [isOpen, setOpen] = useState(true);
@@ -19,6 +20,11 @@ function Sidebar() {
       title: "Notifications",
       icon: <AiOutlineNotification />,
       link: "/notifications",
+    },
+    {
+      title: "Library",
+      icon: <LuLibrary />,
+      link: "/library",
     },
   ];
 
