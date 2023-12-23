@@ -12,6 +12,7 @@ import YourNotes from "./Components/pages/YourNotes";
 import Notification from "./Components/pages/Notification";
 import Saved from "./Components/pages/Saved";
 import Profile from "./Components/pages/Profile";
+import { Library } from "./Components/pages/Library";
 
 function App() {
   return (
@@ -29,11 +30,12 @@ function App() {
 
           {/* private routes  */}
           <Route element={<RootLayout/>}>
-          <Route path="/" element={<Home />}></Route>
+          <Route exact path="/" element={<Home />}></Route>
           <Route path="/yourNotes" element={<YourNotes/>}></Route>
           <Route path="/notifications" element={<Notification/>}></Route>
           <Route path="/savedNotes" element={<Saved/>}></Route>
           <Route path="/profile" element={<Profile/>}></Route>
+          <Route path="/library" element={<Library/>}></Route>
           </Route>
           <Route path="*" element={<PageNotFound/>}></Route>
         </Routes>
