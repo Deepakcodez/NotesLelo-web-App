@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
+import { GoPlus } from "react-icons/go";
+
 
 function Navbar(props) {
   const { name, email } = props.userDetail; //destructure the props(object) inner object calles userDetail
@@ -23,7 +25,8 @@ function Navbar(props) {
         <NavLink to={"/"} className="font-bold text-xl text-white ">
           <img src="/src/assets/logo.png" className="h-[2rem]"></img>{" "}
         </NavLink>{" "}
-        <section className="avatar">
+        <section className="rightnav flex items-center gap-3 ">
+          <GoPlus className="text-3xl text-white bg-slate-700 rounded-full p-[.2rem] hover:bg-slate-600"/>
           <div className="h-10 w-10 rounded-full bg-blue-300 items-center justify-center flex  text-white font-semibold text-2xl ">
             {avatarSign}
           </div>
