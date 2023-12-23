@@ -4,6 +4,6 @@ const {demo,createGroup}=require("../controller/groups.controller");
 
 
 router.route('/demo').post(demo)
-router.route('/crateGroup').post(createGroup)
+router.route('/createGroup').post(createGroup)
 
 module.exports=router
