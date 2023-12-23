@@ -17,4 +17,4 @@ const user = require("./router/user.rout");
 
 app.use("/api/v1/user", user);
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`NotesaLelo app listening on port ${port}!`));
