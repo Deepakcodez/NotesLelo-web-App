@@ -18,7 +18,8 @@ app.use(cookieParser()); //cookie parser middleware
 
 
 app.use("/api/v1/user", user);
-app.use("/api/v1/group",group)
+app.use("/api/v1/group",group);
+
 
 
 app.listen(port, () => console.log(`NotesaLelo app listening on port ${port}!`));
