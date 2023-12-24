@@ -108,12 +108,21 @@ const login = async (req, resp) => {
   try {
     const user = await userModel.findOne({ email });
 
+
+    if(!user){
+      resp.status(422).send({
+        status: 422,
+        success: false,
+        message: "something incorrect",
+      });
+    }
     if (user) {
       const isMatch = await bcrypt.compare(String(password), user.password);
-      // console.log("Provided password:", password);
-      // console.log("Hashed password from the database:", user.password);
-      // console.log("Is password match?", isMatch);
-
+      console.log("Provided password:", password);
+      console.log("Hashed password from the database:", user.password);
+      console.log("Is password match?", isMatch);
+      
+      
       if (!isMatch) {
         resp.status(422).send({
           status: 422,
