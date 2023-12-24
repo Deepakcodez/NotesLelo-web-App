@@ -103,8 +103,10 @@ const login = async (req, resp) => {
     });
   }
 
+  // email or email:email are same thing
+
   try {
-    const user = await userModel.findOne({ email: email });
+    const user = await userModel.findOne({ email });
 
     if (user) {
       const isMatch = await bcrypt.compare(String(password), user.password);
