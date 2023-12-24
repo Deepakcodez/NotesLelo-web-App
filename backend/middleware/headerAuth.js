@@ -6,11 +6,9 @@ const secretKey = "NotesLeloSecretKey";
 const authenticate = async (req, resp, next) => {
   try {
 
-    //taking token from cookies
-    const{token} = req.cookies
-  console.log('>>>>>>>>>>>', token)
+  
     // take the data from the headers in token variable
-    // const token = req.headers.authorization;
+    const token = req.headers.authorization;
 
     // Verify the token with secret key which we used in generating token in userModel page
     const decoded = jwt.verify(token, secretKey);

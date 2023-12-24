@@ -1,6 +1,7 @@
 const groupdb=require("../model/groups.model");
 const groupModel=groupdb.Group;
-
+const userdb = require("../model/user.model");
+const userModel = userdb.User;
 
 
 const demo= async(req,resp)=>{
@@ -22,7 +23,7 @@ const demo= async(req,resp)=>{
 // create group controller 
 
 const createGroup = async (req,resp)=>{
-    const{title,description} = req.body;
+    const{title,description,owner} = req.body;
   try {
       if(!title){
           return resp.status(422).json({
@@ -31,30 +32,43 @@ const createGroup = async (req,resp)=>{
               error:"Enter tittle of the group "
           });
       }
-      const existingGroup = await groupModel.findOne({ title: title });
+      const existingGroup = await groupModel.findOne({ title });
 
     if (existingGroup) {
       return resp.status(400).json({
         status: 400,
         success: false,
-        message: "Group already exist already exists",
+        message: "Group already exist",
       });
     } 
       else{
         const group = new groupModel({
             title,
-            description
-        
+            description,
+            owner: [{ owner: req.userId }],
           });
     
-          const storeGroupData = await group.save();
+          const storedGroupData = await group.save();
+
+          const userId = req.userId; // Assuming your authenticate middleware sets user information in req.user
+
+      if (userId) {
+        const user = await userModel.findById(userId);
+        if (user) {
+          user.group.push(storedGroupData._id);
+          await user.save();
+        }
+      }
+
+
+     
     
-          console.log(">>>>>>>>>>> Register successful");
+          console.log(">>>>>>>>>>> group created successfully");
           return resp.status(200).json({
               status:200,
               success:true,
               Message:"Group Created Successfullly,",
-              data:storeGroupData
+              data:storedGroupData
           });
       }
   } catch (error) {

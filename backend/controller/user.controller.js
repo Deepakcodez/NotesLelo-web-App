@@ -124,7 +124,7 @@ const login = async (req, resp) => {
         // console.log("Generated token:", token);
 
         // storing token in browser cookies
-        resp.cookie("userCookie", token, {
+        resp.cookie("token", token, {
           expires: new Date(Date.now() + 90000000),
           httpOnly: true,
         });
