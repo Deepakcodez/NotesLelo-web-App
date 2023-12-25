@@ -13,6 +13,7 @@ import Notification from "./Components/pages/Notification";
 import Saved from "./Components/pages/Saved";
 import Profile from "./Components/pages/Profile";
 import { Library } from "./Components/pages/Library";
+import { Loading } from "./Components/shared/Loading";
 
 function App() {
   return (

@@ -1,18 +1,22 @@
 import { FcHome, FcDocument, FcAdvertising, FcBookmark } from "react-icons/fc";
+import { RiHome2Line } from "react-icons/ri";
+import { GrDocumentNotes } from "react-icons/gr";
+import { GiBookmark } from "react-icons/gi";
+import { AiOutlineNotification } from "react-icons/ai";
 
 import { NavLink } from "react-router-dom";
 function BottomBar() {
   return (
     <>
       <section className="bottombar md:hidden fixed bottom-0 w-full">
-        <div className=" flex justify-around bg-slate-600 py-4 px-3">
+        <div className=" flex justify-around bg-slate-800 py-4 px-3 border-t-[1px] border-slate-700">
           <NavLink
             to={"/"}
             style={({ isActive }) => {
               return { scale: isActive && "1.5" };
             }}
           >
-            <FcHome className="text-3xl" />
+            <RiHome2Line className="text-3xl text-white" />
           </NavLink>
 
           <NavLink
@@ -21,7 +25,7 @@ function BottomBar() {
               return {  scale: isActive &&"1.5"  };
             }}
           >
-            <FcDocument className="text-3xl" />
+            <GrDocumentNotes className="text-3xl text-white" />
           </NavLink>
 
           <NavLink
@@ -30,7 +34,7 @@ function BottomBar() {
               return { scale: isActive && "1.5" };
             }}
           >
-            <FcAdvertising className="text-3xl" />
+            <AiOutlineNotification className="text-3xl text-white" />
           </NavLink>
 
           <NavLink
@@ -39,7 +43,7 @@ function BottomBar() {
               return { scale: isActive && "1.5" };
             }}
           >
-            <FcBookmark className="text-3xl" />
+            <GiBookmark className="text-3xl text-white" />
           </NavLink>
         </div>
       </section>
