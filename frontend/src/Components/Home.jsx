@@ -5,7 +5,10 @@ const Home=()=> {
 
   return (
     <>
-    <div className="pt-20 px-6 pb-[60rem]  md:pb-0 w-full  flex gap-5 flex-wrap   ">
+    <div className="pt-20 px-6 pb-[60rem]  w-full   gap-5 grid justify-center   "
+    style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(5rem , 20rem))' }}
+
+    >
       <GroupCard/>
       <GroupCard/>
       <GroupCard/>

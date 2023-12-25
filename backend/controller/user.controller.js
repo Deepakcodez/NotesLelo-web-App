@@ -118,9 +118,9 @@ const login = async (req, resp) => {
     }
     if (user) {
       const isMatch = await bcrypt.compare(String(password), user.password);
-      console.log("Provided password:", password);
-      console.log("Hashed password from the database:", user.password);
-      console.log("Is password match?", isMatch);
+      // console.log("Provided password:", password);
+      // console.log("Hashed password from the database:", user.password);
+      // console.log("Is password match?", isMatch);
       
       
       if (!isMatch) {
