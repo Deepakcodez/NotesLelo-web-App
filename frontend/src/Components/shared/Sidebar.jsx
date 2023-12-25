@@ -57,7 +57,7 @@ function Sidebar() {
             width: isOpen ? "16rem" : "4rem",
             transition: { duration: 0.5, type: "spring", damping: 13 },
           }}
-          className=" flex shadow-md  h-full gap-3   py-4 flex-col p-2 bg-slate-800"
+          className=" flex shadow-md  h-full gap-3   py-4 flex-col p-2 bg-slate-800/75"
         >
           <div
             className={`flex ${

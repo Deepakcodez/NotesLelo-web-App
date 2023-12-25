@@ -61,8 +61,8 @@ function RootLayout() {
         <Sidebar   />
     
       
-      <section className=" flex flex-1 h-screen  w-full bg-center bg-repeat bg-contain" 
-       style={{backgroundImage:'url(/src/assets/bg.png)'}}>
+      <section className=" flex flex-1 h-screen  w-full " 
+       >
         <Outlet />
       </section>
       </div>
