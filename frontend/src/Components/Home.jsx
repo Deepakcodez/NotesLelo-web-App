@@ -14,6 +14,13 @@ const Home=()=> {
       <GroupCard/>
       <GroupCard/>
       <GroupCard/>
+      <GroupCard/>
+      <GroupCard/>
+      <GroupCard/>
+      <GroupCard/>
+      <GroupCard/>
+      <GroupCard/>
+      <GroupCard/>
     </div>
     </>
   )
