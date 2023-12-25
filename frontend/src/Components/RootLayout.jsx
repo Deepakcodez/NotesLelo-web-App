@@ -62,7 +62,7 @@ function RootLayout() {
         <Sidebar   />
     
       
-      <section className=" flex flex-1 h-screen  w-full " 
+      <section className=" flex flex-1 h-screen  w-full  " 
        >
         <Outlet />
       </section>

@@ -9,7 +9,7 @@ function BottomBar() {
   return (
     <>
       <section className="bottombar md:hidden fixed bottom-0 w-full">
-        <div className=" flex justify-around bg-slate-800 py-4 px-3 border-t-[1px] border-slate-700">
+        <div className=" flex justify-around bg-slate-800 py-4 px-3 border-tcd-[1px] border-slate-700">
           <NavLink
             to={"/"}
             style={({ isActive }) => {

@@ -51,7 +51,7 @@ function Sidebar() {
 
   return (
     <>
-      <section className=" sidebar min-h-screen max-h-fit h-auto   hidden  md:inline-block  ">
+      <section className=" sidebar h-screen   hidden  md:inline-block  ">
         <motion.div
           animate={{
             width: isOpen ? "16rem" : "4rem",
