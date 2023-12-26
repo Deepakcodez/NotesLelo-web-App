@@ -15,7 +15,7 @@ export const GroupCard = () => {
           setEnlargeIcon(false);
           console.log('Icon size reset');
         
-      }, 2000);
+      }, 100);
       const textToCopy = userIdRef.current.value;
       navigator.clipboard.writeText(textToCopy);
       console.log('Text successfully copied to clipboard:', textToCopy);
@@ -39,7 +39,7 @@ export const GroupCard = () => {
               className='groupID text-slate-500 text-sm bg-transparent'
             />
             <IoCopy
-              className={`text-orange-200 text-lg  hover:text-orange-300 ${enlargeIcon&&"text-4xl"} `}
+              className={`text-orange-200   hover:text-orange-300 ${enlargeIcon?"text-xl":"text-lg"} `}
               onClick={copyIdHandler}
             />
           </div>
