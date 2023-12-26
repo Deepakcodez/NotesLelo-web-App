@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "./shared/Navbar";
 import Sidebar from "./shared/Sidebar";
 import BottomBar from "./shared/BottomBar";
+import { Loading } from "./shared/Loading";
 
 function RootLayout() {
   const [isLoading, setLoading] = useState(true);
@@ -46,8 +47,8 @@ function RootLayout() {
   if (isLoading) {
     return (
       <>
-        <h1 className="flex flex-1 justify-center h-screen w-screen bgdark  items-center flex-col py-10">
-          Loading.........
+        <h1 className="flex flex-1 justify-center h-screen w-screen bgdark  items-center flex-col py-10 text-white">
+          <Loading/>
         </h1>
       </>
     );
@@ -61,7 +62,8 @@ function RootLayout() {
         <Sidebar   />
     
       
-      <section className=" flex flex-1 h-full ">
+      <section className=" flex flex-1 h-screen  w-full  " 
+       >
         <Outlet />
       </section>
       </div>

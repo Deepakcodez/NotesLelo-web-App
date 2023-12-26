@@ -103,15 +103,26 @@ const login = async (req, resp) => {
     });
   }
 
-  try {
-    const user = await userModel.findOne({ email: email });
+  // email or email:email are same thing
 
+  try {
+    const user = await userModel.findOne({ email });
+
+
+    if(!user){
+      resp.status(422).send({
+        status: 422,
+        success: false,
+        message: "something incorrect",
+      });
+    }
     if (user) {
       const isMatch = await bcrypt.compare(String(password), user.password);
       // console.log("Provided password:", password);
       // console.log("Hashed password from the database:", user.password);
       // console.log("Is password match?", isMatch);
-
+      
+      
       if (!isMatch) {
         resp.status(422).send({
           status: 422,
@@ -124,7 +135,7 @@ const login = async (req, resp) => {
         // console.log("Generated token:", token);
 
         // storing token in browser cookies
-        resp.cookie("userCookie", token, {
+        resp.cookie("token", token, {
           expires: new Date(Date.now() + 90000000),
           httpOnly: true,
         });

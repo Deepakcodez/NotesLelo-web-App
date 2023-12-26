@@ -51,13 +51,13 @@ function Sidebar() {
 
   return (
     <>
-      <section className=" sidebar h-full  hidden  md:inline-block  ">
+      <section className=" sidebar h-screen   hidden  md:inline-block  ">
         <motion.div
           animate={{
             width: isOpen ? "16rem" : "4rem",
             transition: { duration: 0.5, type: "spring", damping: 13 },
           }}
-          className=" flex shadow-md  h-full gap-3   py-4 flex-col ps-3 bg-slate-800"
+          className=" flex shadow-md  h-full gap-3   py-4 flex-col p-2 bg-slate-800/75"
         >
           <div
             className={`flex ${
@@ -84,7 +84,7 @@ function Sidebar() {
                 style={({ isActive }) => {
                   return { background: isActive && "#556274" };
                 }}
-                className="flex text-white gap-8  px-3 py-4   hover:border-e-4 hover:ease-in duration-300 hover:bg-slate-700 rounded-md"
+                className="flex text-white gap-8  px-3 py-4 mt-2   hover:border-t-4 hover:ease-in duration-300 hover:bg-slate-700 rounded-md"
               >
                 <div className="text-2xl">{items.icon}</div>
                 <AnimatePresence>
