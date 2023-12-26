@@ -2,6 +2,7 @@ const groupdb=require("../model/groups.model");
 const groupModel=groupdb.Group;
 const userdb = require("../model/user.model");
 const userModel = userdb.User;
+const db = require("../utils/db.connection")
 
 
 const demo= async(req,resp)=>{
@@ -73,11 +74,35 @@ const createGroup = async (req,resp)=>{
           });
       }
   } catch (error) {
-    
+    error
   }
 
 }    
+const allGroups = async(req,res)=>{
+   
+    const Groups = await groupModel.find({});
+    console.log(Groups)
+    try{
+     
+        if(!Groups){
+            res.status(404).json({
+                status:404,
+                successfalse,
+                message:"not found"
+            });
+        }else{
+        res.status(200).json({
+            status:200,
+            success:true,
+            Groups:Groups
+        });
+        }
+    }catch(err){
+        err
+    }
+
+}
 
 
 
-module.exports = {demo,createGroup}
+module.exports = {demo,createGroup,allGroups}
