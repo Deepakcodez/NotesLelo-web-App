@@ -19,7 +19,6 @@ const demo= async(req,resp)=>{
 };
 
 
-<<<<<<< HEAD
 const createGroup = async (req,res)=>{
     const{title,description} = req.body;
     if(!title){
@@ -45,7 +44,6 @@ const createGroup = async (req,res)=>{
             data:storeData
         });
     }
-=======
 
 // create group controller 
 
@@ -101,9 +99,8 @@ const createGroup = async (req,resp)=>{
   } catch (error) {
     
   }
->>>>>>> e3907db9c972b7dd389b7b8700c5f43683f3a90d
 
-    
+}    
 }
 
 
