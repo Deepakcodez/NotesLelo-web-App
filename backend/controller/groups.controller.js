@@ -19,6 +19,33 @@ const demo= async(req,resp)=>{
 };
 
 
+<<<<<<< HEAD
+const createGroup = async (req,res)=>{
+    const{title,description} = req.body;
+    if(!title){
+        return res.status(422).json({
+            status:422,
+            success:false,
+            error:"Enter tittle of the group "
+        });
+    }
+    else{
+
+        const group = new groupModel(
+            {
+                title:title,
+                description:description
+            }
+        );
+        const storeData = await group.save();
+         res.status(200).json({
+            status:200,
+            success:true,
+            Message:"Group Created Successfullly",
+            data:storeData
+        });
+    }
+=======
 
 // create group controller 
 
@@ -74,6 +101,7 @@ const createGroup = async (req,resp)=>{
   } catch (error) {
     
   }
+>>>>>>> e3907db9c972b7dd389b7b8700c5f43683f3a90d
 
     
 }
