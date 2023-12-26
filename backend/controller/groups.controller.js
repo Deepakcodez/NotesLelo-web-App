@@ -19,8 +19,8 @@ const demo= async(req,res)=>{
 
 
 const createGroup = async (req,res)=>{
-    const{tittle,description} = req.body;
-    if(!tittle){
+    const{title,description} = req.body;
+    if(!title){
         return res.status(422).json({
             status:422,
             success:false,
@@ -28,10 +28,19 @@ const createGroup = async (req,res)=>{
         });
     }
     else{
-        return res.status(200).json({
+
+        const group = new groupModel(
+            {
+                title:title,
+                description:description
+            }
+        );
+        const storeData = await group.save();
+         res.status(200).json({
             status:200,
             success:true,
             Message:"Group Created Successfullly",
+            data:storeData
         });
     }
 
