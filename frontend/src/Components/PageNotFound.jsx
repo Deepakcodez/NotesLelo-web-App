@@ -15,7 +15,7 @@ function PageNotFound() {
       <h1 className="flex flex-1 justify-center h-screen w-screen bgdark  items-center flex-col py-10">
         <img
           className="h-80"
-          src="/public/assets/404.png"
+          src="/assets/404.png"
           alt="page not found"
         />
       </h1>
