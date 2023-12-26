@@ -45,7 +45,7 @@ export const GroupCard = () => {
         >
           <div className=" border-b-[1px] pt-2 rounded-t-md border-b-slate-400/70 bg-slate-700">
             <h1 className="groupName px-4 font-bold text-white">
-              {group.title}
+              {group.title.toUpperCase()}
             </h1>
 
             <div className="flex  items-center justify-between px-4 pb-2">
