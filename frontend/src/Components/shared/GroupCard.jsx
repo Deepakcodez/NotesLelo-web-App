@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { IoCopy } from "react-icons/io5";
 
 export const GroupCard = () => {
-
-    
+  const userIdRef = useRef(null);
+console.log('>>>>>>>>>>>',userIdRef.current.value )
+    const  copyIdHandler =()=>{
+      try {
+         navigator.clipboard.writeText(userIdRef.current.value );
+        console.log('Text successfully copied to clipboard');
+      } catch (err) {
+        console.error('Unable to copy to clipboard', err);
+      }
+    }
 
   return (
     <>
@@ -12,8 +20,13 @@ export const GroupCard = () => {
       <h1 className='groupName px-4 font-bold text-white  ' >Notes Zilla</h1>
 
       <div className='flex  items-center justify-between px-4 pb-2'>
-      <h1 className='groupID text-slate-500 text-sm '>fdhfdfhfljhkjh</h1>
-      <IoCopy className='text-orange-200 text-lg hover:scale-110 hover:text-orange-300'/>
+      <input type='text' value={"dhhfkjdn"}
+      ref={userIdRef}
+      disabled={true}
+      className='groupID text-slate-500 text-sm bg-transparent' />
+      <IoCopy className='text-orange-200 text-lg hover:scale-110 hover:text-orange-300' 
+      onClick={copyIdHandler}
+      />
       </div>
 
       </div>
