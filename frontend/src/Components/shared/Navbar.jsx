@@ -32,7 +32,7 @@ function Navbar(props) {
     const firstCharacter = name ? name[0] : ""; // Check if name is defined
     const capitalAvatarcharacter =
       firstCharacter && firstCharacter.toUpperCase();
-    console.log(">>>>>>>>>>>", capitalAvatarcharacter);
+    // console.log(">>>>>>>>>>>", capitalAvatarcharacter);
     setAvatarSign(capitalAvatarcharacter);
   }, [name]);
 

@@ -36,8 +36,9 @@ function App() {
           <Route path="/savedNotes" element={<Saved/>}></Route>
           <Route path="/profile" element={<Profile/>}></Route>
           <Route path="/library" element={<Library/>}></Route>
-          </Route>
+
           <Route path="*" element={<PageNotFound/>}></Route>
+          </Route>
         </Routes>
       </main>
     </>

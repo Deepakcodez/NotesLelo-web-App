@@ -28,7 +28,7 @@ function RootLayout() {
         );
         setLoading(false);
         const data = await response.json();
-        console.log(">>>>>>>>>>>data", data);
+        // console.log(">>>>>>>>>>>data", data);
         setUserDetail(data.data)
     
         if (data.status == 401 || !data) {

@@ -7,15 +7,15 @@ function PageNotFound() {
   useEffect(() => {
     setTimeout(() => {
       navigate("/");
-    }, 3000);
+    }, 5000);
   });
 
   return (
     <>
-      <h1 className="flex flex-1 justify-center h-screen w-screen bgdark  items-center flex-col py-10">
+      <h1 className="flex flex-1 justify-center h-screen w-screen   items-center flex-col py-10">
         <img
           className="h-80"
-          src="/assets/404.png"
+          src="/src/assets/404.png"
           alt="page not found"
         />
       </h1>
