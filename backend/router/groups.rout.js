@@ -7,6 +7,6 @@ const authenticate = require('../middleware/authenticate')
 
 router.route('/demo').post(demo)
 router.route('/create').post(authenticate,createGroup)
-router.route('/allGroups').get(allGroups)
+router.route('/all').get(allGroups)
 
 module.exports=router
