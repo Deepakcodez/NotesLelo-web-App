@@ -13,8 +13,12 @@ import Notification from "./Components/pages/Notification";
 import Saved from "./Components/pages/Saved";
 import Profile from "./Components/pages/Profile";
 import { Library } from "./Components/pages/Library";
+import { useContext } from "react";
+import { createGroupContext } from "./Context";
+import { CreateGroup } from "./Components/pages/CreateGroup";
 
 function App() {
+
   return (
     <>
       <main className="flex h-screen ">
@@ -29,6 +33,7 @@ function App() {
 
 
           {/* private routes  */}
+
           <Route element={<RootLayout/>}>
           <Route exact path="/" element={<Home />}></Route>
           <Route path="/yourNotes" element={<YourNotes/>}></Route>

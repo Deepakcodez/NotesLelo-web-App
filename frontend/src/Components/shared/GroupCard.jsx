@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { IoCopy } from "react-icons/io5";
 
 export const GroupCard = () => {
@@ -39,8 +39,9 @@ export const GroupCard = () => {
   return (
     <>
       {groups.map((group, index) => (
+        <Fragment key={index}>
         <div
-          key={group.id} // Add a unique key for each mapped element
+          
           className="card bg-slate-500/75 h-40  min-w-[auto] rounded-md shadow-lg border-[1px] border-t-slate-300 hover:border-t-slate-100 border-slate-400/50 hover:shadow-2xl hover:bg-slate-600 hover:scale-[1.009] outline-slate-200/5 outline-1 outline-offset-4 outline"
         >
           <div className=" border-b-[1px] pt-2 rounded-t-md border-b-slate-400/70 bg-slate-700">
@@ -68,6 +69,7 @@ export const GroupCard = () => {
             {group.description}
           </h1>
         </div>
+        </Fragment>
       ))}
     </>
   );

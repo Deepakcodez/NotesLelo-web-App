@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "./shared/Navbar";
 import Sidebar from "./shared/Sidebar";
 import BottomBar from "./shared/BottomBar";
 import { Loading } from "./shared/Loading";
+import { createGroupContext } from "../Context";
+import { CreateGroup } from "./pages/CreateGroup";
 
 function RootLayout() {
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [userDetail,setUserDetail] = useState({}) //use for dynamiv value change in sidebar 
+  const {isCreateGroup,setCreateGroup} = useContext(createGroupContext)
 
   useEffect(() => {
     const isAuthenticated = async () => {
@@ -55,8 +58,11 @@ function RootLayout() {
   }
   return (
     <>
-    {/* md:flex */}
       <div className="w-full   ">
+        {
+          isCreateGroup&&
+      <CreateGroup/>
+        }
         <Navbar userDetail={userDetail} />
         <div className="flex h-full">
         <Sidebar   />
