@@ -2,6 +2,7 @@ const express = require('express');
 const router =express.Router();
 const {demo,createGroup, allGroups}=require("../controller/groups.controller");
 const authenticate = require('../middleware/authenticate')
+const  headerAuth  = require('../middleware/headerAuth')
 
 
 

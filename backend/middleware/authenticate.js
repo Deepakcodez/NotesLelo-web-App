@@ -8,9 +8,17 @@ const authenticate = async (req, resp, next) => {
 
     //taking token from cookies
     const{token} = req.cookies
-  console.log('>>>>>>>>>>>', token)
     // take the data from the headers in token variable
     // const token = req.headers.authorization;
+
+    if (!token) {
+      return resp.status(401).json({
+        status: 401,
+        success: false,
+        message: "Token unavailable",
+      });
+    }
+  console.log('>>>>>>>>>>>', token)
 
     // Verify the token with secret key which we used in generating token in userModel page
     const decoded = jwt.verify(token, secretKey);
@@ -32,11 +40,11 @@ const authenticate = async (req, resp, next) => {
     // Proceed with the next middleware or route handler
     next();
   } catch (error) {
-    console.error("JWT Verification Error:", error);
+    console.error(" from cookie authJWT Verification Error:", error);
     resp.status(401).send({
       status: 401,
       success: false,
-      message: "Unauthorized",
+      message: "Unauthorized user",
     });
   }
 };

@@ -26,7 +26,7 @@ export const CreateGroup = () => {
       const response = await axios.post(
         "http://localhost:8000/api/v1/group/create",
         GroupDetail,
-        { headers: { "Content-Type": "application/json","Authorization":token },
+        { headers: { "Content-Type": "application/json","token":  token  },
 
       }
         );

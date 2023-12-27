@@ -9,7 +9,15 @@ const authenticate = async (req, resp, next) => {
   
     // take the data from the headers in token variable
     const token = req.headers.authorization;
+    if (!token) {
+      return resp.status(400).json({
+        status: 400,
+        success: false,
+        message: "Unauthorized user. Token unavailable.",
+      });
+    }
 
+console.log('>>>>>>>>>>>', token)
     // Verify the token with secret key which we used in generating token in userModel page
     const decoded = jwt.verify(token, secretKey);
 
@@ -30,7 +38,7 @@ const authenticate = async (req, resp, next) => {
     // Proceed with the next middleware or route handler
     next();
   } catch (error) {
-    console.error("JWT Verification Error:", error);
+    console.error("from Header auth JWT Verification Error:", error);
     resp.status(401).send({
       status: 401,
       success: false,

@@ -22,7 +22,7 @@ const demo= async(req,resp)=>{
 
 
 
-// create group controller 
+// create group API 
 
 const createGroup = async (req,resp)=>{
     const{title,description,owner} = req.body;
@@ -78,6 +78,9 @@ const createGroup = async (req,resp)=>{
   }
 
 }    
+
+
+//all groups API
 const allGroups = async(req,res)=>{
    
     const Groups = await groupModel.find({});
@@ -87,7 +90,7 @@ const allGroups = async(req,res)=>{
         if(!Groups){
             res.status(404).json({
                 status:404,
-                successfalse,
+                success:false,
                 message:"not found"
             });
         }else{
