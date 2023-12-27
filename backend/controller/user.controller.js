@@ -138,7 +138,9 @@ const login = async (req, resp) => {
         resp.cookie("token", token, {
           expires: new Date(Date.now() + 90000000),
           httpOnly: true,
+
         });
+
 
         const result = {
           user,

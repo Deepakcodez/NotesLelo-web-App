@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const CreateGroup = () => {
-  const navigate = useNavigate()
-  const token = localStorage.getItem('useDataToken')
-  console.log('>>>>>>>>>>>', token)
+  const navigate = useNavigate();
+  const token = localStorage.getItem("useDataToken");
+  console.log(">>>>>>>>>>>", token);
   const { isCreateGroup, setCreateGroup } = useContext(createGroupContext);
   const [GroupDetail, setGroupDetail] = useState({
-    groupName: "",
+    title: "",
     description: "",
   });
 
@@ -26,20 +26,18 @@ export const CreateGroup = () => {
       const response = await axios.post(
         "http://localhost:8000/api/v1/group/create",
         GroupDetail,
-        { headers: { "Content-Type": "application/json","token":  token  },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+            withCredentials: true,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(">>>>>>>>>>>", error);
+    }
 
-      }
-        );
-        console.log(">>>>>>>>>>>", response.data.message);
-        
-      } catch (error) {
-        console.log('>>>>>>>>>>>', error)
-      }
-      
-
-
-
-    // alert("success", response.data.message);
     setCreateGroup(false);
     navigate("/");
     setGroupDetail({
@@ -55,7 +53,7 @@ export const CreateGroup = () => {
           <form>
             {/* Group name  */}
             <label
-              htmlFor="groupName"
+              htmlFor="title"
               className="block text-left text-sm font-medium leading-6 text-white"
             >
               Group Name
@@ -64,7 +62,7 @@ export const CreateGroup = () => {
               <div className="flex rounded-md shadow-sm ring-1 ring-inset focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 ">
                 <input
                   type="text"
-                  name="groupName"
+                  name="title"
                   value={GroupDetail.groupName}
                   onChange={inputHandler}
                   className="block flex-1 border-0 text-white bg-transparent py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"

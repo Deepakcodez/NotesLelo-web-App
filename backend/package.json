@@ -3,12 +3,9 @@
   "version": "1.0.0",
   "description": "backend of noteslelo web app",
   "main": "index.js",
-
-
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
- 
   "author": "Deepak_Sumit",
   "license": "ISC",
   "dependencies": {

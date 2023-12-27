@@ -30,7 +30,13 @@ function SignIn() {
       alert("please enter password");
     } else {
       try {
-        const response = await axios.post("http://localhost:8000/api/v1/user/login",inputValue);
+        const response = await axios.post("http://localhost:8000/api/v1/user/login",inputValue,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        });
         if( response.status === 200){
           localStorage.setItem("useDataToken", response.data.data.token);
           setInputValue({ email: "", password: "" });

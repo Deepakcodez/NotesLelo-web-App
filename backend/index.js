@@ -4,18 +4,25 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const port = 8000;
 const db = require("./utils/db.connection");
-// routes
-const user = require("./router/user.rout");
-const group=require("./router/groups.rout");
 db.connectDB();
 
 // middlewares
-app.use(cors()); //for connection with react
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:5173',
+})); //for connection with react
 app.use(express.json()); //parse body content
 app.use(express.urlencoded({ extended: true })); //parse url encoded content
 app.use(cookieParser()); //cookie parser middleware
 
+app.get('/test', (req, res) => {
+    res.json({ cookies: req.cookies });
+});
 
+
+// routes
+const user = require("./router/user.rout");
+const group=require("./router/groups.rout");
 
 app.use("/api/v1/user", user);
 app.use("/api/v1/group",group);

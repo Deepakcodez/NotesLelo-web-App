@@ -1,50 +1,47 @@
-const jwt = require("jsonwebtoken");
-const userdb = require("../model/user.model");
+const jwt = require('jsonwebtoken');
+const userdb = require('../model/user.model');
 const userModel = userdb.User;
-const secretKey = "NotesLeloSecretKey";
+const secretKey = 'NotesLeloSecretKey';
 
 const authenticate = async (req, resp, next) => {
+  const tokenFromHeader = req.headers.token;
+  console.log('>>>>>>>>>>>header token', tokenFromHeader)
   try {
+    // Check for token in headers
 
-    //taking token from cookies
-    const{token} = req.cookies
-    // take the data from the headers in token variable
-    // const token = req.headers.authorization;
+    // Check for token in cookies
+    const tokenFromCookie = req.cookies.token;
+    console.log('>>>>>>>>>>>', tokenFromCookie)
+
+    // Choose the source of the token (either from headers or cookies)
+    const token = tokenFromHeader || tokenFromCookie;
 
     if (!token) {
       return resp.status(401).json({
         status: 401,
         success: false,
-        message: "Token unavailable",
+        message: 'Token unavailable',
       });
     }
-  console.log('>>>>>>>>>>>', token)
 
-    // Verify the token with secret key which we used in generating token in userModel page
     const decoded = jwt.verify(token, secretKey);
-
-    // You can access the decoded payload
-
-    console.log("Decoded Token:", decoded);  
-     
     const user = await userModel.findOne({ _id: decoded._id });
 
-    if (!user) throw new Error("user unavailable");
-//    sending below data to the req and capture it in isVarify function
-    req.token=token;
+    if (!user) {
+      throw new Error('User unavailable');
+    }
+
+    req.token = token;
     req.user = user;
-    req.userId = user._id
+    req.userId = user._id;
 
-    console.log('>>>>>>>>>>>', req.user)
-
-    // Proceed with the next middleware or route handler
     next();
   } catch (error) {
-    console.error(" from cookie authJWT Verification Error:", error);
+    console.error('Authentication Error:', error);
     resp.status(401).send({
       status: 401,
       success: false,
-      message: "Unauthorized user",
+      message: 'Unauthorized user',
     });
   }
 };

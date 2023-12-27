@@ -19,7 +19,7 @@ export const GroupCard = () => {
     };
 
     fetchingAllGroup();
-  }, []); // Use an empty dependency array to run the effect only once
+  }, ); // Use an empty dependency array to run the effect only once
 
   const copyIdHandler = (index) => {
     try {

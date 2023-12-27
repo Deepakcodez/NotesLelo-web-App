@@ -84,7 +84,7 @@ const createGroup = async (req,resp)=>{
 const allGroups = async(req,res)=>{
    
     const Groups = await groupModel.find({});
-    console.log(Groups)
+    // console.log(Groups)
     try{
      
         if(!Groups){
