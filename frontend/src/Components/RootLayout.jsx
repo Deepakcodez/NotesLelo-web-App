@@ -6,12 +6,14 @@ import BottomBar from "./shared/BottomBar";
 import { Loading } from "./shared/Loading";
 import { createGroupContext } from "../Context";
 import { CreateGroup } from "./pages/CreateGroup";
+import { JoinGroup } from "./pages/JoinGroup";
 
 function RootLayout() {
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [userDetail,setUserDetail] = useState({}) //use for dynamiv value change in sidebar 
   const {isCreateGroup,setCreateGroup} = useContext(createGroupContext)
+  const {joinGroup,setJoinGroup} = useContext(createGroupContext)
 
   useEffect(() => {
     const isAuthenticated = async () => {
@@ -62,6 +64,10 @@ function RootLayout() {
         {
           isCreateGroup&&
       <CreateGroup/>
+        }
+        {
+          joinGroup&&
+        <JoinGroup/>
         }
         <Navbar userDetail={userDetail} />
         <div className="flex h-full">

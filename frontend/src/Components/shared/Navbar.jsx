@@ -12,6 +12,8 @@ function Navbar(props) {
   const {isCreateGroup,setCreateGroup} = useContext(createGroupContext)
   const logoRef = useRef();
   const popupRef = useRef();
+  const {joinGroup,setJoinGroup} = useContext(createGroupContext)
+
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -72,7 +74,7 @@ const createGroupHandler=()=>{
                 </li>
                 <li className="hover:bg-slate-500 w-full cursor-pointer ps-4 ">
                   {" "}
-                  <h1>Join Group</h1>
+                  <h1 onClick={()=>setJoinGroup(true)}>Join Group</h1>
                 </li>
               </ul>
             </div>

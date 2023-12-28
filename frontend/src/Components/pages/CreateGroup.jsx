@@ -48,7 +48,7 @@ export const CreateGroup = () => {
 
   return (
     <>
-      <div className="wrapper h-[111.5%] w-full absolute z-50 bg-slate-500/50 flex items-center justify-center">
+      <div className="wrapper h-[111.5%] w-full absolute z-50 bg-slate-900/75 flex items-center justify-center">
         <div className="w-[70%] bg-slate-700 px-5 py-5 rounded-lg shadow-lg border-[1px] border-slate-600 md:w-[30rem]">
           <form>
             {/* Group name  */}
