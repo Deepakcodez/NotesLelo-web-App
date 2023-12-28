@@ -52,6 +52,7 @@ const createGroup = async (req, resp) => {
         const user = await userModel.findById(userId);
         if (user) {
           user.group.push(storedGroup._id);
+          // user.member.push(storedGroup._id)
           await user.save();
         }
       }
@@ -61,7 +62,7 @@ const createGroup = async (req, resp) => {
         status: 200,
         success: true,
         Message: "Group Created Successfullly,",
-        data: storedGroupData,
+        data: storedGroup,
       });
     }
   } catch (error) {
