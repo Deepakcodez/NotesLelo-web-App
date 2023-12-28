@@ -11,7 +11,7 @@ export const GroupCard = () => {
     const fetchingAllGroup = async () => {
       try {
         const response = await axios.get("http://localhost:8000/api/v1/group/all");
-        console.log(">>>>>>>>>>>", response.data.Groups);
+        // console.log(">>>>>>>>>>>", response.data.Groups);
         setGroups(response.data.Groups);
       } catch (error) {
         console.log("Error fetching data:", error);
@@ -19,7 +19,7 @@ export const GroupCard = () => {
     };
 
     fetchingAllGroup();
-  }, ); // Use an empty dependency array to run the effect only once
+  }, []); // Use an empty dependency array to run the effect only once
 
   const copyIdHandler = (index) => {
     try {

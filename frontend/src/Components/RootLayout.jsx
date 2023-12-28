@@ -13,7 +13,7 @@ function RootLayout() {
   const navigate = useNavigate();
   const [userDetail,setUserDetail] = useState({}) //use for dynamiv value change in sidebar 
   const {isCreateGroup,setCreateGroup} = useContext(createGroupContext)
-  const {joinGroup,setJoinGroup} = useContext(createGroupContext)
+  const {joinGroup, setJoinGroup} = useContext(createGroupContext)
 
   useEffect(() => {
     const isAuthenticated = async () => {

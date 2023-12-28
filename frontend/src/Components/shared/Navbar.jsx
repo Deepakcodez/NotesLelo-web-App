@@ -65,14 +65,14 @@ const createGroupHandler=()=>{
           {ispopUp && (
             <div
               ref={popupRef}
-              className="popup absolute bg-slate-400 text-white shadow-lg py-4 w-[8rem]  top-8 end-10 rounded-sm  "
+              className="popup absolute bg-slate-500 text-white shadow-lg py-4 w-[10rem]  top-8 end-10 rounded-sm  "
             >
               <ul className="flex flex-col items-center">
-                <li className="hover:bg-slate-500 w-full cursor-pointer ps-4">
+                <li className="hover:bg-slate-600 w-full cursor-pointer ps-4">
                   {" "}
                   <h1 onClick={createGroupHandler}>Create Group</h1>
                 </li>
-                <li className="hover:bg-slate-500 w-full cursor-pointer ps-4 ">
+                <li className="hover:bg-slate-600 w-full cursor-pointer ps-4 ">
                   {" "}
                   <h1 onClick={()=>setJoinGroup(true)}>Join Group</h1>
                 </li>

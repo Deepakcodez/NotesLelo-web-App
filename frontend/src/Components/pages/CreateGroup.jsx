@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const CreateGroup = () => {
+  const { isCreateGroup, setCreateGroup } = useContext(createGroupContext);
   const navigate = useNavigate();
   const token = localStorage.getItem("useDataToken");
   console.log(">>>>>>>>>>>", token);
-  const { isCreateGroup, setCreateGroup } = useContext(createGroupContext);
   const [GroupDetail, setGroupDetail] = useState({
     title: "",
     description: "",
@@ -34,16 +34,25 @@ export const CreateGroup = () => {
           },
         }
       );
+      console.log('>>>>>>>>>>respomse>', response)
+         // Check if the API request was successful (you can customize this based on your API response structure)
+    if (response.status === 200) {
+      // If successful, navigate and reset form
+      navigate("/");
+      setGroupDetail({
+        groupName: "",
+        description: "",
+      });
+    } else {
+      // Handle unsuccessful API response, if needed
+      console.log("API request was not successful");
+    }
     } catch (error) {
       console.log(">>>>>>>>>>>", error);
     }
 
     setCreateGroup(false);
-    navigate("/");
-    setGroupDetail({
-      groupName: "",
-      description: "",
-    });
+    
   };
 
   return (
