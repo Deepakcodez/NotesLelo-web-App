@@ -85,15 +85,15 @@ const joinGroup = async (req, resp) => {
     }
     const Group = await groupModel.find({_id:id });
     const user = req.user;
-    console.log('>>>>>>>>>>>user grp', user.memberOf)
-    console.log('>>>>>>>>>>> group id', Group[0])
+    // console.log('>>>>>>>>>>>user grp', user.memberOf)
+    // console.log('>>>>>>>>>>> group id', Group[0])
     user.memberOf.push(Group[0]._id)
     await user.save();
 
-    console.log('>>>>>>>>>>>user mem',user.name, user.memberOf)
-    console.log('>>>>>>>>>>>user data', user)
+    // console.log('>>>>>>>>>>>user mem',user.name, user.memberOf)
+    // console.log('>>>>>>>>>>>user data', user)
 
-   
+   console.log('>>>>>>>>>>> GROUP JOINED SUCCESSFULLY')
     resp.status(200).json({
       status: 200,
       success: true,

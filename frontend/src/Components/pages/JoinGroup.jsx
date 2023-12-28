@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
 import { createGroupContext } from "../../Context";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const JoinGroup = () => {
 
     const {JoinGroup,setJoinGroup } = useContext(createGroupContext);
-
+const navigate = useNavigate()
     const [Id , setId] = useState({"id":""});
     const token = localStorage.getItem("useDataToken");
 
@@ -30,11 +31,15 @@ export const JoinGroup = () => {
           },
         }
         )
+        if(resp.status===200){
+          navigate("/");
+
+        }
 
       } catch (error) {
         console.log('>>>>>>>>>>>', error)
       }
-
+      setJoinGroup(false)
     }
 
   return (
