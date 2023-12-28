@@ -6,11 +6,18 @@ export const GroupCard = () => {
   const userIdRefs = useRef([]);
   const [enlargeIcon, setEnlargeIcon] = useState(null);
   const [groups, setGroups] = useState([]);
+  const token = localStorage.getItem("useDataToken");
+
 
   useEffect(() => {
     const fetchingAllGroup = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/v1/group/all");
+        const response = await axios.get("http://localhost:8000/api/v1/group/all",
+        {headers: {
+          "Content-Type": "application/json",
+          "token": token,
+        }}
+        );
         // console.log(">>>>>>>>>>>", response.data.Groups);
         setGroups(response.data.Groups);
       } catch (error) {
@@ -19,7 +26,7 @@ export const GroupCard = () => {
     };
 
     fetchingAllGroup();
-  }, []); // Use an empty dependency array to run the effect only once
+  },[] ); // Use an empty dependency array to run the effect only once
 
   const copyIdHandler = (index) => {
     try {

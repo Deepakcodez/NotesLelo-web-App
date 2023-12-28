@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Groups",
     }],
-    member:[{
+    memberOf:[{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Groups",
     }],

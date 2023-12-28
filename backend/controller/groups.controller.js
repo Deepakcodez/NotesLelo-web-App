@@ -52,7 +52,7 @@ const createGroup = async (req, resp) => {
         const user = await userModel.findById(userId);
         if (user) {
           user.group.push(storedGroup._id);
-          // user.member.push(storedGroup._id)
+          user.memberOf.push(storedGroup._id)
           await user.save();
         }
       }
@@ -74,6 +74,7 @@ const createGroup = async (req, resp) => {
 
 const joinGroup = async (req, resp) => {
   const { id } = req.body;
+  console.log('>>>>>>>>>>>id', id)
   try {
     if (!id) {
       resp.status(404).json({
@@ -84,15 +85,21 @@ const joinGroup = async (req, resp) => {
     }
     const Group = await groupModel.find({_id:id });
     const user = req.user;
-    // console.log('>>>>>>>>>>>user grp', user.member)
-  // console.log('>>>>>>>>>>> group',Group, Group[0].title)
-    user.member.push(Group[0]._id)
-   
+    console.log('>>>>>>>>>>>user grp', user.memberOf)
+    console.log('>>>>>>>>>>> group id', Group[0])
+    user.memberOf.push(Group[0]._id)
+    await user.save();
 
-    resp.send({
-      user,
-      Group
-    })
+    console.log('>>>>>>>>>>>user mem',user.name, user.memberOf)
+    console.log('>>>>>>>>>>>user data', user)
+
+   
+    resp.status(200).json({
+      status: 200,
+      success: true,
+      message:"group joined ",
+      data: Group,
+    });
 
 
 
@@ -118,6 +125,7 @@ const allGroups = async (req, resp) => {
       resp.status(200).json({
         status: 200,
         success: true,
+        message:"fetching all groups",
         Groups: Groups,
       });
     }
@@ -126,4 +134,38 @@ const allGroups = async (req, resp) => {
   }
 };
 
-module.exports = { demo, createGroup, allGroups, joinGroup};
+//all group that user join and create
+const allJoinAndCreated = async (req, resp) => {
+  
+  // const users = await userModel.find({});
+  const user = req.user;
+  console.log('>>>>>>>>>>>user mem', user.memberOf)
+  const memberOf  = user.memberOf
+  const Groups = await groupModel.find({_id:memberOf});
+
+  // console.log(Groups)
+  try {
+    if (!Groups) {
+      resp.status(404).json({
+        status: 404,
+        success: false,
+        message: "not found",
+      });
+    } else {
+      resp.status(200).json({
+        status: 200,
+        success: true,
+        message:"fetching all groups",
+        Groups: Groups,
+      });
+    }
+  } catch (err) {
+    console.log(">>>>>>>>>>>", err);
+  }
+};
+
+
+
+
+
+module.exports = { demo, createGroup, allGroups, joinGroup,allJoinAndCreated};
