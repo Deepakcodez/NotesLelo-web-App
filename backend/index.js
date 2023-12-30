@@ -22,10 +22,12 @@ app.get('/test', (req, res) => {
 
 // routes
 const user = require("./router/user.rout");
-const group=require("./router/groups.rout");
+const group = require("./router/groups.rout");
+const notes = require("./router/notes.rout");
 
 app.use("/api/v1/user", user);
 app.use("/api/v1/group",group);
+app.use("/api/v1/notes",notes)
 
 
 
