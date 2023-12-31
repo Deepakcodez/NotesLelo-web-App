@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require("cors"); // use for connection with react (cross origin sharing )
 const cookieParser = require("cookie-parser");

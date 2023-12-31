@@ -141,7 +141,7 @@ const allJoinAndCreated = async (req, resp) => {
   const user = req.user;
   console.log('>>>>>>>>>>>user mem', user.memberOf)
   const memberOf  = user.memberOf
-  const Groups = await groupModel.find({_id:memberOf});
+  const Groups = await groupModel.findById({_id:memberOf});
 
   // console.log(Groups)
   try {
