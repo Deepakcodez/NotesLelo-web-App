@@ -173,6 +173,16 @@ const updateGroup = async (req, res) => {
   const { title, description } = req.body;
   console.log(id); 
   console.log(title);
+
+
+   // Check if title and description are provided
+   if (!title || !description) {
+    return res.status(400).json({
+      success: false,
+      status: 400,
+      message: "Title and description are required.",
+    });
+  }
  
   
   try {
