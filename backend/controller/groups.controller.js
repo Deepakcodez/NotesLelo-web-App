@@ -4,6 +4,7 @@ const userdb = require("../model/user.model");
 const userModel = userdb.User;
 const db = require("../utils/db.connection");
 
+
 const demo = async (req, resp) => {
   try {
     resp.send({
@@ -141,7 +142,7 @@ const allJoinAndCreated = async (req, resp) => {
   const user = req.user;
   console.log('>>>>>>>>>>>user mem', user.memberOf)
   const memberOf  = user.memberOf
-  const Groups = await groupModel.findById({_id:memberOf});
+  const Groups = await groupModel.find({_id:memberOf});
 
   // console.log(Groups)
   try {
@@ -165,7 +166,53 @@ const allJoinAndCreated = async (req, resp) => {
 };
 
 
+// update group  title and description  api 
+ 
+const updateGroup = async (req, res) => {
+  const { id } = req.params;
+  const { title, description } = req.body;
+  console.log(id); 
+  console.log(title);
+ 
+  
+  try {
+  
+    const updated = await groupModel.findOneAndUpdate(
+      {_id:id},
+      { title, description },
+      { new: true }     // This option returns the modified document instead of the original
+    );
+   
+  
+   
+    console.log(updated);
+    if (!updated) {
+      return res.status(404).json({
+        success: false,
+        status: 404,
+        message: "Data Not Found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: "Data Updated Successfully",
+      data: updated,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      status: 500,
+      message: "Internal Server Error",err
+    });
+  }
+};
 
 
 
-module.exports = { demo, createGroup, allGroups, joinGroup,allJoinAndCreated};
+
+
+
+module.exports = { demo, createGroup, allGroups, joinGroup,allJoinAndCreated,updateGroup};
