@@ -49,6 +49,8 @@ export const CreateGroup = () => {
     }
     } catch (error) {
       console.log(">>>>>>>>>>>", error);
+      navigate("/");
+
     }
 
     setCreateGroup(false);

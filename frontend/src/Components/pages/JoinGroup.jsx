@@ -38,6 +38,8 @@ const navigate = useNavigate()
 
       } catch (error) {
         console.log('>>>>>>>>>>>', error)
+        navigate("/");
+
       }
       setJoinGroup(false)
     }

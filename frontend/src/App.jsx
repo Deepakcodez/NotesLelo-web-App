@@ -16,12 +16,13 @@ import { Library } from "./Components/pages/Library";
 import { useContext } from "react";
 import { createGroupContext } from "./Context";
 import { CreateGroup } from "./Components/pages/CreateGroup";
+import { GroupChat } from "./Components/pages/GroupChat";
 
 function App() {
 
   return (
     <>
-      <main className="flex h-screen ">
+      <main className=" main flex h-screen ">
         <Routes>
           {/* public routes  */}
 
@@ -33,7 +34,6 @@ function App() {
 
 
           {/* private routes  */}
-
           <Route element={<RootLayout/>}>
           <Route exact path="/" element={<Home />}></Route>
           <Route path="/yourNotes" element={<YourNotes/>}></Route>
@@ -41,7 +41,7 @@ function App() {
           <Route path="/savedNotes" element={<Saved/>}></Route>
           <Route path="/profile" element={<Profile/>}></Route>
           <Route path="/library" element={<Library/>}></Route>
-
+          <Route path="/chat" element={<GroupChat/>}></Route>
           <Route path="*" element={<PageNotFound/>}></Route>
           </Route>
         </Routes>

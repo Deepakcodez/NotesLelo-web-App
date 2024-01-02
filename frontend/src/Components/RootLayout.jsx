@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "./shared/Navbar";
 import Sidebar from "./shared/Sidebar";
 import BottomBar from "./shared/BottomBar";
@@ -9,11 +9,12 @@ import { CreateGroup } from "./pages/CreateGroup";
 import { JoinGroup } from "./pages/JoinGroup";
 
 function RootLayout() {
+ 
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const [userDetail,setUserDetail] = useState({}) //use for dynamiv value change in sidebar 
-  const {isCreateGroup,setCreateGroup} = useContext(createGroupContext)
-  const {joinGroup, setJoinGroup} = useContext(createGroupContext)
+  const [userDetail, setUserDetail] = useState({}); //use for dynamiv value change in sidebar
+  const { isCreateGroup, setCreateGroup } = useContext(createGroupContext);
+  const { joinGroup, setJoinGroup } = useContext(createGroupContext);
 
   useEffect(() => {
     const isAuthenticated = async () => {
@@ -34,8 +35,8 @@ function RootLayout() {
         setLoading(false);
         const data = await response.json();
         // console.log(">>>>>>>>>>>data", data);
-        setUserDetail(data.data)
-    
+        setUserDetail(data.data);
+
         if (data.status == 401 || !data) {
           navigate("/signIn");
         }
@@ -52,34 +53,29 @@ function RootLayout() {
   if (isLoading) {
     return (
       <>
-        <h1 className="flex flex-1 justify-center h-screen w-screen bgdark  items-center flex-col py-10 text-white">
-          <Loading/>
+        <h1 className="flex flex-1 justify-center  w-screen bgdark  items-center flex-col py-10 text-white">
+          <Loading />
         </h1>
       </>
     );
   }
   return (
     <>
-      <div className="w-full   ">
-        {
-          isCreateGroup&&
-      <CreateGroup/>
-        }
-        {
-          joinGroup&&
-        <JoinGroup/>
-        }
-        <Navbar userDetail={userDetail} />
-        <div className="flex h-full">
-        <Sidebar   />
-    
-      
-      <section className=" flex flex-1 h-screen  w-full  " 
-       >
-        <Outlet />
-      </section>
-      </div>
-      <BottomBar/>
+      <div className="w-full h-full ">
+        {isCreateGroup && <CreateGroup />}
+        {joinGroup && <JoinGroup />}
+        
+        <Navbar  userDetail={userDetail} />
+        
+        <div className="flex h-[calc(100%-4.55rem)] bg-oange-300 ">
+          
+              <Sidebar />
+
+              <section className="  flex flex-1  w-full  ">
+                <Outlet />
+              </section>
+        </div>
+        <BottomBar />
       </div>
     </>
   );

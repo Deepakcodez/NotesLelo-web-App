@@ -51,13 +51,14 @@ function Sidebar() {
 
   return (
     <>
-      <section className=" sidebar h-screen   hidden  md:inline-block  ">
+    <div className="h-full bg-slate-800/75">
+      <section className=" sidebar  hidden  md:inline-block  ">
         <motion.div
           animate={{
             width: isOpen ? "16rem" : "4rem",
             transition: { duration: 0.5, type: "spring", damping: 13 },
           }}
-          className=" flex shadow-md  h-full gap-3   py-4 flex-col p-2 bg-slate-800/75"
+          className=" flex   h-full gap-3   py-4 flex-col p-2 "
         >
           <div
             className={`flex ${
@@ -105,6 +106,7 @@ function Sidebar() {
           </section>
         </motion.div>
       </section>
+      </div>
     </>
   );
 }
