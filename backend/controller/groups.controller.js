@@ -3,7 +3,7 @@ const groupModel = groupdb.Group;
 const userdb = require("../model/user.model");
 const userModel = userdb.User;
 const db = require("../utils/db.connection");
-
+const mongoose = require('mongoose')
 
 const demo = async (req, resp) => {
   try {
@@ -221,8 +221,45 @@ const updateGroup = async (req, res) => {
 };
 
 
+// delete api for group
+const deleteGroup = async (req, res) => {
+  const { id } = req.params;
+
+
+  try {
+    const deleted = await groupModel.findByIdAndDelete(id);
+
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        status: 404,
+        message: "Data Not Found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: "Data Deleted Successfully",
+      data: deleted,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      status: 500,
+      message: "Internal Server Error",
+    });
+  }
+};
 
 
 
 
-module.exports = { demo, createGroup, allGroups, joinGroup,allJoinAndCreated,updateGroup};
+
+
+
+
+
+module.exports = { demo, createGroup, allGroups, joinGroup,
+  allJoinAndCreated,updateGroup,deleteGroup};
