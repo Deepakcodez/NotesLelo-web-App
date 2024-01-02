@@ -1,10 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
 import { GoPlus } from "react-icons/go";
 import { Context, createGroupContext } from "../../Context";
 
 function Navbar(props) {
+  const location  = useLocation()
+  const urlLocation = location.pathname
   const { name, email } = props.userDetail; //destructure the props(object) inner object calles userDetail
   // console.log('>>>>>>>>>>>name', name[0].toUpperCase())
   const [avatarSign, setAvatarSign] = useState();
@@ -45,7 +47,7 @@ const createGroupHandler=()=>{
   }, [name]);
 
   return (
-    <section className="top  ">
+    <section className={`navbar ${urlLocation=="/chat"&& "hidden md:block"} `}>
       <div
         style={{}}
         className="flex justify-between gap-3 py-4 items-center px-3 bg-slate-800 border-b-[1px] border-slate-700"

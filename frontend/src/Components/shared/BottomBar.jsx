@@ -4,11 +4,13 @@ import { GrDocumentNotes } from "react-icons/gr";
 import { GiBookmark } from "react-icons/gi";
 import { AiOutlineNotification } from "react-icons/ai";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 function BottomBar() {
+  const location  = useLocation()
+  const urlLocation = location.pathname
   return (
     <>
-      <section className="bottombar md:hidden fixed bottom-0 w-full">
+      <section className={`bottombar  ${urlLocation=="/chat"&& "hidden"} md:hidden fixed bottom-0 w-full`}>
         <div className=" flex justify-around bg-slate-800 py-4 px-3 border-tcd-[1px] border-slate-700">
           <NavLink
             to={"/"}
