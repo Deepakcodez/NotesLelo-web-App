@@ -3,7 +3,7 @@ const groupModel = groupdb.Group;
 const userdb = require("../model/user.model");
 const userModel = userdb.User;
 const db = require("../utils/db.connection");
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const demo = async (req, resp) => {
   try {
@@ -53,7 +53,7 @@ const createGroup = async (req, resp) => {
         const user = await userModel.findById(userId);
         if (user) {
           user.group.push(storedGroup._id);
-          user.memberOf.push(storedGroup._id)
+          user.memberOf.push(storedGroup._id);
           await user.save();
         }
       }
@@ -75,7 +75,7 @@ const createGroup = async (req, resp) => {
 
 const joinGroup = async (req, resp) => {
   const { id } = req.body;
-  console.log('>>>>>>>>>>>id', id)
+  console.log(">>>>>>>>>>>id", id);
   try {
     if (!id) {
       resp.status(404).json({
@@ -84,28 +84,23 @@ const joinGroup = async (req, resp) => {
         message: "Require ID",
       });
     }
-    const Group = await groupModel.find({_id:id });
+    const Group = await groupModel.find({ _id: id });
     const user = req.user;
     // console.log('>>>>>>>>>>>user grp', user.memberOf)
     // console.log('>>>>>>>>>>> group id', Group[0])
-    user.memberOf.push(Group[0]._id)
+    user.memberOf.push(Group[0]._id);
     await user.save();
 
     // console.log('>>>>>>>>>>>user mem',user.name, user.memberOf)
     // console.log('>>>>>>>>>>>user data', user)
 
-   console.log('>>>>>>>>>>> GROUP JOINED SUCCESSFULLY')
+    console.log(">>>>>>>>>>> GROUP JOINED SUCCESSFULLY");
     resp.status(200).json({
       status: 200,
       success: true,
-      message:"group joined ",
+      message: "group joined ",
       data: Group,
     });
-
-
-
-     
-
   } catch (error) {
     console.log(">>>>>>>>>>>", error);
   }
@@ -126,7 +121,7 @@ const allGroups = async (req, resp) => {
       resp.status(200).json({
         status: 200,
         success: true,
-        message:"fetching all groups",
+        message: "fetching all groups",
         Groups: Groups,
       });
     }
@@ -137,12 +132,11 @@ const allGroups = async (req, resp) => {
 
 //all group that user join and create
 const allJoinAndCreated = async (req, resp) => {
-  
   // const users = await userModel.find({});
   const user = req.user;
-  console.log('>>>>>>>>>>>user mem', user.memberOf)
-  const memberOf  = user.memberOf
-  const Groups = await groupModel.find({_id:memberOf});
+  // console.log('>>>>>>>>>>>user mem', user.memberOf)
+  const memberOf = user.memberOf;
+  const Groups = await groupModel.find({ _id: memberOf });
 
   // console.log(Groups)
   try {
@@ -156,7 +150,7 @@ const allJoinAndCreated = async (req, resp) => {
       resp.status(200).json({
         status: 200,
         success: true,
-        message:"fetching all groups",
+        message: "fetching all groups",
         Groups: Groups,
       });
     }
@@ -165,36 +159,30 @@ const allJoinAndCreated = async (req, resp) => {
   }
 };
 
+// update group  title and description  api
 
-// update group  title and description  api 
- 
 const updateGroup = async (req, res) => {
   const { id } = req.params;
   const { title, description } = req.body;
-  console.log(id); 
+  console.log(id);
   console.log(title);
 
-
-   // Check if title and description are provided
-   if (!title || !description) {
+  // Check if title and description are provided
+  if (!title || !description) {
     return res.status(400).json({
       success: false,
       status: 400,
       message: "Nothing to change",
     });
   }
- 
-  
+
   try {
-  
     const updated = await groupModel.findOneAndUpdate(
-      {_id:id},
+      { _id: id },
       { title, description },
-      { new: true }     // This option returns the modified document instead of the original
+      { new: true } // This option returns the modified document instead of the original
     );
-   
-  
-   
+
     console.log(updated);
     if (!updated) {
       return res.status(404).json({
@@ -215,16 +203,16 @@ const updateGroup = async (req, res) => {
     res.status(500).json({
       success: false,
       status: 500,
-      message: "Internal Server Error",err
+      message: "Internal Server Error",
+      err,
     });
   }
 };
 
-
 // delete api for group
 const deleteGroup = async (req, res) => {
   const { id } = req.params;
-
+  //  console.log('>>>>>>>>>>>userID', req.userId)
 
   try {
     const deleted = await groupModel.findByIdAndDelete(id);
@@ -235,6 +223,12 @@ const deleteGroup = async (req, res) => {
         status: 404,
         message: "Data Not Found",
       });
+    } else {
+      // req.userId got from middleware
+      const user = await userModel.findById(req.userId);
+      const index = user.memberOf.indexOf(id);
+      user.memberOf.splice(index, 1); //deleting ref of group in user model also
+      await user.save();
     }
 
     res.status(200).json({
@@ -253,13 +247,12 @@ const deleteGroup = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
-
-
-module.exports = { demo, createGroup, allGroups, joinGroup,
-  allJoinAndCreated,updateGroup,deleteGroup};
+module.exports = {
+  demo,
+  createGroup,
+  allGroups,
+  joinGroup,
+  allJoinAndCreated,
+  updateGroup,
+  deleteGroup,
+};
