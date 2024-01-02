@@ -137,11 +137,13 @@ const allGroups = async (req, resp) => {
 //all groups that user join and create
 const allJoinAndCreated = async (req, resp) => {
   const user = req.user;
+  const {id} = req.params
   // console.log('>>>>>>>>>>>user mem', user.memberOf)
   const memberOf = user.memberOf;
+
   const Groups = await groupModel.find({ _id: memberOf });
 
-  console.log("all groups",Groups)
+  // console.log("all groups",Groups)
   try {
     if (!Groups) {
       resp.status(404).json({
@@ -161,6 +163,41 @@ const allJoinAndCreated = async (req, resp) => {
     console.log(">>>>>>>>>>>", err);
   }
 };
+
+
+
+//getting group by id
+//all groups that user join and create
+const groupById = async (req, resp) => {
+  const {id} = req.params
+
+
+  const Group = await groupModel.findById(id);
+
+  // console.log("all groups",Groups)
+  try {
+    if (!Group) {
+      resp.status(404).json({
+        status: 404,
+        success: false,
+        message: "not found",
+      });
+    } else {
+      resp.status(200).json({
+        status: 200,
+        success: true,
+        message: "fetching all groups",
+        Groups: Group,
+      });
+    }
+  } catch (err) {
+    console.log(">>>>>>>>>>>", err);
+  }
+};
+
+
+
+
 
 // update group  title and description  api
 
@@ -258,4 +295,5 @@ module.exports = {
   allJoinAndCreated,
   updateGroup,
   deleteGroup,
+  groupById
 };
