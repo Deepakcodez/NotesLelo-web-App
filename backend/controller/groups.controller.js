@@ -187,7 +187,7 @@ const groupById = async (req, resp) => {
         status: 200,
         success: true,
         message: "fetching all groups",
-        Groups: Group,
+        data: Group,
       });
     }
   } catch (err) {
