@@ -15,7 +15,14 @@ const [groupData,setGroupData] = useState({
   "title" : "",
   "description": ""
 })
-  
+
+useEffect(() => {
+  // Cleanup function to be executed when leaving the page
+  return () => {
+    // Empty the "groupId" in localStorage
+    localStorage.removeItem("groupId");
+  };
+}, []);
    const fetchData = async()=>{
     try {
       const response = await axios.get(
@@ -27,8 +34,9 @@ const [groupData,setGroupData] = useState({
           },
         }
       );
-      console.log("Group data:", response);
-      setGroupData({"title":response.data.data.title})
+      // console.log("Group data:", response.data.data.description);
+      setGroupData({"title":response.data.data.title, "description":response.data.data.description
+    })
     } catch (error) {
 
       console.log("Error fetching data:", error);
@@ -52,7 +60,12 @@ const [groupData,setGroupData] = useState({
         <div className="containet h-[calc(100%-4rem)] md:h-full w-full  flex flex-col justify-between">
             <div className="navbar bg-slate-500      w-full h-[3rem] flex items-center ">
                 <ul className="flex h-full items-center justify-between px-5 w-full">
-                    <li className="font-bold text-xl">{groupData.title}</li>
+                  
+                    <li className="font-bold text-xl">
+                    
+                    {groupData.title}
+                
+                      </li>
                     <li><SlOptionsVertical/></li>
                 </ul>
             </div>

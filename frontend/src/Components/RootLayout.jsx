@@ -16,12 +16,12 @@ function RootLayout() {
   const { isCreateGroup, setCreateGroup,clickedGroupId, setClickedGroupId } = useContext(createGroupContext);
   const { joinGroup, setJoinGroup } = useContext(createGroupContext);
   const currentURL = useLocation().pathname
-  if(currentURL !== "/chat"){
-  localStorage.setItem("groupId","")
-  }
-  if(currentURL == "/chat"){
-    localStorage.setItem("groupId",clickedGroupId)
-  }
+  // if(currentURL !== "/chat"){
+  // localStorage.setItem("groupId","")
+  // }
+  // if(currentURL == "/chat"){
+  //   localStorage.setItem("groupId",clickedGroupId)
+  // }
   useEffect(() => {
     const isAuthenticated = async () => {
       try {
