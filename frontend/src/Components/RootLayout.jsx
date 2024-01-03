@@ -13,9 +13,15 @@ function RootLayout() {
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [userDetail, setUserDetail] = useState({}); //use for dynamiv value change in sidebar
-  const { isCreateGroup, setCreateGroup } = useContext(createGroupContext);
+  const { isCreateGroup, setCreateGroup,clickedGroupId, setClickedGroupId } = useContext(createGroupContext);
   const { joinGroup, setJoinGroup } = useContext(createGroupContext);
-
+  const currentURL = useLocation().pathname
+  if(currentURL !== "/chat"){
+  localStorage.setItem("groupId","")
+  }
+  if(currentURL == "/chat"){
+    localStorage.setItem("groupId",clickedGroupId)
+  }
   useEffect(() => {
     const isAuthenticated = async () => {
       try {
