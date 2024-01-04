@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { SlOptionsVertical } from "react-icons/sl";
 import { GoPlus } from "react-icons/go";
 import { IoMdSend } from "react-icons/io";
@@ -9,6 +9,8 @@ import { createGroupContext } from "../../../Context";
 export const GroupChat = () => {
   const { groupDeleteOpt, setGroupDeleteOpt } = useContext(createGroupContext);
   const [option, setOption] = useState(false);
+  const optionModelRef = useRef()
+  const optionIconRef = useRef()
   const token = localStorage.getItem("useDataToken");
   const id = localStorage.getItem("groupId");
   const navigate = useNavigate();
@@ -17,6 +19,21 @@ export const GroupChat = () => {
     description: "",
   });
 
+
+  
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!optionIconRef.current.contains(e.target) && optionModelRef.current) {
+        setOption(false);
+      }
+    };
+
+    window.addEventListener("click", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   useEffect(() => {
     // Cleanup function to be executed when leaving the page
     return () => {
@@ -58,32 +75,39 @@ export const GroupChat = () => {
   const optionClickHandler = () => {
     setOption(!option);
   };
-  const deleteGroupHandler=()=>{
-    setGroupDeleteOpt(true)
-    setOption(false)
-  }
+  const deleteGroupHandler = () => {
+    setGroupDeleteOpt(true);
+    setOption(false);
+  };
 
   return (
     <Fragment>
-      <div className="container relative  md:h-full w-full  flex flex-col justify-between">
+      <div className="container relative  h-full w-full  flex flex-col justify-between">
         <div className="navbar bg-slate-500      w-full h-[3rem] flex items-center ">
           <ul className="flex h-full items-center justify-between px-5 w-full">
             <li className="font-bold text-xl">{groupData.title}</li>
-            <li onClick={optionClickHandler}>
-              <SlOptionsVertical  />
+            <li ref={optionIconRef} onClick={optionClickHandler}>
+              <SlOptionsVertical />
             </li>
           </ul>
         </div>
         {option && (
-          <div className="absolute right-5 top-9   bg-slate-700 w-[10rem] rounded-sm h-auto min-h-[2rem]  py-2">
-            <div className="text-white hover:bg-slate-600 ps-4 cursor-pointer">
-              info
+          <div ref={optionModelRef} className="absolute right-5 top-9   bg-slate-700 w-[10rem] rounded-md h-auto min-h-[2rem]  py-2">
+            <div className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer">
+              Members{" "}
+            </div>
+            <div className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer">
+              Docs,and links{" "}
             </div>
             <div
-              className="text-white hover:bg-slate-600 ps-4 cursor-pointer"
+              className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer"
               onClick={deleteGroupHandler}
             >
-              delete group
+              Delete 
+            </div>
+
+            <div className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer">
+              more
             </div>
           </div>
         )}
