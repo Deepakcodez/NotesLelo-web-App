@@ -18,10 +18,7 @@ function RootLayout() {
   const { isCreateGroup, setCreateGroup,clickedGroupId, setClickedGroupId ,groupDeleteOpt,setGroupDeleteOpt,joinGroup,setJoinGroup} = useContext(createGroupContext);
   const currentURL = useLocation().pathname
   console.log('>>>>>>>>>>>', currentURL)
-  // if(currentURL == "/chat"){
-  
-  //   setChatURL(true)
-  // }
+
  
   useEffect(() => {
     const isAuthenticated = async () => {
@@ -56,7 +53,11 @@ function RootLayout() {
     };
 
     isAuthenticated();
-  }, []);
+    if(currentURL=='/chat'){
+      setChatURL(true)
+    }
+  
+  }, [setChatURL,chatURL,navigate]);
   if (isLoading) {
     return (
       <>
@@ -75,11 +76,11 @@ function RootLayout() {
         
         <Navbar  userDetail={userDetail} />
         
-        <div className="  flex  h-[calc(100%-4.55rem)]  ">
+        <div className={`  flex ${chatURL?"h-full md:h-[calc(100%-4.55rem)]":'h-[calc(100%-4.55rem)]'}   `}>
           
               <Sidebar />
 
-              <section className="  flex flex-1  w-full  ">
+              <section className="  flex flex-1  w-full   ">
                 <Outlet />
               </section>
         </div>
