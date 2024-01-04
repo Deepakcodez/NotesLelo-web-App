@@ -5,23 +5,24 @@ import Sidebar from "./shared/Sidebar";
 import BottomBar from "./shared/BottomBar";
 import { Loading } from "./shared/Loading";
 import { createGroupContext } from "../Context";
-import { CreateGroup } from "./pages/CreateGroup";
-import { JoinGroup } from "./pages/JoinGroup";
+import { CreateGroup } from "./pages/group/CreateGroup";
+import { JoinGroup } from "./pages/group/JoinGroup";
+import { DeleteGroup } from "./pages/group/DeleteGroup";
 
 function RootLayout() {
  
   const [isLoading, setLoading] = useState(true);
+  const [chatURL, setChatURL]  = useState(false)
   const navigate = useNavigate();
   const [userDetail, setUserDetail] = useState({}); //use for dynamiv value change in sidebar
-  const { isCreateGroup, setCreateGroup,clickedGroupId, setClickedGroupId } = useContext(createGroupContext);
-  const { joinGroup, setJoinGroup } = useContext(createGroupContext);
+  const { isCreateGroup, setCreateGroup,clickedGroupId, setClickedGroupId ,groupDeleteOpt,setGroupDeleteOpt,joinGroup,setJoinGroup} = useContext(createGroupContext);
   const currentURL = useLocation().pathname
-  // if(currentURL !== "/chat"){
-  // localStorage.setItem("groupId","")
-  // }
+  console.log('>>>>>>>>>>>', currentURL)
   // if(currentURL == "/chat"){
-  //   localStorage.setItem("groupId",clickedGroupId)
+  
+  //   setChatURL(true)
   // }
+ 
   useEffect(() => {
     const isAuthenticated = async () => {
       try {
@@ -70,10 +71,11 @@ function RootLayout() {
       <div className="w-full h-full ">
         {isCreateGroup && <CreateGroup />}
         {joinGroup && <JoinGroup />}
+        {groupDeleteOpt&&<DeleteGroup/>}
         
         <Navbar  userDetail={userDetail} />
         
-        <div className="flex h-[calc(100%-4.55rem)] bg-oange-300 ">
+        <div className="  flex  h-[calc(100%-4.55rem)]  ">
           
               <Sidebar />
 

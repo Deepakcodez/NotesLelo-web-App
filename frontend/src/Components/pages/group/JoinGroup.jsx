@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { createGroupContext } from "../../Context";
+import { createGroupContext } from "../../../Context";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 

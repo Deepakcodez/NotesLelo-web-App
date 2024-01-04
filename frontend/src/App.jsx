@@ -15,8 +15,9 @@ import Profile from "./Components/pages/Profile";
 import { Library } from "./Components/pages/Library";
 import { useContext } from "react";
 import { createGroupContext } from "./Context";
-import { CreateGroup } from "./Components/pages/CreateGroup";
-import { GroupChat } from "./Components/pages/GroupChat";
+import { CreateGroup } from "./Components/pages/group/CreateGroup";
+import { GroupChat } from "./Components/pages/group/GroupChat";
+
 
 function App() {
 
