@@ -252,9 +252,32 @@ const updateGroup = async (req, res) => {
 // delete api for group
 const deleteGroup = async (req, res) => {
   const { id } = req.params;
-  //  console.log('>>>>>>>>>>>userID', req.userId)
 
   try {
+    const group = await groupModel.findById(id);
+
+    if (!group) {
+      return res.status(404).json({
+        success: false,
+        status: 404,
+        message: "Group Not Found",
+      });
+    }
+
+    const groupOwnerId = group.owner[0].owner;
+    const userId = req.userId;
+
+    console.log('>>>>>>>>>>>', groupOwnerId, userId);
+    // on log >>>>>>>>>>> new ObjectId('65735ca3cb3c4e79f4976082') new ObjectId('65735ca3cb3c4e79f4976082')
+
+    if (groupOwnerId.toString() !== userId.toString()) {
+      return res.status(403).json({
+        success: false,
+        status: 403,
+        message: "You are not the owner of this group. Access denied.",
+      });
+    }
+
     const deleted = await groupModel.findByIdAndDelete(id);
 
     if (!deleted) {
@@ -263,18 +286,18 @@ const deleteGroup = async (req, res) => {
         status: 404,
         message: "Data Not Found",
       });
-    } else {
-      // req.userId got from middleware
-      const user = await userModel.findById(req.userId);
-      const index = user.memberOf.indexOf(id);
-      user.memberOf.splice(index, 1); //deleting ref of group in user model also
-      await user.save();
     }
+
+    // req.userId got from middleware
+    const user = await userModel.findById(req.userId);
+    const index = user.memberOf.indexOf(id);
+    user.memberOf.splice(index, 1); // deleting ref of group in user model also
+    await user.save();
 
     res.status(200).json({
       success: true,
       status: 200,
-      message: "Data Deleted Successfully",
+      message: "Group Deleted Successfully",
       data: deleted,
     });
   } catch (err) {
@@ -286,6 +309,7 @@ const deleteGroup = async (req, res) => {
     });
   }
 };
+
 
 module.exports = {
   demo,

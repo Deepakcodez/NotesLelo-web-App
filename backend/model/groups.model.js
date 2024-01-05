@@ -18,8 +18,8 @@ const groupSchema = new Schema(
         owner: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
-        }
-      }
+        },
+      },
     ],
     members: [
       {
@@ -29,7 +29,7 @@ const groupSchema = new Schema(
         },
       },
     ],
-   
+
     createdAt: {
       type: Date,
       default: Date.now,

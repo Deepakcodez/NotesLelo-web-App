@@ -11,7 +11,7 @@ const authenticate = async (req, resp, next) => {
 
     // Check for token in cookies
     const tokenFromCookie = req.cookies.token;
-    console.log('>>>>>>>>>>>', tokenFromCookie)
+    console.log('>>>>>>>>>>>token from cookies', tokenFromCookie)
 
     // Choose the source of the token (either from headers or cookies)
     const token = tokenFromHeader || tokenFromCookie;
