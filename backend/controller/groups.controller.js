@@ -267,14 +267,12 @@ const deleteGroup = async (req, res) => {
     const groupOwnerId = group.owner[0].owner;
     const userId = req.userId;
 
-    console.log('>>>>>>>>>>>', groupOwnerId, userId);
-    // on log >>>>>>>>>>> new ObjectId('65735ca3cb3c4e79f4976082') new ObjectId('65735ca3cb3c4e79f4976082')
 
     if (groupOwnerId.toString() !== userId.toString()) {
       return res.status(403).json({
         success: false,
         status: 403,
-        message: "You are not the owner of this group. Access denied.",
+        message: "Access denied.",
       });
     }
 
