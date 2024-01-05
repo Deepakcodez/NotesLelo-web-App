@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 export const JoinGroup = () => {
 
     const {JoinGroup,setJoinGroup } = useContext(createGroupContext);
-const navigate = useNavigate()
+    const [warning,setWarning] = useState(false)
+    const navigate = useNavigate()
     const [Id , setId] = useState({"id":""});
     const token = localStorage.getItem("useDataToken");
 
@@ -20,6 +21,11 @@ const navigate = useNavigate()
 
     const joinHandler=async(e)=>{
       e.preventDefault()
+
+      if(!Id.id){
+          setWarning(true)
+          return;
+      }
 
       try {
         const resp = await axios.post('http://localhost:8000/api/v1/group/join',Id,
@@ -51,7 +57,7 @@ const navigate = useNavigate()
           <form>
             <label
               htmlFor="title"
-              className="block text-left text-sm font-medium leading-6 text-white"
+              className="block text-left  text-sm font-medium leading-6 text-white"
             >
               Group ID
             </label>
@@ -79,6 +85,13 @@ const navigate = useNavigate()
               Cancel
             </button>{" "}
           </form>
+          <div className="h-[2rem]">
+          {
+            warning&&
+        <h1 className="warning text-slate-400">Group ID is required</h1>
+          }
+
+          </div>
         </div>
       </div>
     </>

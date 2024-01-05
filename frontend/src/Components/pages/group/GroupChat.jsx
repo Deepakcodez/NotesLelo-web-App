@@ -88,9 +88,9 @@ export const GroupChat = () => {
 
   return (
     <Fragment>
-      {/* navbar  */}
       <div className="container relative min-h-full h-fit w-fit min-w-full  flex flex-col justify-between">
-        <div className="navbar bg-slate-500      w-full h-[3rem] flex items-center ">
+      {/* navbar  */}
+        <div className="navbar bg-slate-500   shadow-lg   w-full h-[3rem] flex items-center ">
           <ul className="flex h-full items-center justify-between px-5 w-full">
             <li className="font-bold text-xl">{groupData.title}</li>
             
@@ -99,6 +99,19 @@ export const GroupChat = () => {
               <SlOptionsVertical />
             </li>
           </ul>
+        </div>
+
+        {/* //chat content div  */}
+        {/* //chat content div  */}
+        {/* //chat content div  */}
+        <div className="chatContent  overflow-y-scroll no-scrollbar  w-full h-[calc(100vh-6rem)] md:h-[calc(100vh-10.55rem)]">
+         {/* chating portion */}
+         {/* chating portion */}
+         {/* chating portion */}
+         {/* chating portion */}
+         {/* chating portion */}
+         {/* chating portion */}
+         {/* chating portion */}
         </div>
         {/* model which open when user click on option button+- */}
         {option && (
@@ -126,7 +139,7 @@ export const GroupChat = () => {
         )}
 
 
-        {/* typing div whwtw */}
+        {/* typing div  */}
         <div className="tpyingArea bg-slate-300 h-[3rem] flex items-center px-1 md:px-10 gap-2">
           <GoPlus className="text-3xl" />
           <input

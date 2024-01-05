@@ -5,6 +5,7 @@ import axios from "axios";
 
 export const CreateGroup = () => {
   const { isCreateGroup, setCreateGroup } = useContext(createGroupContext);
+  const [warning,setWarning] = useState(false)
   const navigate = useNavigate();
   const token = localStorage.getItem("useDataToken");
   console.log(">>>>>>>>>>>", token);
@@ -20,42 +21,53 @@ export const CreateGroup = () => {
       [name]: value,
     });
   };
-  const createHandler = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/group/create",
-        GroupDetail,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            token: token,
-            withCredentials: true,
-          },
-        }
-      );
-      console.log('>>>>>>>>>>respomse>', response)
-         // Check if the API request was successful (you can customize this based on your API response structure)
-    if (response.status === 200) {
-      // If successful, navigate and reset form
-      navigate("/");
-      setGroupDetail({
-        groupName: "",
-        description: "",
-      });
-    } else {
-      // Handle unsuccessful API response, if needed
-      console.log("API request was not successful");
-    }
-    } catch (error) {
-      console.log(">>>>>>>>>>>", error);
-      navigate("/");
 
-    }
+ 
+    const createHandler = async (e) => {
+      e.preventDefault();
 
-    setCreateGroup(false);
+    if(!GroupDetail.title){
+      setWarning(true)
+      return ;
+    }
     
-  };
+
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/api/v1/group/create",
+          GroupDetail,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              token: token,
+              withCredentials: true,
+            },
+          }
+        );
+        console.log('>>>>>>>>>>respomse>', response)
+           // Check if the API request was successful (you can customize this based on your API response structure)
+      if (response.status === 200) {
+        // If successful, navigate and reset form
+        navigate("/");
+        setGroupDetail({
+          groupName: "",
+          description: "",
+        });
+      } else {
+        // Handle unsuccessful API response, if needed
+        console.log("API request was not successful");
+      }
+      } catch (error) {
+        console.log(">>>>>>>>>>>", error);
+        navigate("/");
+  
+      }
+  
+      setCreateGroup(false);
+      
+    };
+  
+  
 
   return (
     <>
@@ -115,6 +127,13 @@ export const CreateGroup = () => {
               Cancel
             </button>
           </form>
+          <div className="h-[2rem]">
+          {
+            warning&&
+        <h1 className="warning text-slate-400">Group Name is required</h1>
+          }
+
+          </div>
         </div>
       </div>
     </>
