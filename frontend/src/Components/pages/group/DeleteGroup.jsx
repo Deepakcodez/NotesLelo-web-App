@@ -21,7 +21,7 @@ export const DeleteGroup = () => {
 
     if (inputId === id) {
       try {
-          await axios.delete(`http://localhost:8000/api/v1/group/delete/${id}`,
+         const response =  await axios.delete(`http://localhost:8000/api/v1/group/delete/${id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -32,10 +32,12 @@ export const DeleteGroup = () => {
         );
         navigate("/");
         setGroupDeleteOpt(false);
-        console.log("Delete successful");
+        console.log("Delete successful",);
         // Handle success, if needed
       } catch (error) {
-        console.error("Error deleting data", error);
+        // console.error("Error deleting data", error);
+        // console.log('>>>>>>>>>>>', error.response.data.message)
+        setWarning( error.response.data.message)
       }
     }
     else{

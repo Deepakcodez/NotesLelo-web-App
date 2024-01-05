@@ -25,7 +25,7 @@ function Navbar(props) {
     };
 
     window.addEventListener("click", handleClickOutside);
-
+    
     return () => {
       window.removeEventListener("click", handleClickOutside);
     };
@@ -67,14 +67,14 @@ const createGroupHandler=()=>{
           {ispopUp && (
             <div
               ref={popupRef}
-              className="popup absolute z-50 bg-slate-500 text-white shadow-lg py-4 w-[10rem]  top-8 end-10 rounded-sm  "
+              className="popup absolute z-50 bg-slate-500 text-white shadow-lg py-1 w-[10rem]  top-8 end-10 rounded-sm  "
             >
               <ul className="flex flex-col items-center">
-                <li className="hover:bg-slate-600 w-full cursor-pointer ps-4">
+                <li className="hover:bg-slate-600 w-full py-3 cursor-pointer ps-4">
                   {" "}
                   <h1 onClick={createGroupHandler}>Create Group</h1>
                 </li>
-                <li className="hover:bg-slate-600 w-full cursor-pointer ps-4 ">
+                <li className="hover:bg-slate-600 w-full cursor-pointer py-3 ps-4 ">
                   {" "}
                   <h1 onClick={()=>setJoinGroup(true)}>Join Group</h1>
                 </li>
