@@ -10,7 +10,7 @@ router.route('/allCreated').get(allGroups)
 router.route('/join').post(authenticate,joinGroup)
 router.route('/all').get(authenticate,allJoinAndCreated)
 router.route('/:id').get(authenticate,groupById)
-router.route('/update/:id').put(updateGroup)
+router.route('/update/:id').put(authenticate,updateGroup)
 router.route('/delete/:id').delete(authenticate,deleteGroup)
 
 module.exports=router
