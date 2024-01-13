@@ -14,7 +14,7 @@ function RootLayout() {
   const [isLoading, setLoading] = useState(true);
   const [chatURL, setChatURL]  = useState(false)
   const navigate = useNavigate();
-  const [userDetail, setUserDetail] = useState({}); //use for dynamiv value change in sidebar
+  const [userDetail, setUserDetail] = useState({}); //use for dynamic value change in sidebar
   const { isCreateGroup, setCreateGroup,clickedGroupId, setClickedGroupId ,groupDeleteOpt,setGroupDeleteOpt,joinGroup,setJoinGroup} = useContext(createGroupContext);
   const currentURL = useLocation().pathname
   console.log('>>>>>>>>>>>', currentURL)

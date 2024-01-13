@@ -89,7 +89,7 @@ const joinGroup = async (req, resp) => {
       });
     }
     const Group = await groupModel.findById(id);
-    console.log(">>>>>>>>>>>", Group._id);
+    // console.log(">>>>>>>>>>>", Group._id);
     const user = req.user;
     user.memberOf.push(Group._id);
     Group.members.push(req.userId);
@@ -195,8 +195,8 @@ const groupById = async (req, resp) => {
 const updateGroup = async (req, res) => {
   const { id } = req.params;
   const { title, description } = req.body;
-  console.log(id);
-  console.log(title);
+  // console.log(id);
+  // console.log(title);
 
   try {
     // Check for empty title and description
@@ -220,7 +220,7 @@ const updateGroup = async (req, res) => {
 
     const groupOwnerId = group.owner[0].owner;
     const userId = req.userId;
-    console.log('>>>>>>>>>>>', groupOwnerId,userId)
+    // console.log('>>>>>>>>>>>', groupOwnerId,userId)
 
     if (groupOwnerId.toString() !== userId.toString()) {
       return res.status(403).json({
@@ -236,7 +236,7 @@ const updateGroup = async (req, res) => {
       { new: true, runValidators: true } // Return the modified document and run validators
     );
 
-    console.log(updated);
+    // console.log(updated);
     if (!updated) {
       return res.status(404).json({
         success: false,

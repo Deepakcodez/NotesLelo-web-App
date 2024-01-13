@@ -23,7 +23,7 @@ console.log('>>>>>>>>>>>', token)
 
     // You can access the decoded payload
 
-    console.log("Decoded Token:", decoded);  
+    // console.log("Decoded Token:", decoded);  
      
     const user = await userModel.findOne({ _id: decoded._id });
 
@@ -33,7 +33,7 @@ console.log('>>>>>>>>>>>', token)
     req.user = user;
     req.userId = user._id
 
-    console.log('>>>>>>>>>>>', req.user)
+    // console.log('>>>>>>>>>>>', req.user)
 
     // Proceed with the next middleware or route handler
     next();

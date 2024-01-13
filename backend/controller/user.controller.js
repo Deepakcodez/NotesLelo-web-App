@@ -56,7 +56,7 @@ const register = async (req, resp) => {
 
       const storeData = await user.save();
 
-      console.log(">>>>>>>>>>> Register successful");
+      // console.log(">>>>>>>>>>> Register successful");
       resp.status(200).json({
         status: 200,
         success: true,
