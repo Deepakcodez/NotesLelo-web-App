@@ -10,7 +10,7 @@ import { FaAngleDoubleRight } from "react-icons/fa";
 import { LuLibrary } from "react-icons/lu";
 
 function Sidebar() {
-  const [isOpen, setOpen] = useState(true);
+  const [isOpen, setOpen] = useState(false);
 
   const menu = [
     { title: "Home", icon: <RiHome2Line />, link: "/" },
