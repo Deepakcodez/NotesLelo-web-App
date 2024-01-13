@@ -19,7 +19,6 @@ export const GroupChat = () => {
     description: "",
   });
 
-
   //function : if user click outside of option model the model will automatically close with user permission
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -34,7 +33,6 @@ export const GroupChat = () => {
       window.removeEventListener("click", handleClickOutside);
     };
   }, []);
-
 
   // Cleanup function to be executed when leaving the page
   useEffect(() => {
@@ -67,7 +65,7 @@ export const GroupChat = () => {
     }
   };
 
-  //if user Id not stored in local storage named groupId 
+  //if user Id not stored in local storage named groupId
   // If groupId is not present, navigate to the root path
   // if groupId present than call the fetchData function
   useEffect(() => {
@@ -89,11 +87,13 @@ export const GroupChat = () => {
   return (
     <Fragment>
       <div className="container relative min-h-full h-fit w-fit min-w-full  flex flex-col justify-between">
-      {/* navbar  */}
-        <div className="navbar bg-slate-500   shadow-lg   w-full h-[3rem] flex items-center ">
+        {/* navbar  */}
+        <div className="navbar bg-slate-300   shadow-lg   w-full h-[3rem] flex items-center ">
           <ul className="flex h-full items-center justify-between px-5 w-full">
-            <li className="font-bold text-xl">{groupData.title}</li>
-            
+            <li className="font-bold  text-xl">
+              {groupData.title.toUpperCase()}
+            </li>
+
             {/* option icon */}
             <li ref={optionIconRef} onClick={optionClickHandler}>
               <SlOptionsVertical />
@@ -105,15 +105,15 @@ export const GroupChat = () => {
         {/* //chat content div  */}
         {/* //chat content div  */}
         <div className="chatContent  overflow-y-scroll no-scrollbar  w-full h-[calc(100vh-6rem)] md:h-[calc(100vh-10.55rem)]">
-         {/* chating portion */}
-         {/* chating portion */}
-         {/* chating portion */}
-         {/* chating portion */}
-         {/* chating portion */}
-         {/* chating portion */}
-         {/* chating portion */}
+          {/* chating portion */}
+          {/* chating portion */}
+          {/* chating portion */}
+          {/* chating portion */}
+          {/* chating portion */}
+          {/* chating portion */}
+          {/* chating portion */}
         </div>
-        {/* model which open when user click on option button+- */}
+        {/* model which open when user click on option button */}
         {option && (
           <div
             ref={optionModelRef}
@@ -138,10 +138,19 @@ export const GroupChat = () => {
           </div>
         )}
 
-
         {/* typing div  */}
-        <div className="tpyingArea bg-slate-300 h-[3rem] flex items-center px-1 md:px-10 gap-2">
-          <GoPlus className="text-3xl" />
+        <div className="typingArea bg-slate-300 h-[3rem] flex items-center px-1 md:px-10 gap-2">
+        <label htmlFor="file" >
+            {" "}
+            <GoPlus className="text-3xl cursor-pointer" />
+          </label>
+          <input
+            type="file"
+            id="file"
+            // ref={fileInputRef}
+            className="hidden"
+            onChange={(e) => console.log(e.target.files[0])}
+          />
           <input
             type="text"
             placeholder="enter message"
