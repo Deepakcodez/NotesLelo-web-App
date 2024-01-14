@@ -50,6 +50,10 @@ const userSchema = new mongoose.Schema(
       public_id: String,
       url: String,
     },
+    isOnline:{
+      type  : Boolean,
+      default : false
+    },
     tokens: [
       {
         token: {
