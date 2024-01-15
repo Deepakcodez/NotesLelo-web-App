@@ -4,8 +4,10 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { createGroupContext } from "../../../Context";
 import { Chat } from "./chat";
-
 export const GroupChat = () => {
+
+
+  const { currentUser } = useContext(createGroupContext);
   const { setGroupDeleteOpt } = useContext(createGroupContext);
   const [option, setOption] = useState(false);
   const optionModelRef = useRef();
@@ -35,8 +37,11 @@ export const GroupChat = () => {
     };
   }, []);
 
+
+
   useEffect(() => {
     return () => {
+    
       localStorage.removeItem("groupId");
     };
   }, []);
@@ -94,7 +99,10 @@ export const GroupChat = () => {
          
           </ul>
         </div>
-        <Chat  currentGroupId={id} />
+        <Chat   currentGroupId={id}
+    
+          />
+      
         {option && (
           <div
             ref={optionModelRef}

@@ -1,6 +1,0 @@
-<<<<<<< HEAD
-this is test 1 by deepak
-hello hello
-hello
-=======
->>>>>>> ae33af82e37372242451ab8e89f1e4f8781a883a
