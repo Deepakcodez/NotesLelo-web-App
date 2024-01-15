@@ -15,7 +15,7 @@ function RootLayout() {
   const [chatURL, setChatURL]  = useState(false)
   const navigate = useNavigate();
   const [userDetail, setUserDetail] = useState({}); //use for dynamic value change in sidebar
-  const { isCreateGroup, setCreateGroup,clickedGroupId, setClickedGroupId ,groupDeleteOpt,setGroupDeleteOpt,joinGroup,setJoinGroup} = useContext(createGroupContext);
+  const { isCreateGroup, setCreateGroup,clickedGroupId, setClickedGroupId ,groupDeleteOpt,setGroupDeleteOpt,joinGroup,setJoinGroup,setCurrentUser} = useContext(createGroupContext);
   const currentURL = useLocation().pathname
   console.log('>>>>>>>>>>>', currentURL)
 
@@ -40,6 +40,7 @@ function RootLayout() {
         const data = await response.json();
         // console.log(">>>>>>>>>>>data", data);
         setUserDetail(data.data);
+        setCurrentUser(data.data)
 
         if (data.status == 401 || !data) {
           navigate("/signIn");
