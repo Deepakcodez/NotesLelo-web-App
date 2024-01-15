@@ -29,4 +29,23 @@ const addMessage = async (req, resp) => {
   }
 };
 
-module.exports = { demo, addMessage };
+const allMessages = async (req, resp) => {
+    const { from, to } = req.body;
+    try {
+      const messages = await messageModel.find({
+        users: { $all: [ to] },
+      }).sort({ updatedAt: 1 });
+  
+      const projectMessages = messages.map((msg) => ({
+        fromSelf: msg.sender.toString() === from,
+        message: msg.message.text,
+      }));
+  
+      resp.json(responseSender(true, 200, 'Messages sent', projectMessages));
+    } catch (error) {
+      console.log('Error:', error);
+      resp.send(responseSender(false, 500, 'Internal Server Error', null));
+    }
+  };
+
+module.exports = { demo, addMessage ,allMessages};
