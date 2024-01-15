@@ -12,7 +12,7 @@ router.use(express.static(path.resolve(__dirname,'public')));
 
 var uploader = multer({
     storage:multer.diskStorage({}),
-    limits:{fileSize:500000}
+    limits:{fileSize:100000000}
 });
 
 router.post('/upload-file',uploader.single("pdf"),notes.uploadFile);
