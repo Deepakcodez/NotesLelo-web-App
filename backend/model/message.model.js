@@ -8,9 +8,9 @@ const messageSchema = new mongoose.Schema(
       },},
       users: Array,
       sender: {
-        // type: mongoose.Schema.Types.ObjectId,
-        type: String,
-        // ref: "User",
+        type: mongoose.Schema.Types.ObjectId,
+    
+        ref: "User",
         required: true,
       },
     },
