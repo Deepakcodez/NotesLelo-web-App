@@ -1,16 +1,13 @@
 import { Fragment, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { SlOptionsVertical } from "react-icons/sl";
-import { GoPlus } from "react-icons/go";
-import { IoMdSend } from "react-icons/io";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { createGroupContext } from "../../../Context";
-import { io } from "socket.io-client";
+import { Chat } from "./chat";
 
 export const GroupChat = () => {
   const { setGroupDeleteOpt } = useContext(createGroupContext);
   const [option, setOption] = useState(false);
-  const [message, setMessage] = useState("");
   const optionModelRef = useRef();
   const optionIconRef = useRef();
   const token = localStorage.getItem("useDataToken");
@@ -20,44 +17,9 @@ export const GroupChat = () => {
     title: "",
     description: "",
   });
-  const [receivedMessages, setReceivedMessages] = useState([]);
-  const socket = useMemo(() => io("http://localhost:8000"), []);
 
-  useEffect(() => {
-    socket.emit("authenticate", id);
-  }, [socket, id]);
 
-  const sendHandler = () => {
-    if (!message.trim()) {
-      console.log('No message to send');
-    } else {
-      socket.emit("message", { message, id });
-      setMessage("");
-    }
-  };
 
-  useEffect(() => {
-    try {
-      socket.on("connect", () => {
-        console.log("Socket connected with ID:", socket.id);
-      });
-
-      socket.on("received-message", (message) => {
-        console.log('Received message:', message);
-        setReceivedMessages((prevMessages) => [...prevMessages, message]);
-      });
-
-      socket.on("disconnect", () => {
-        console.log('Socket disconnected');
-      });
-
-      return () => {
-        socket.disconnect();
-      };
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }, [socket]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -120,21 +82,19 @@ export const GroupChat = () => {
   return (
     <Fragment>
       <div className="container relative min-h-full h-fit w-fit min-w-full  flex flex-col justify-between">
-        <div className="navbar bg-slate-300 shadow-lg w-full h-[3rem] flex items-center">
+        <div className="navbar bg-slate-500 shadow-lg w-full h-[3rem] flex items-center">
           <ul className="flex h-full items-center justify-between px-5 w-full">
             <li className="font-bold text-xl">
               {groupData.title.toUpperCase()}
             </li>
+        
             <li ref={optionIconRef} onClick={optionClickHandler}>
               <SlOptionsVertical />
             </li>
+         
           </ul>
         </div>
-        <div className="chatContent overflow-y-scroll no-scrollbar w-full h-[calc(100vh-6rem)] md:h-[calc(100vh-10.55rem)]">
-          {receivedMessages.map((msg, index) => (
-            <h1 className="text-white" key={index}> {msg.text || JSON.stringify(msg)}</h1>
-          ))}
-        </div>
+        <Chat  currentGroupId={id} />
         {option && (
           <div
             ref={optionModelRef}
@@ -157,25 +117,7 @@ export const GroupChat = () => {
             </div>
           </div>
         )}
-        <div className="typingArea bg-slate-300 h-[3rem] flex items-center px-1 md:px-10 gap-2">
-          <label htmlFor="file">
-            <GoPlus className="text-3xl cursor-pointer" />
-          </label>
-          <input
-            type="file"
-            id="file"
-            className="hidden"
-            onChange={(e) => console.log(e.target.files[0])}
-          />
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Enter message"
-            className="w-[100%] h-[1.8rem] px-2 rounded-md"
-          />
-          <IoMdSend onClick={sendHandler} className="text-3xl" />
-        </div>
+        
       </div>
     </Fragment>
   );
