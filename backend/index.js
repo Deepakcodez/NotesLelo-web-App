@@ -38,31 +38,3 @@ const server = app.listen(port, () =>
   console.log(`NotesaLelo app listening on port ${port}!`)
 );
 
-// Socket code
-const io = socket(server, {
-  cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-});
-
-
-global.onlineUsers = new Map();
-
-io.on("connection", (socket) => {
-  console.log('User connected:', socket.id);
-
-  socket.on("add-user", (userId) => {
-    console.log('User added:', userId);
-    onlineUsers.set(userId, socket.id);
-  });
-
-  socket.on("send-message", (data) => {
-    console.log('Message received:', data);
-    const sendUserSocket = onlineUsers.get(data.to);
-    if (sendUserSocket) {
-      socket.to(sendUserSocket).emit("message-received", { message: data.message });
-    }
-  });
-});
