@@ -8,6 +8,7 @@ import { createGroupContext } from "../Context";
 import { CreateGroup } from "./pages/group/CreateGroup";
 import { JoinGroup } from "./pages/group/JoinGroup";
 import { DeleteGroup } from "./pages/group/DeleteGroup";
+import { Demand } from "./pages/group/Demand";
 
 function RootLayout() {
  
@@ -15,7 +16,7 @@ function RootLayout() {
   const [chatURL, setChatURL]  = useState(false)
   const navigate = useNavigate();
   const [userDetail, setUserDetail] = useState({}); //use for dynamic value change in sidebar
-  const { isCreateGroup, setCreateGroup,clickedGroupId, setClickedGroupId ,groupDeleteOpt,setGroupDeleteOpt,joinGroup,setJoinGroup,setCurrentUser} = useContext(createGroupContext);
+  const { isCreateGroup, setCreateGroup,clickedGroupId, setClickedGroupId ,groupDeleteOpt,setGroupDeleteOpt,joinGroup,setJoinGroup,setCurrentUser,demand} = useContext(createGroupContext);
   const currentURL = useLocation().pathname
   console.log('>>>>>>>>>>>', currentURL)
 
@@ -74,6 +75,7 @@ function RootLayout() {
         {isCreateGroup && <CreateGroup />}
         {joinGroup && <JoinGroup />}
         {groupDeleteOpt&&<DeleteGroup/>}
+        {demand&&<Demand/>}
         
         <Navbar  userDetail={userDetail} />
         

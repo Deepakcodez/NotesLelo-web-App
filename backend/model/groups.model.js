@@ -29,13 +29,11 @@ const groupSchema = new Schema(
         },
       },
     ],
-    demands:[
+    demands: [
       {
-        demandv:{
-          type : mongoose.Schema.Types.ObjectId,
-          ref : 'Demand'
-        },
-      }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Demand",
+      },
     ],
 
     createdAt: {

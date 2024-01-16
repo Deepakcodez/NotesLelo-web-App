@@ -42,7 +42,8 @@ export const Chat = ({ currentGroupId }) => {
 
   return (
     <>
-      <div className="chatContent bg-yellow-300 overflow-y-scroll no-scrollbar w-full h-[calc(100vh-3rem)] md:h-[calc(100vh-10.55rem)]">
+      <div className="chatContent  overflow-y-scroll no-scrollbar w-full
+       h-[calc(100vh-3rem)] md:h-[calc(100vh-7.6rem)]">
         {/* Display received messages */}
      
         <div ref={scrollRef}></div>

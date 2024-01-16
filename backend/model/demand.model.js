@@ -1,22 +1,16 @@
 const mongoose = require("mongoose");
 const demandSchema = new mongoose.Schema(
-  {
-   
-    from:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        
-    },
-    demand:[
-        {
-            message:{
-                type : String,
-                required : true
-            }
-        }
-    ],
-
-  },
+    {
+        message: {
+          type: String,
+          required: true,
+        },
+        from: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+      },
 
   { timestamps: true }
 );

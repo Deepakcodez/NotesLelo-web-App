@@ -1,20 +1,22 @@
-import { Fragment, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { SlOptionsVertical } from "react-icons/sl";
+import { MdChevronLeft } from "react-icons/md";
+import { IoHandLeftOutline } from "react-icons/io5";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createGroupContext } from "../../../Context";
 import { Chat } from "./chat";
 export const GroupChat = () => {
 
 
-  const { currentUser } = useContext(createGroupContext);
-  const { setGroupDeleteOpt } = useContext(createGroupContext);
+  const { setGroupDeleteOpt,demand,setDemand, currentUser } = useContext(createGroupContext);
   const [option, setOption] = useState(false);
   const optionModelRef = useRef();
   const optionIconRef = useRef();
   const token = localStorage.getItem("useDataToken");
   const id = localStorage.getItem("groupId");
   const navigate = useNavigate();
+
   const [groupData, setGroupData] = useState({
     title: "",
     description: "",
@@ -87,14 +89,17 @@ export const GroupChat = () => {
   return (
     <Fragment>
       <div className="container relative min-h-full h-fit w-fit min-w-full  flex flex-col ">
-        <div className="navbar bg-slate-500 shadow-lg w-full h-[3rem] flex items-center">
+        <div className="navbar bg-slate-700 shadow-lg w-full h-[3rem] flex items-center">
           <ul className="flex h-full items-center justify-between px-5 w-full">
-            <li className="font-bold text-xl">
+            <li className="font-bold text-white text-xl flex items-center gap-2">
+             <Link to="/" className="text-3xl md:hidden"><  MdChevronLeft/></Link> 
               {groupData.title.toUpperCase()}
             </li>
         
-            <li ref={optionIconRef} onClick={optionClickHandler}>
-              <SlOptionsVertical />
+            <li className="text-white flex items-center gap-3" >
+             <div className="text-xl" onClick={()=>setDemand(!demand)}  >  <IoHandLeftOutline/></div>
+             <div ref={optionIconRef} onClick={optionClickHandler}><SlOptionsVertical /></div>
+              
             </li>
          
           </ul>
@@ -106,7 +111,7 @@ export const GroupChat = () => {
         {option && (
           <div
             ref={optionModelRef}
-            className="optionModel absolute right-5 top-9 bg-slate-700 w-[10rem] rounded-md h-auto min-h-[2rem] shadow-md py-2"
+            className="optionModel  absolute right-5 top-9 bg-slate-800 w-[10rem] rounded-md h-auto min-h-[2rem] shadow-md py-2"
           >
             <div className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer">
               Members{" "}

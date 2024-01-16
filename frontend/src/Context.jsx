@@ -7,10 +7,11 @@ export const Context = ({children}) => {
     const [groupDeleteOpt , setGroupDeleteOpt]  = useState(false)
     const [clickedGroupId , setClicikedGroupId] = useState('')
     const [currentUser , setCurrentUser] = useState({})
+    const [demand,setDemand] = useState(false)
 
   return (
 <>
-<createGroupContext.Provider  value={{isCreateGroup,setCreateGroup,joinGroup,setJoinGroup,clickedGroupId,setClicikedGroupId,groupDeleteOpt,setGroupDeleteOpt ,currentUser , setCurrentUser}} >
+<createGroupContext.Provider  value={{isCreateGroup,setCreateGroup,demand,setDemand,joinGroup,setJoinGroup,clickedGroupId,setClicikedGroupId,groupDeleteOpt,setGroupDeleteOpt ,currentUser , setCurrentUser}} >
 {children}
 </createGroupContext.Provider>
 </>
