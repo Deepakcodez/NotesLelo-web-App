@@ -29,12 +29,21 @@ const groupSchema = new Schema(
         },
       },
     ],
+    demands:[
+      {
+        demandv:{
+          type : mongoose.Schema.Types.ObjectId,
+          ref : 'Demand'
+        },
+      }
+    ],
 
     createdAt: {
       type: Date,
       default: Date.now,
     },
   },
+  
   { timestamps: true }
 );
 
