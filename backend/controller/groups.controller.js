@@ -1,4 +1,5 @@
 const groupdb = require("../model/groups.model");
+const { notification } = require("../model/notification.model");
 const groupModel = groupdb.Group;
 const userdb = require("../model/user.model");
 const userModel = userdb.User;
@@ -59,18 +60,29 @@ const createGroup = async (req, resp) => {
         }
       }
 
+      const newNotification = new notification(
+        {
+          sender: req.userId,
+          message:"group created"
+        }
+      );
+      const savedNotification =  await newNotification.save();
+      console.log("this is notification");
+      console.log(savedNotification);
+
       return resp.status(200).json({
         status: 200,
         success: true,
         Message: "Group Created Successfullly,",
         data: storedGroup,
+        dataNotification:savedNotification
       });
     }
   } catch (error) {
     return resp.status(400).json({
       status: 400,
       success: false,
-      Message: "internal server error",
+      Message: "internal server error",error,
     });
   }
 };
