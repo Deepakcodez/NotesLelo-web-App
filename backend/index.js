@@ -27,12 +27,14 @@ app.use(cookieParser());
 const user = require("./router/user.rout");
 const group = require("./router/groups.rout");
 const notes = require("./router/notes.rout");
-const message = require("./router/message.rout");
+const demand = require("./router/demand.rout");
+
 
 app.use("/api/v1/user", user);
 app.use("/api/v1/group", group);
 app.use("/api/v1/notes", notes);
-app.use("/api/v1/message", message);
+app.use("/api/v1/demand", demand);
+
 
 const server = app.listen(port, () =>
   console.log(`NotesaLelo app listening on port ${port}!`)
