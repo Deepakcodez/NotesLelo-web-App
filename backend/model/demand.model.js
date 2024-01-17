@@ -10,6 +10,11 @@ const demandSchema = new mongoose.Schema(
           ref: "User",
           required: true,
         },
+        to: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Group",
+            required: true,
+          },
       },
 
   { timestamps: true }
