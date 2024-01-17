@@ -2,9 +2,11 @@ import axios from "axios";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { IoCopy } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { createGroupContext } from "../../Context";
 
 export const GroupCard = () => {
   const navigate = useNavigate();
+  const { isCreateGroup, setCreateGroup } = useContext(createGroupContext);
 
   const userIdRefs = useRef([]);
   const [enlargeIcon, setEnlargeIcon] = useState(null);
@@ -30,7 +32,7 @@ export const GroupCard = () => {
     };
 
     fetchingAllGroup();
-  }, [token]);
+  }, [isCreateGroup]);
 
   const copyIdHandler = (index) => {
     try {
