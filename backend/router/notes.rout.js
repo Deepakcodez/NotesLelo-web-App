@@ -1,20 +1,21 @@
-const express = require("express");
+const express = require('express');
 const multer = require('multer');
-const notes = require('../controller/notes.controller');
-const router = express();
+const notesController = require('../controller/notes.controller');
+const router = express.Router(); // Change from `express()` to `express.Router()`
 
 const path = require('path');
 const bodyParser = require('body-parser');
 
-router.use(bodyParser.urlencoded({extended:true}));
-router.use(express.static(path.resolve(__dirname,'public')));
+// Middleware order correction
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use(express.static(path.resolve(__dirname, 'public')));
 
-
-var uploader = multer({
-    storage:multer.diskStorage({}),
-    limits:{fileSize:100000000}
+const uploader = multer({
+  storage: multer.diskStorage({}),
+  limits: { fileSize: 100000000 }
 });
 
-router.post('/upload-file',uploader.single("pdf"),notes.uploadFile);
-module.exports=router;
+// Route to handle file upload
+router.post('/upload-file', uploader.single('pdf'), notesController.uploadFile);
 
+module.exports = router;

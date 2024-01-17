@@ -1,5 +1,5 @@
 import { Fragment, useContext, useEffect, useRef, useState } from 'react';
-
+import { FaFileUpload } from "react-icons/fa";
 import { createGroupContext } from '../../../Context';
 import axios from 'axios';
 
@@ -8,7 +8,7 @@ export const Chat = () => {
   const scrollRef = useRef();
   const groupId = localStorage.getItem('groupId')
   const [newdemands, setNewDemands] = useState([])
-
+  const {isUploadPage,setUploadPage} = useContext(createGroupContext);
   const { demand, currentUser } = useContext(createGroupContext);
 
 
@@ -29,7 +29,7 @@ export const Chat = () => {
   }, [groupId, demand]);
 
 
-  useEffect(() => { console.log('>>>>>>>>>>>', currentUser) }, [])
+ 
 
 
 
@@ -63,7 +63,7 @@ export const Chat = () => {
 
   return (
     <>
-      <div className="chatContent flex flex-col gap-5 overflow-y-scroll no-scrollbar w-full
+      <div className="chatContent relative flex flex-col gap-5 overflow-y-scroll no-scrollbar w-full
        h-[calc(100vh-3rem)] md:h-[calc(100vh-7.6rem)] py-3 px-6">
         {/* Display received messages */}
         {
@@ -72,7 +72,7 @@ export const Chat = () => {
 
               
                <Fragment key={index}>
-                <div  className={` ${dmd.demand.from === currentUser._id?"self-end":"self-start"} min-h-[10rem] h-  max-h-[20rem] w-[90%] sm:w-[70%] md:w-[40%] bg-slate-500 rounded-lg px-1 `} style={{ borderTop: "1rem solid orange" }}>
+                <div  ref={scrollRef} className={` ${dmd.demand.from === currentUser._id?"self-end":"self-start"} min-h-[10rem] h-  max-h-[20rem] w-[90%] sm:w-[70%] md:w-[40%] bg-slate-500 rounded-lg px-1 `} style={{ borderTop: "1rem solid orange" }}>
                   <h1 className='sender text-orange-300'>{dmd.user.name.toUpperCase()}</h1>
                   <div className='messageArea  h-[80%] overflow-y-scroll  text-white p-5 overflow-auto no-scrollbar  '>{dmd.demand.message}</div>
                 </div>
@@ -82,6 +82,10 @@ export const Chat = () => {
             )
           })
         }
+             <div className='upload sticky p-4 text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end bottom-0' onClick={() =>setUploadPage(true)}>
+          <FaFileUpload  />
+          
+        </div>  
       </div>
 
 
