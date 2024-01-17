@@ -7,7 +7,7 @@ export const UploadFile = () => {
   const { setUploadPage } = useContext(createGroupContext);
   const fileInputRef = useRef(null);
   const [warning, setWarning] = useState(false);
-
+  const groupId = localStorage.getItem("groupId")
   const [inputData, setInputData] = useState({
     caption: '',
     description: '',
@@ -26,7 +26,7 @@ export const UploadFile = () => {
     const fileInput = fileInputRef.current;
     const file = fileInput.files[0];
 
-    if (!file) {
+    if (!file || !inputData.caption || !inputData.description) {
       console.log('No file selected');
       setWarning(true)
       return;
@@ -36,6 +36,7 @@ export const UploadFile = () => {
     data.append('pdf', file);
     data.append('caption', inputData.caption);
     data.append('description', inputData.description);
+    data.append('groupId', groupId); 
 
     try {
       const response = await axios.post('http://localhost:8000/api/v1/notes/upload-file', data,{ headers: {

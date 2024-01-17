@@ -4,8 +4,8 @@ const notesModel = notesDb.Post;
 const cloud = require('../utils/cloudinary');
 
 const uploadFile = async (req, res) => {
-  const { caption, description } = req.body;
-
+  const { caption, description,groupId } = req.body;
+  console.log('>>>>>>>>>>>', groupId)
   try {
     // Validate file and perform file upload to Cloudinary
     const result = await cloud.uploadOncloudinary(req.file.path);
@@ -19,6 +19,7 @@ const uploadFile = async (req, res) => {
     const notesSchema = new notesModel({
       caption,
       description,
+      to: groupId,
       pdf: {
         url: result.secure_url,
       }
@@ -43,5 +44,12 @@ const uploadFile = async (req, res) => {
     });
   }
 };
+
+
+const notes = async(req,resp)=>{
+       const {groupId} = req.body;
+
+
+}
 
 module.exports = { uploadFile };
