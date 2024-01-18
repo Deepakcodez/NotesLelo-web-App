@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const notificationSchma = new mongoose.Schema({
-    sender:{
+    user:{
         type:mongoose.Schema.Types.ObjectId,
         ref : 'User',
         

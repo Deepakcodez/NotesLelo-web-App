@@ -62,7 +62,7 @@ const createGroup = async (req, resp) => {
 
       const newNotification = new notification(
         {
-          sender: req.userId,
+          user: req.userId,
           message:"group created"
         }
       );
@@ -108,12 +108,22 @@ const joinGroup = async (req, resp) => {
     await user.save();
     await Group.save();
 
+
+    const newNotification = new notification(
+      {
+        user: req.userId,
+        message:"Group Joined"
+      }
+    )
+    const savedNotification =  await newNotification.save()
+    console.log(savedNotification);
     console.log(">>>>>>>>>>> GROUP JOINED SUCCESSFULLY");
     resp.status(200).json({
       status: 200,
       success: true,
       message: "group joined ",
       data: Group,
+      notificationData:savedNotification
     });
   } catch (error) {
     console.log(">>>>>>>>>>>", error);
