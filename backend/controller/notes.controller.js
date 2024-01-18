@@ -1,7 +1,10 @@
 const { Schema } = require('mongoose');
 const notesDb = require('../model/notes.model');
 const notesModel = notesDb.Post;
+const groupdb = require("../model/groups.model");
+const groupModel = groupdb.Group;
 const cloud = require('../utils/cloudinary');
+const responseSender = require('../utils/responseSender');
 
 const uploadFile = async (req, res) => {
   const { caption, description,groupId } = req.body;
@@ -19,7 +22,7 @@ const uploadFile = async (req, res) => {
     const notesSchema = new notesModel({
       caption,
       description,
-      to: groupId,
+      "to": groupId,
       pdf: {
         url: result.secure_url,
       }
@@ -27,7 +30,8 @@ const uploadFile = async (req, res) => {
 
     // Save the record to the database
     const record = await notesSchema.save();
-
+ // Update the Group document with the new notes _id
+ await groupModel.findByIdAndUpdate(groupId, { $push: { notes: record._id } });
     // Return a success response
     res.status(200).json({
       success: true,
@@ -46,10 +50,26 @@ const uploadFile = async (req, res) => {
 };
 
 
-const notes = async(req,resp)=>{
+const groupNotes = async(req,resp)=>{
        const {groupId} = req.body;
+       console.log('>>>>>>>>>>>', groupId)
+       if(!groupId){
+        resp.send(responseSender(false,402,"group Id not provided",null))
+        return
+       }
+       try {
+         const currentGroupNotes = await notesModel.find({"to":groupId})
+         console.log('>>>>>>>>>>> currentGroupNotes', currentGroupNotes)
+         if(!currentGroupNotes){
+          return  resp.send(responseSender(false,402,"notes not available",null))
+
+         }
+       return  resp.send(responseSender(true, 200, "Notes retrieved successfully", currentGroupNotes));
+       } catch (error) {
+       return resp.send(responseSender(false,500,"internal server error",null))
+       }
 
 
 }
 
-module.exports = { uploadFile };
+module.exports = { uploadFile,groupNotes };

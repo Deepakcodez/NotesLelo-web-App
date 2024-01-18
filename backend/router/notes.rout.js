@@ -18,4 +18,7 @@ const uploader = multer({
 // Route to handle file upload
 router.post('/upload-file', uploader.single('pdf'), notesController.uploadFile);
 
+router.post('/groupNotes',notesController.groupNotes)
+
+
 module.exports = router;
