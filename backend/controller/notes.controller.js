@@ -8,7 +8,8 @@ const responseSender = require('../utils/responseSender');
 
 const uploadFile = async (req, res) => {
   const { caption, description,groupId } = req.body;
-  console.log('>>>>>>>>>>>', groupId)
+  const userId = req.userId;
+  console.log('>>>>>>>>>>>', userId)
   try {
     // Validate file and perform file upload to Cloudinary
     const result = await cloud.uploadOncloudinary(req.file.path);
@@ -23,6 +24,7 @@ const uploadFile = async (req, res) => {
       caption,
       description,
       "to": groupId,
+      owner: userId,
       pdf: {
         url: result.secure_url,
       }
@@ -51,8 +53,9 @@ const uploadFile = async (req, res) => {
 
 
 const groupNotes = async(req,resp)=>{
-       const {groupId} = req.body;
-       console.log('>>>>>>>>>>>', groupId)
+       const {groupId} = req.params;
+       const userId = req.userId;
+       console.log('>>>>>>>>>>>', userId)
        if(!groupId){
         resp.send(responseSender(false,402,"group Id not provided",null))
         return

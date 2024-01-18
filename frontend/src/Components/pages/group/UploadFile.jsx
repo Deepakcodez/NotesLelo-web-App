@@ -4,6 +4,7 @@ import { MdDriveFolderUpload } from 'react-icons/md';
 import axios from 'axios';
 
 export const UploadFile = () => {
+  const token = localStorage.getItem("useDataToken")
   const { setUploadPage } = useContext(createGroupContext);
   const fileInputRef = useRef(null);
   const [warning, setWarning] = useState(false);
@@ -38,9 +39,12 @@ export const UploadFile = () => {
     data.append('description', inputData.description);
     data.append('groupId', groupId); 
 
+
     try {
       const response = await axios.post('http://localhost:8000/api/v1/notes/upload-file', data,{ headers: {
         'Content-Type': 'multipart/form-data',
+        token: token,
+        withCredentials: true,
       },});
         setUploadPage(false)
       console.log('File upload response:', response.data);

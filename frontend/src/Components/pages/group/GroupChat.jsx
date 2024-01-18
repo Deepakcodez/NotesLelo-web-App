@@ -1,15 +1,14 @@
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { SlOptionsVertical } from "react-icons/sl";
 import { MdChevronLeft } from "react-icons/md";
-import { IoHandLeftOutline } from "react-icons/io5";
 import axios from "axios";
-import { Link, Outlet, Route, Routes, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { createGroupContext } from "../../../Context";
-import { Chat } from "./chat";
+
 export const GroupChat = () => {
 
-
-  const { setGroupDeleteOpt,demand,setDemand, currentUser } = useContext(createGroupContext);
+  const location = useLocation();
+  const { setGroupDeleteOpt, demand, setDemand, currentUser } = useContext(createGroupContext);
   const [option, setOption] = useState(false);
   const optionModelRef = useRef();
   const optionIconRef = useRef();
@@ -21,6 +20,7 @@ export const GroupChat = () => {
     title: "",
     description: "",
   });
+
 
 
 
@@ -43,7 +43,7 @@ export const GroupChat = () => {
 
   useEffect(() => {
     return () => {
-    
+
       localStorage.removeItem("groupId");
     };
   }, []);
@@ -92,27 +92,32 @@ export const GroupChat = () => {
         <div className="navbar bg-slate-700 shadow-lg w-full h-[3rem] flex items-center">
           <ul className="flex h-full items-center justify-between px-5 w-full">
             <li className="font-bold text-white text-xl flex items-center gap-2">
-             <Link to="/" className="text-3xl md:hidden"><  MdChevronLeft/></Link> 
+              <Link to="/" className="text-3xl md:hidden"><  MdChevronLeft /></Link>
               {groupData.title.toUpperCase()}
             </li>
-        
+
             <li className="text-white flex items-center gap-3" >
-             <div className="text-xl" onClick={()=>setDemand(!demand)}  >  <IoHandLeftOutline/></div>
-             <div ref={optionIconRef} onClick={optionClickHandler}><SlOptionsVertical /></div>
-              
+              <div ref={optionIconRef} onClick={optionClickHandler}><SlOptionsVertical /></div>
+
             </li>
-         
+
           </ul>
         </div>
-        <div className="groupnavlinks w-full  absolute z-[900]   top-[3rem] ">
-             <ul className="flex  justify-center items-center text-xl ">
-              <Link to="/group/demand"><li className="bg-orange-300/50 text-white w-[30vw] rounded-s-full text-center px-7 py-2 ">Demands</li></Link>
-              <Link to="/group/notes"><li className="bg-blue-300/50 text-white w-[30vw] rounded-e-full px-7 py-2 text-center">Notes</li></Link>
-             </ul>
-           </div>
-        
+        <div className="groupnavlinks w-full  absolute z-[40]   top-[3rem] ">
+          <ul className="flex  justify-center items-center text-xl ">
+            <NavLink 
+               to="/group/demand">
+                <li className={`${location.pathname === "/group/demand" ?"bg-orange-300 text-black":"bg-orange-300/50"} text-white w-[30vw] rounded-s-full text-center px-7 py-2 `}>Demands</li></NavLink>
+            <NavLink 
+            to="/group/notes">
+              <li className={` ${location.pathname === "/group/notes" ?"bg-blue-300 text-black":"bg-blue-300/50"} text-white w-[30vw] rounded-e-full px-7 py-2 text-center`}>
+                Notes
+              </li></NavLink>
+          </ul>
+        </div>
+
         <Outlet />
-      
+
         {option && (
           <div
             ref={optionModelRef}
@@ -135,7 +140,7 @@ export const GroupChat = () => {
             </div>
           </div>
         )}
-        
+
       </div>
     </Fragment>
   );

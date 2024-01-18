@@ -2,13 +2,14 @@ import { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { FaFileUpload } from "react-icons/fa";
 import { createGroupContext } from '../../../Context';
 import axios from 'axios';
+import { IoHandLeftOutline } from "react-icons/io5";
 
 
-export const Chat = () => {
+export const GroupDemand = () => {
   const scrollRef = useRef();
   const groupId = localStorage.getItem('groupId')
   const [newdemands, setNewDemands] = useState([])
-  const {isUploadPage,setUploadPage} = useContext(createGroupContext);
+
   const { demand, currentUser } = useContext(createGroupContext);
 
 
@@ -82,8 +83,8 @@ export const Chat = () => {
             )
           })
         }
-             <div className='upload sticky p-4 text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end bottom-0' onClick={() =>setUploadPage(true)}>
-          <FaFileUpload  />
+             <div className='upload sticky p-4 mt-[35rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end bottom-0' onClick={() =>setUploadPage(true)}>
+          <IoHandLeftOutline  />
           
         </div>  
       </div>
