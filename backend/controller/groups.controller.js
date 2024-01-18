@@ -109,12 +109,14 @@ const joinGroup = async (req, resp) => {
     await Group.save();
 
 
-    const newNotification = new notification(
-      {
-        user: req.userId,
-        message:"Group Joined"
-      }
-    )
+    const newNotification = new notification({
+      notification:[
+        {
+          user:req.userId,
+          message:"Group Joined"
+        }
+      ]
+    })
     const savedNotification =  await newNotification.save()
     console.log(savedNotification);
     console.log(">>>>>>>>>>> GROUP JOINED SUCCESSFULLY");
