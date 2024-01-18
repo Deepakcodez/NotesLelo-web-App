@@ -3,7 +3,7 @@ import { SlOptionsVertical } from "react-icons/sl";
 import { MdChevronLeft } from "react-icons/md";
 import { IoHandLeftOutline } from "react-icons/io5";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import { createGroupContext } from "../../../Context";
 import { Chat } from "./chat";
 export const GroupChat = () => {
@@ -104,9 +104,14 @@ export const GroupChat = () => {
          
           </ul>
         </div>
-        <Chat   currentGroupId={id}
-    
-          />
+        <div className="groupnavlinks w-full  absolute z-[900]   top-[3rem] ">
+             <ul className="flex  justify-center items-center text-xl ">
+              <Link to="/group/demand"><li className="bg-orange-300/50 text-white w-[30vw] rounded-s-full text-center px-7 py-2 ">Demands</li></Link>
+              <Link to="/group/notes"><li className="bg-blue-300/50 text-white w-[30vw] rounded-e-full px-7 py-2 text-center">Notes</li></Link>
+             </ul>
+           </div>
+        
+        <Outlet />
       
         {option && (
           <div

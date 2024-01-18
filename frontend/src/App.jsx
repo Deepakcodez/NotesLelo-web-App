@@ -17,6 +17,8 @@ import { useContext } from "react";
 import { createGroupContext } from "./Context";
 import { CreateGroup } from "./Components/pages/group/CreateGroup";
 import { GroupChat } from "./Components/pages/group/GroupChat";
+import { Chat } from "./Components/pages/group/chat";
+import { Notes } from "./Components/pages/group/Notes";
 
 
 function App() {
@@ -42,7 +44,11 @@ function App() {
           <Route path="/savedNotes" element={<Saved/>}></Route>
           <Route path="/profile" element={<Profile/>}></Route>
           <Route path="/library" element={<Library/>}></Route>
-          <Route path="/chat" element={<GroupChat/>}></Route>
+          <Route path="/group" element={<GroupChat />}>
+            <Route path="demand" element={<Chat />} />
+            <Route path="notes" element={<Notes />} />
+          </Route>
+
           <Route path="*" element={<PageNotFound/>}></Route>
           </Route>
         </Routes>

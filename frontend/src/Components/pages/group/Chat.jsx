@@ -64,7 +64,7 @@ export const Chat = () => {
   return (
     <>
       <div className="chatContent relative flex flex-col gap-5 overflow-y-scroll no-scrollbar w-full
-       h-[calc(100vh-3rem)] md:h-[calc(100vh-7.6rem)] py-3 px-6">
+       h-[calc(100vh-3rem)] md:h-[calc(100vh-7.6rem)] py-3 pt-[3rem] px-6">
         {/* Display received messages */}
         {
           newdemands.map((dmd, index) => {
