@@ -2,7 +2,15 @@ import { Fragment, useContext, useEffect, useState } from 'react';
 import { FaFileUpload } from "react-icons/fa";
 import { createGroupContext } from '../../../Context';
 import axios from 'axios';
-import { FaFileDownload } from "react-icons/fa";
+import { BsHandThumbsUp } from "react-icons/bs";
+import { BsHandThumbsUpFill } from "react-icons/bs";
+import { LiaComment } from "react-icons/lia";
+import { GoBookmark } from "react-icons/go";
+import { GoBookmarkFill } from "react-icons/go";
+
+import { BsDownload } from "react-icons/bs";
+
+
 export const Notes = () => {
     const groupId = localStorage.getItem("groupId");
     const { isUploadPage, setUploadPage } = useContext(createGroupContext);
@@ -34,27 +42,27 @@ export const Notes = () => {
 
     const handleDownload = async (fileUrl, fileName) => {
         try {
-          const response = await axios.get(fileUrl.url, { responseType: 'blob' });
-          const blob = new Blob([response.data], { type: 'application/pdf' });
-          const url = URL.createObjectURL(blob);
-      
-          // Create a virtual anchor element
-          const anchor = document.createElement('a');
-          anchor.href = url;
-          anchor.download = fileName;
-      
-          // Simulate a click on the anchor element to trigger the download
-          document.body.appendChild(anchor);
-          anchor.click();
-          document.body.removeChild(anchor);
-      
-          // Release the Object URL
-          URL.revokeObjectURL(url);
+            const response = await axios.get(fileUrl.url, { responseType: 'blob' });
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+
+            // Create a virtual anchor element
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = fileName;
+
+            // Simulate a click on the anchor element to trigger the download
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+
+            // Release the Object URL
+            URL.revokeObjectURL(url);
         } catch (error) {
-          console.error('Error downloading file:', error);
+            console.error('Error downloading file:', error);
         }
-      };
-      
+    };
+
 
 
     return (
@@ -62,34 +70,35 @@ export const Notes = () => {
             <div className="chatContent relative flex flex-col gap-[7rem] overflow-y-scroll no-scrollbar w-full h-[calc(100vh-3rem)] md:h-[calc(100vh-7.6rem)] py-3 pt-[3rem] px-6">
 
                 {
-          
+
                     notesData?.map((data, index) => {
                         return (
                             <Fragment key={index}>
 
-                                <div className={`wrapper   ${data.notes.owner === data.user._id ? "self-end" : "self-start"} w-[85%] sm:w-[80%] md:w-[43%] h-[20rem] bg-slate-500 rounded-md`}>
-                                    <div className='header w-full h-[2rem] bg-blue-500 rounded-t-md'></div>
-                                    <div className='pdfposter h-[10rem] w-full bg-slate-800 flex justify-center items-center'>
-                                        <h1 className=' text-5xl  text-slate-600/50 font-bold'>NOTES</h1>
+                                <div className=' flex flex-col  rounded-md h-[15rem] w-[15rem] sm:w-[20rem] bg-slate-700 border-gray-200' style={{border:"1px solid gray"}} >
+                                    <div className='h-[5rem] w-full  text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl'>NOTESLELO</div>
+                                    <div className='px-2'>
+                                        <div className='flex justify-between'>
+                                            <h1 className=' bg text-lg font-bold tracking-tight text-gray-900 dark:text-white'>{data.notes.caption}</h1>
+                                            <h1 className='text-sm text-gray-500 '>{data.user.name.toUpperCase()}</h1>
+                                        </div>
+                                        <h1 className='mb-3overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400'>{data.notes.description}</h1>
                                     </div>
-
-
-                                    <div className='notescontent  px-3 w-full h-[8rem]  bg-slate-600 rounded-md'>
-                                        <div className='contentHeader h-full  flex-col justify-between  text-white'>
-                                            <div className='contentHeader  flex justify-between  text-white'>
-                                                <h1 className='text-white text-xl '>{data.notes.caption}</h1>
-                                                <h1 className='text-blue-200/50'>{data.user.name.toUpperCase()}</h1>
-                                            </div>
-
-                                            <div className='description overflow-y-scroll  text-white  overflow-auto no-scrollbar h-[50%] text-slate-300 '>
-                                                <h1>{data.notes.description}</h1>
-                                            </div>
-                                            <div className='footer pt-2 flex justify-end'>
-                                                <div className=' text-green-300 text-xl' onClick={() => { handleDownload(data.notes.pdf , data.notes.caption) }} ><FaFileDownload /></div>
-                                            </div>
+                                    <div className='footer flex justify-between px-3 text-xl py-2  text-white '>
+                                        <div className='flex gap-2'>
+                                            <div><BsHandThumbsUp /></div>
+                                            {/* <div><BsHandThumbsUpFill/></div> */}
+                                            <div><LiaComment /></div>
+                                            <div><GoBookmark /></div>
+                                            {/* <div><GoBookmarkFill/></div> */}</div>
+                                        <div className='bg-cyan-400 rounded-lg border-gray-300 border-2 ' onClick={() => { handleDownload(data.notes.pdf , data.notes.caption) }}>
+                                            <div className='text-green-900 p-1'><BsDownload /></div>
                                         </div>
                                     </div>
                                 </div>
+
+
+
 
                             </Fragment>
                         )
