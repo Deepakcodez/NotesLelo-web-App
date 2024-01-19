@@ -62,8 +62,8 @@ export const Notes = () => {
             <div className="chatContent relative flex flex-col gap-[7rem] overflow-y-scroll no-scrollbar w-full h-[calc(100vh-3rem)] md:h-[calc(100vh-7.6rem)] py-3 pt-[3rem] px-6">
 
                 {
-
-                    notesData.map((data, index) => {
+          
+                    notesData?.map((data, index) => {
                         return (
                             <Fragment key={index}>
 
