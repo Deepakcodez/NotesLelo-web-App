@@ -1,14 +1,13 @@
 const express = require('express');
-const multer = require('multer');
-const notesController = require('../controller/notes.controller');
 const router = express.Router(); // Change from `express()` to `express.Router()`
-const authenticate = require('../middleware/authenticate')
-
+const multer = require('multer');
 const path = require('path');
-const bodyParser = require('body-parser');
+
+const notesController = require('../controller/notes.controller');
+const authenticate = require('../middleware/authenticate');
 
 // Middleware order correction
-router.use(bodyParser.urlencoded({ extended: true }));
+router.use(express.urlencoded({ extended: true }));
 router.use(express.static(path.resolve(__dirname, 'public')));
 
 const uploader = multer({
@@ -17,9 +16,8 @@ const uploader = multer({
 });
 
 // Route to handle file upload
-router.post('/upload-file', uploader.single('pdf'), authenticate,notesController.uploadFile);
+router.post('/upload-file', uploader.single('pdf'), authenticate, notesController.uploadFile);
 
-router.get('/groupNotes/:groupId',notesController.groupNotes)
-
+router.get('/groupNotes/:groupId', authenticate, notesController.groupNotes);
 
 module.exports = router;

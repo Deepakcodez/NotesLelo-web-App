@@ -10,7 +10,7 @@ export const GroupDemand = () => {
   const groupId = localStorage.getItem('groupId')
   const [newdemands, setNewDemands] = useState([])
 
-  const { demand, currentUser } = useContext(createGroupContext);
+  const { demand,setDemand, currentUser } = useContext(createGroupContext);
 
 
   useEffect(() => {
@@ -28,28 +28,6 @@ export const GroupDemand = () => {
 
     fetchData();
   }, [groupId, demand]);
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   useEffect(() => {
@@ -83,7 +61,7 @@ export const GroupDemand = () => {
             )
           })
         }
-             <div className='upload sticky p-4 mt-[35rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end bottom-0' onClick={() =>setUploadPage(true)}>
+             <div className='demand sticky p-4 mt-[35rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end bottom-[5rem]' onClick={() =>setDemand(true)}>
           <IoHandLeftOutline  />
           
         </div>  

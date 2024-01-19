@@ -67,7 +67,7 @@ const createGroupHandler=()=>{
           {ispopUp && (
             <div
               ref={popupRef}
-              className="popup absolute z-1000 bg-slate-500 text-white shadow-lg py-1 w-[10rem]  top-8 end-10 rounded-sm  "
+              className="popup absolute z-30 bg-slate-500 text-white shadow-lg py-1 w-[10rem]  top-8 end-10 rounded-sm  "
             >
               <ul className="flex flex-col items-center">
                 <li className="hover:bg-slate-600 w-full py-3 cursor-pointer ps-4">
