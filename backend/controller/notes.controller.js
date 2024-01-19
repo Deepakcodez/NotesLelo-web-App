@@ -65,7 +65,9 @@
       const currentGroupNotes = await notesModel.find({ "to": groupId });
       const notesWithUserData = await Promise.all(
         currentGroupNotes.map(async (notes) => {
-          const user = await userModel.findById(userId);
+          // const user = await userModel.findById(userId);
+          console.log('>>>>>>>>>>>notes owner', notes.owner)
+          const user = await userModel.findById(notes.owner );
           return {
             notes,
             user,
