@@ -16,7 +16,7 @@ export const Notes = () => {
     const { isUploadPage, setUploadPage, currentUser } = useContext(createGroupContext);
     const [notesData, setNotesData] = useState([]);
     const [notesId, setNotesId] = useState("");
-    const [like, setLike] = useState(false);
+
     const token = localStorage.getItem("useDataToken")
 
     useEffect(() => {
@@ -40,7 +40,7 @@ export const Notes = () => {
 
         fetchData(); // Call the fetchData function
 
-    }, [groupId, isUploadPage, notesId]); // Add 'groupId' as a dependency
+    }, [groupId, notesData, isUploadPage, notesId]); // Add 'groupId' as a dependency
 
     const handleDownload = async (fileUrl, fileName) => {
         try {
@@ -80,12 +80,28 @@ export const Notes = () => {
                     withCredentials: true,
                 }
             );
-        
-            if (resp.data.data.some(userdata => userdata._id === currentUser._id)) {
-                setLike(true)
-            } else {
-                setLike(false)
-            }
+            console.log('>>>>>>>>>>>', resp.data.data)
+
+            // Update the local state with the modified notes data
+            setNotesData((prevNotesData) => {
+                return prevNotesData.map((note) => {
+                    if (note.notes._id === notesId) {
+                        // Toggle the user's like status
+                        const isUserLiked = note.notes.likes.some(userdata => userdata._id === currentUser._id);
+                        return {
+                            ...note,
+                            notes: {
+                                ...note.notes,
+                                likes: isUserLiked
+                                    ? note.notes.likes.filter(userdata => userdata._id !== currentUser._id)
+                                    : [...note.notes.likes, currentUser],
+                            },
+                        };
+                    }
+                    return note;
+                });
+            });
+
         } catch (error) {
             console.log('>>>>>>>>>>>', error);
         }
@@ -116,7 +132,7 @@ export const Notes = () => {
                                     <div className='footer flex justify-between px-3 text-xl py-2  text-white '>
                                         <div className='flex gap-2'>
                                             <div onClick={() => { likeClickHandler(data.notes._id) }}>
-                                                {like ?
+                                                {data.notes.likes.some(userdata => userdata._id === currentUser._id) ?
                                                     <BsHandThumbsUpFill /> : <BsHandThumbsUp />
                                                 }
                                             </div>
