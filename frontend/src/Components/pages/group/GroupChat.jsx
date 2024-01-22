@@ -95,6 +95,11 @@ export const GroupChat = () => {
               <Link to="/" className="text-3xl md:hidden"><  MdChevronLeft /></Link>
               {groupData.title.toUpperCase()}
             </li>
+            <ul className="flex gap-3 text-lg text-white">
+              <NavLink to="/group/demand"> <li className={`${location.pathname === "/group/demand" ? "text-orange-400 underline underline-offset-4" : "text-white select-none  "}`}>Demand</li></NavLink>
+              <NavLink to="/group/notes">  <li className={`${location.pathname === "/group/notes" ? "text-blue-400 underline underline-offset-4" : "text-white select-none transition duration-3000 ease-in-out "}`}>Notes</li></NavLink>
+
+            </ul>
 
             <li className="text-white flex items-center gap-3" >
               <div ref={optionIconRef} onClick={optionClickHandler}><SlOptionsVertical /></div>
@@ -103,18 +108,7 @@ export const GroupChat = () => {
 
           </ul>
         </div>
-        <div className="groupnavlinks w-full  absolute z-[40]   top-[3rem] ">
-          <ul className="flex  justify-center items-center text-xl ">
-            <NavLink 
-               to="/group/demand">
-                <li className={`${location.pathname === "/group/demand" ?"bg-orange-300 text-black":"bg-orange-300/50 text-white"}  w-[30vw] rounded-s-full text-center px-7 py-2 `}>Demands</li></NavLink>
-            <NavLink 
-            to="/group/notes">
-              <li className={` ${location.pathname === "/group/notes" ?"bg-blue-300 text-black":"bg-blue-300/50 text-white"}  w-[30vw] rounded-e-full px-7 py-2 text-center`}>
-                Notes
-              </li></NavLink>
-          </ul>
-        </div>
+
 
         <Outlet />
 

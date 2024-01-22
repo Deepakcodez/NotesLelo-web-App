@@ -19,5 +19,6 @@ const uploader = multer({
 router.post('/upload-file', uploader.single('pdf'), authenticate, notesController.uploadFile);
 
 router.get('/groupNotes/:groupId', authenticate, notesController.groupNotes);
+router.put('/groupNotes/addLike/:notesId', authenticate, notesController.addLikeOrDislike);
 
 module.exports = router;

@@ -49,7 +49,7 @@ export const GroupCard = () => {
   };
 
   const cardClickHandler = async (groupId) => {
-    console.log('Clicked on Group ID:', groupId);
+    // console.log('Clicked on Group ID:', groupId);
 
     navigate("/group/demand");
     localStorage.setItem("groupId", groupId);

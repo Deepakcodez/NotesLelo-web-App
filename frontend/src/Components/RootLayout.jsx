@@ -19,7 +19,6 @@ function RootLayout() {
   const [userDetail, setUserDetail] = useState({}); //use for dynamic value change in sidebar
   const { isCreateGroup,isUploadPage,setUploadPage, setCreateGroup,clickedGroupId, setClickedGroupId ,groupDeleteOpt,setGroupDeleteOpt,joinGroup,setJoinGroup,setCurrentUser,demand} = useContext(createGroupContext);
   const currentURL = useLocation().pathname
-  console.log('>>>>>>>>>>>', currentURL)
 
  
   useEffect(() => {

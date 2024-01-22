@@ -85,7 +85,43 @@
       return resp.send(responseSender(false, 500, 'internal server error', null));
     }
   };
+
+  const addLikeOrDislike = async (req, resp) => {
+    const { notesId } = req.params;
+    const userId = req.userId;
   
-  module.exports = { uploadFile, groupNotes };
+    try {
+      // Check if the notes exist
+      const notes = await notesModel.findById(notesId);
+  
+      if (!notes) {
+        return resp.status(404).send(responseSender(false, 404, "Notes not found", null));
+      }
+  
+      // Check if the user has already liked the notes
+      const userLiked = notes.likes.some(id => id.equals(userId));
+  
+      if (userLiked) {
+        // User has already liked, remove the like (dislike)
+        // await notesModel.findByIdAndUpdate(notesId, { $pull: { likes: userId } });   //not working
+      await  notes.likes.pull(userId);
+      } else {
+        // User has not liked, add the like
+       await notes.likes.push(userId);
+      }
+  
+      // Save the changes to the notes
+      await notes.save();
+  
+      // Fetch the updated notes with user data
+      const updatedNotes = await notesModel.findById(notesId).populate('owner');
+  
+      return resp.status(200).send(responseSender(true, 200, "Operation successful", updatedNotes.likes));
+    } catch (error) {
+      return resp.status(500).send(responseSender(false, 500, "Internal server error", null));
+    }
+  };
+  
+  module.exports = { uploadFile, groupNotes, addLikeOrDislike };
   
 

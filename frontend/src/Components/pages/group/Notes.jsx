@@ -13,8 +13,10 @@ import { BsDownload } from "react-icons/bs";
 
 export const Notes = () => {
     const groupId = localStorage.getItem("groupId");
-    const { isUploadPage, setUploadPage } = useContext(createGroupContext);
+    const { isUploadPage, setUploadPage, currentUser } = useContext(createGroupContext);
     const [notesData, setNotesData] = useState([]);
+    const [notesId, setNotesId] = useState("");
+    const [like, setLike] = useState(false);
     const token = localStorage.getItem("useDataToken")
 
     useEffect(() => {
@@ -27,7 +29,7 @@ export const Notes = () => {
                     },
                     withCredentials: true,
                 });
-                console.log('>>>>>>>>>>>', response.data.data)
+                // console.log('>>>>>>>>>>>', response.data.data)
                 setNotesData(response.data.data);
 
             } catch (error) {
@@ -38,7 +40,7 @@ export const Notes = () => {
 
         fetchData(); // Call the fetchData function
 
-    }, [groupId, isUploadPage]); // Add 'groupId' as a dependency
+    }, [groupId, isUploadPage, notesId]); // Add 'groupId' as a dependency
 
     const handleDownload = async (fileUrl, fileName) => {
         try {
@@ -63,6 +65,33 @@ export const Notes = () => {
         }
     };
 
+    const likeClickHandler = async (notesId) => {
+        setNotesId(notesId)
+
+        try {
+            const resp = await axios.put(
+                `http://localhost:8000/api/v1/notes/groupNotes/addLike/${notesId}`,
+                {},
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'token': token,
+                    },
+                    withCredentials: true,
+                }
+            );
+        
+            if (resp.data.data.some(userdata => userdata._id === currentUser._id)) {
+                setLike(true)
+            } else {
+                setLike(false)
+            }
+        } catch (error) {
+            console.log('>>>>>>>>>>>', error);
+        }
+    }
+
+
 
 
     return (
@@ -75,7 +104,7 @@ export const Notes = () => {
                         return (
                             <Fragment key={index}>
 
-                                <div className=' flex flex-col  rounded-md h-[15rem] w-[15rem] sm:w-[20rem] bg-slate-700 border-gray-200' style={{border:"1px solid gray"}} >
+                                <div className={`  ${data.notes.owner === currentUser._id ? "self-end" : "self-start"}  flex flex-col  rounded-md h-[15rem] w-[15rem] sm:w-[20rem] bg-slate-700 border-gray-200`} style={{ border: "1px solid gray" }} >
                                     <div className='h-[5rem] w-full  text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl'>NOTESLELO</div>
                                     <div className='px-2'>
                                         <div className='flex justify-between'>
@@ -86,12 +115,16 @@ export const Notes = () => {
                                     </div>
                                     <div className='footer flex justify-between px-3 text-xl py-2  text-white '>
                                         <div className='flex gap-2'>
-                                            <div><BsHandThumbsUp /></div>
-                                            {/* <div><BsHandThumbsUpFill/></div> */}
+                                            <div onClick={() => { likeClickHandler(data.notes._id) }}>
+                                                {like ?
+                                                    <BsHandThumbsUpFill /> : <BsHandThumbsUp />
+                                                }
+                                            </div>
+                                            {/* <div></div> */}
                                             <div><LiaComment /></div>
                                             <div><GoBookmark /></div>
                                             {/* <div><GoBookmarkFill/></div> */}</div>
-                                        <div className='bg-cyan-400 rounded-lg border-gray-300 border-2 ' onClick={() => { handleDownload(data.notes.pdf , data.notes.caption) }}>
+                                        <div className='bg-cyan-400 rounded-lg border-gray-300 border-2 ' onClick={() => { handleDownload(data.notes.pdf, data.notes.caption) }}>
                                             <div className='text-green-900 p-1'><BsDownload /></div>
                                         </div>
                                     </div>
@@ -105,7 +138,7 @@ export const Notes = () => {
                     })
                 }
 
-                <div className='upload sticky p-4 mt-[35rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end bottom-0' onClick={() => setUploadPage(true)}>
+                <div className='upload sticky p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end bottom-0' onClick={() => setUploadPage(true)}>
                     <FaFileUpload />
                 </div>
             </div>
