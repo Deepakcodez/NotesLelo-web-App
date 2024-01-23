@@ -10,7 +10,8 @@ export const GroupDemand = () => {
   const groupId = localStorage.getItem('groupId')
   const [newdemands, setNewDemands] = useState([])
 
-  const { demand,setDemand, currentUser } = useContext(createGroupContext);
+
+  const { demand, setDemand, currentUser } = useContext(createGroupContext);
 
 
   useEffect(() => {
@@ -18,7 +19,8 @@ export const GroupDemand = () => {
       try {
         const response = await axios.get(`http://localhost:8000/api/v1/demand/demands/${groupId}`);
         setNewDemands(response.data.data);
-       
+        console.log('>>>>>>>>>>>', newdemands)
+
 
       } catch (error) {
         console.log('Error fetching demands:', error);
@@ -48,22 +50,26 @@ export const GroupDemand = () => {
           newdemands.map((dmd, index) => {
             return (
 
-              
-               <Fragment key={index}>
-                <div  ref={scrollRef} className={` ${dmd.demand.from === currentUser._id?"self-end":"self-start"} min-h-[10rem] h-  max-h-[20rem] w-[90%] sm:w-[70%] md:w-[40%] bg-slate-500 rounded-lg px-1 `} style={{ borderTop: "1rem solid orange" }}>
-                  <h1 className='sender text-orange-300'>{dmd.user.name.toUpperCase()}</h1>
+
+              <Fragment key={index}>
+                <div ref={scrollRef} className={` ${dmd.demand.from === currentUser._id ? "self-end" : "self-start"} min-h-[10rem] h-  max-h-[20rem] w-[90%] sm:w-[70%] md:w-[40%] bg-slate-600 rounded-lg px-1  border-gray-200`} style={{ borderTop: "1rem solid orange", borderBottom: "1px solid white" }}>
+                  <div className='flex justify-between'>
+                    <h1 className='sender text-orange-300'>{dmd.user.name.toUpperCase()}</h1>
+                    <div className='text-white/25' >{new Date(dmd.demand.createdAt).toLocaleString()}</div>
+
+                  </div>
                   <div className='messageArea  h-[80%] overflow-y-scroll text-2xl font-bold text-white p-5 overflow-auto no-scrollbar  '>{dmd.demand.message}</div>
                 </div>
-                </Fragment>
-              
-                
+              </Fragment>
+
+
             )
           })
         }
-             <div className='demand sticky p-4 mt-[30rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end bottom-[35rem]' onClick={() =>setDemand(true)}>
-          <IoHandLeftOutline  />
-          
-        </div>  
+        <div className='demand sticky p-4 mt-[30rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end bottom-[35rem]' onClick={() => setDemand(true)}>
+          <IoHandLeftOutline />
+
+        </div>
       </div>
 
 

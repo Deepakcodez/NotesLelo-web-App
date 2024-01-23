@@ -124,7 +124,7 @@ export const Notes = () => {
                     withCredentials: true,
                 }
             );
-            console.log('>>>>>>>>>>>', resp.data);
+            // console.log('>>>>>>>>>>>', resp.data);
     
             // Update the local state with the modified notes data
             setNotesData((prevNotesData) => {
