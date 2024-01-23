@@ -85,13 +85,13 @@ export const Notes = () => {
             // Update the local state with the modified notes data
             setNotesData((prevNotesData) => {
                 return prevNotesData.map((note) => {
-                    if (note.notes._id === notesId) {
-                        // Toggle the user's like status
-                        const isUserLiked = note.notes.likes.some(userdata => userdata._id === currentUser._id);
+                    if (note.user._id === currentUser._id) {
+                        
+                        const isnotesSaved = note.user.savedNotes.some(userdata => userdata._id === currentUser._id);
                         return {
                             ...note,
-                            notes: {
-                                ...note.notes,
+                            user: {
+                                ...note.user,
                                 likes: isUserLiked
                                     ? note.notes.likes.filter(userdata => userdata._id !== currentUser._id)
                                     : [...note.notes.likes, currentUser],
@@ -106,6 +106,50 @@ export const Notes = () => {
             console.log('>>>>>>>>>>>', error);
         }
     }
+
+    const saveHandler = async (notesId) => {
+        setNotesId(notesId);
+    
+        try {
+            const resp = await axios.post(
+                `http://localhost:8000/api/v1/notes/groupNotes/saveNotes`,
+                {
+                    notesId
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'token': token,
+                    },
+                    withCredentials: true,
+                }
+            );
+            console.log('>>>>>>>>>>>', resp.data);
+    
+            // Update the local state with the modified notes data
+            setNotesData((prevNotesData) => {
+                return prevNotesData.map((note) => {
+                    if (note.notes._id === notesId) {
+                        // Toggle the user's save status
+                        const isUserSaved = note.user.savedNotes.some(userdata => userdata._id === currentUser._id);
+                        return {
+                            ...note,
+                            user: {
+                                ...note.user,
+                                savedNotes: isUserSaved
+                                    ? note.user.savedNotes.filter(userdata => userdata._id !== currentUser._id)
+                                    : [...note.user.savedNotes, currentUser],
+                            },
+                        };
+                    }
+                    return note;
+                });
+            });
+        } catch (error) {
+            console.log('>>>>>>>>>>>', error);
+        }
+    };
+    
 
 
 
@@ -133,13 +177,18 @@ export const Notes = () => {
                                         <div className='flex gap-2'>
                                             <div onClick={() => { likeClickHandler(data.notes._id) }}>
                                                 {data.notes.likes.some(userdata => userdata._id === currentUser._id) ?
-                                                    <BsHandThumbsUpFill /> : <BsHandThumbsUp />
+                                                    <BsHandThumbsUpFill className='text-red-400' /> : <BsHandThumbsUp />
                                                 }
                                             </div>
                                             {/* <div></div> */}
                                             <div><LiaComment /></div>
-                                            <div><GoBookmark /></div>
-                                            {/* <div><GoBookmarkFill/></div> */}</div>
+                                            <div onClick={() => { saveHandler(data.notes._id) }}>
+                                                {
+                                                    data.user.savedNotes.some(userdata => userdata._id === currentUser._id) ?
+                                                        <GoBookmarkFill /> : <GoBookmark />
+                                                }
+                                            </div>
+                                        </div>
                                         <div className='bg-cyan-400 rounded-lg border-gray-300 border-2 ' onClick={() => { handleDownload(data.notes.pdf, data.notes.caption) }}>
                                             <div className='text-green-900 p-1'><BsDownload /></div>
                                         </div>

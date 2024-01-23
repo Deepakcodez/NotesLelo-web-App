@@ -164,7 +164,7 @@ const savedNotes = async (req, resp) => {
       // User has not saved, add the save
       await userdata.savedNotes.push(notesId);
       await userdata.save();
-      resp.send(responseSender(true, 200, "notes saved to saved-notes"));
+      resp.send(responseSender(true, 200, "notes saved to saved-notes",userdata.savedNotes));
     }
   } catch (error) {
     resp.send(responseSender(false, 500, "internal server error", null));
