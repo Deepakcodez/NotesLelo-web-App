@@ -40,7 +40,7 @@ export const Notes = () => {
 
         fetchData(); // Call the fetchData function
 
-    }, [groupId, notesData, isUploadPage, notesId]); // Add 'groupId' as a dependency
+    }, [groupId, isUploadPage, notesId]); // Add 'groupId' as a dependency
 
     const handleDownload = async (fileUrl, fileName) => {
         try {
@@ -80,7 +80,7 @@ export const Notes = () => {
                     withCredentials: true,
                 }
             );
-            console.log('>>>>>>>>>>>', resp.data.data)
+            // console.log('>>>>>>>>>>>', resp.data.data)
 
             // Update the local state with the modified notes data
             setNotesData((prevNotesData) => {

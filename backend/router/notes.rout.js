@@ -20,5 +20,6 @@ router.post('/upload-file', uploader.single('pdf'), authenticate, notesControlle
 
 router.get('/groupNotes/:groupId', authenticate, notesController.groupNotes);
 router.put('/groupNotes/addLike/:notesId', authenticate, notesController.addLikeOrDislike);
+router.post('/groupNotes/saveNotes', authenticate, notesController.savedNotes);
 
 module.exports = router;
