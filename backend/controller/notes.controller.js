@@ -37,6 +37,9 @@ const uploadFile = async (req, res) => {
     await groupModel.findByIdAndUpdate(groupId, {
       $push: { notes: record._id },
     });
+    await userModel.findByIdAndUpdate(userId, {
+      $push: { posts: record._id },
+    });
     // Return a success response
     res.status(200).json({
       success: true,
@@ -143,11 +146,11 @@ const savedNotes = async (req, resp) => {
   const userId = req.userId;
   const { notesId } = req.body;
   if (!userId) {
-    resp.send(responseSender(false, 500, "user not defined", null));
+    return resp.send(responseSender(false, 500, "user not defined", null));
   }
 
   if (!notesId) {
-    resp.send(responseSender(false, 500, "notes id not provided", null));
+   return  resp.send(responseSender(false, 500, "notes id not provided", null));
   }
   try {
     const userdata = await userModel.findById(userId);
@@ -159,16 +162,76 @@ const savedNotes = async (req, resp) => {
 
       await userdata.savedNotes.pull(notesId);
       await userdata.save();
-      resp.send(responseSender(true, 200, "notes unsaved"));
+      resp.send(
+        responseSender(true, 200, "notes unsaved", userdata.savedNotes)
+      );
     } else {
       // User has not saved, add the save
       await userdata.savedNotes.push(notesId);
       await userdata.save();
-      resp.send(responseSender(true, 200, "notes saved to saved-notes",userdata.savedNotes));
+      resp.send(
+        responseSender(
+          true,
+          200,
+          "notes saved to saved-notes",
+          userdata.savedNotes
+        )
+      );
     }
   } catch (error) {
     resp.send(responseSender(false, 500, "internal server error", null));
   }
 };
 
-module.exports = { uploadFile, groupNotes, addLikeOrDislike, savedNotes };
+const UserSavedNotes = async (req, resp) => {
+  const savedNotesid = req.user.savedNotes;
+  try {
+    if (!savedNotesid) {
+      resp.send(responseSender(true, 200, "not any saved notes", null));
+    }
+
+    const savedNotes = await notesModel.find({ _id: savedNotesid });
+    resp.send(responseSender(true, 200, " user saved notes", savedNotes));
+  } catch (error) {
+    resp.send(responseSender(false, 500, "internal server error", null));
+  }
+};
+
+
+
+
+
+
+
+const userNotes = async (req, resp) => {
+  const userNotesArray = req.user.posts;
+  console.log('>>>>>>>>>>>notesId', userNotesArray);
+
+  if (!userNotesArray) {
+    return resp.send(responseSender(false, 500, "Notes not found", null));
+  }
+
+  try {
+    const notes = await notesModel.find({ _id: userNotesArray });
+    
+    if (!notes || notes.length === 0) {
+      return resp.send(responseSender(false, 404, "Notes not found", null));
+    }
+
+    console.log(req.user); // Log user information
+    return resp.send(responseSender(true, 200, "Shared notes fetched successfully", notes));
+  } catch (error) {
+    console.error('Error fetching user notes:', error);
+    return resp.send(responseSender(false, 500, "Internal server error", null));
+  }
+};
+
+
+module.exports = {
+  uploadFile,
+  groupNotes,
+  addLikeOrDislike,
+  savedNotes,
+  UserSavedNotes,
+  userNotes,
+};
