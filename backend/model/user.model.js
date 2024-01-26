@@ -34,10 +34,10 @@ const userSchema = new mongoose.Schema(
       minlength: [6, "password must be  at least 6 characters"],
       required: [true, "please enter valid  password"],
     },
-    posts: {
+    posts: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Post",
-    },
+    }],
     savedNotes :[
       {
         type : mongoose.Schema.Types.ObjectId,
@@ -83,6 +83,20 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.generateAuthToken = async function () {
   try {
+
+   // Remove expired tokens
+   this.tokens = this.tokens.filter((tokenData) => {
+    try {
+      jwt.verify(tokenData.token, secretKey);
+      return true; // Token is valid
+    } catch (error) {
+      return false; // Token is expired or invalid
+    }
+  });
+
+
+
+
     let GeneratedToken = jwt.sign({ _id: this._id }, secretKey, {
       expiresIn: "1d",
     });
