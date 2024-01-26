@@ -15,6 +15,7 @@ export const Notes = () => {
     const groupId = localStorage.getItem("groupId");
     const { isUploadPage, setUploadPage, currentUser } = useContext(createGroupContext);
     const [notesData, setNotesData] = useState([]);
+    const [noteSaved, setNoteSaved] = useState([])
     const [notesId, setNotesId] = useState("");
 
     const token = localStorage.getItem("useDataToken")
@@ -29,8 +30,9 @@ export const Notes = () => {
                     },
                     withCredentials: true,
                 });
-                // console.log('>>>>>>>>>>>', response.data.data)
+                // console.log('>>>>>>>>>>>', response.data.data[0].user)
                 setNotesData(response.data.data);
+                setNoteSaved(response.data.data)
 
             } catch (error) {
                 console.error("Error fetching notes:", error);
@@ -85,13 +87,13 @@ export const Notes = () => {
             // Update the local state with the modified notes data
             setNotesData((prevNotesData) => {
                 return prevNotesData.map((note) => {
-                    if (note.user._id === currentUser._id) {
-                        
-                        const isnotesSaved = note.user.savedNotes.some(userdata => userdata._id === currentUser._id);
+                    if (note.notes._id === notesId) {
+                        // Toggle the user's like status
+                        const isUserLiked = note.notes.likes.some(userdata => userdata._id === currentUser._id);
                         return {
                             ...note,
-                            user: {
-                                ...note.user,
+                            notes: {
+                                ...note.notes,
                                 likes: isUserLiked
                                     ? note.notes.likes.filter(userdata => userdata._id !== currentUser._id)
                                     : [...note.notes.likes, currentUser],
@@ -107,8 +109,19 @@ export const Notes = () => {
         }
     }
 
+
+
+
+
+
+
+
+
+
+
     const saveHandler = async (notesId) => {
         setNotesId(notesId);
+        console.log('>>>>>>>>>>>on click', notesId)
     
         try {
             const resp = await axios.post(
@@ -124,7 +137,7 @@ export const Notes = () => {
                     withCredentials: true,
                 }
             );
-            // console.log('>>>>>>>>>>>', resp.data);
+            console.log('>>>>>>>>>>>', resp.data);
     
             // Update the local state with the modified notes data
             setNotesData((prevNotesData) => {
@@ -146,9 +159,11 @@ export const Notes = () => {
                 });
             });
         } catch (error) {
-            console.log('>>>>>>>>>>>', error);
+            console.log('Error saving notes:', error);
         }
     };
+    
+
     
 
 
@@ -164,32 +179,34 @@ export const Notes = () => {
                         return (
                             <Fragment key={index}>
 
-                                <div className={`  ${data.notes.owner === currentUser._id ? "self-end" : "self-start"}  flex flex-col  rounded-md h-[15rem] w-[15rem] sm:w-[20rem] bg-slate-700 border-gray-200`} style={{ border: "1px solid gray" }} >
+                                <div className={`  ${data.notes?.owner === currentUser._id ? "self-end" : "self-start"}  flex flex-col  rounded-md h-[15rem] w-[15rem] sm:w-[20rem] bg-slate-700 border-gray-200`} style={{ border: "1px solid gray" }} >
                                     <div className='h-[5rem] w-full  text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl'>NOTESLELO</div>
                                     <div className='px-2'>
                                         <div className='flex justify-between'>
-                                            <h1 className=' bg text-lg font-bold tracking-tight text-gray-900 dark:text-white'>{data.notes.caption}</h1>
-                                            <h1 className='text-sm text-gray-500 '>{data.user.name.toUpperCase()}</h1>
+                                            <h1 className=' bg text-lg font-bold tracking-tight text-gray-900 dark:text-white'>{data.notes?.caption}</h1>
+                                            <h1 className='text-sm text-gray-500 '>{data.user?.name.toUpperCase()}</h1>
                                         </div>
-                                        <h1 className='mb-3overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400'>{data.notes.description}</h1>
+                                        <h1 className='mb-3 overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400'>{data.notes?.description}
+                                        {data.notes?._id}
+                                        </h1>
                                     </div>
                                     <div className='footer flex justify-between px-3 text-xl py-2  text-white '>
                                         <div className='flex gap-2'>
                                             <div onClick={() => { likeClickHandler(data.notes._id) }}>
-                                                {data.notes.likes.some(userdata => userdata._id === currentUser._id) ?
+                                                {data.notes?.likes.some(userdata => userdata._id === currentUser._id) ?
                                                     <BsHandThumbsUpFill className='text-red-400' /> : <BsHandThumbsUp />
                                                 }
                                             </div>
                                             {/* <div></div> */}
                                             <div><LiaComment /></div>
-                                            <div onClick={() => { saveHandler(data.notes._id) }}>
+                                            <div onClick={() => { saveHandler(data.notes?._id) }}>
                                                 {
-                                                    data.user.savedNotes.some(userdata => userdata._id === currentUser._id) ?
+                                                    data.user?.savedNotes.some(userdata => userdata._id === currentUser._id) ?
                                                         <GoBookmarkFill /> : <GoBookmark />
                                                 }
                                             </div>
                                         </div>
-                                        <div className='bg-cyan-400 rounded-lg border-gray-300 border-2 ' onClick={() => { handleDownload(data.notes.pdf, data.notes.caption) }}>
+                                        <div className='bg-cyan-400 rounded-lg border-gray-300 border-2 ' onClick={() => { handleDownload(data.notes?.pdf, data.notes?.caption) }}>
                                             <div className='text-green-900 p-1'><BsDownload /></div>
                                         </div>
                                     </div>

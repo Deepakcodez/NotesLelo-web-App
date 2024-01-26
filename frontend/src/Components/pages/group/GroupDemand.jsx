@@ -47,18 +47,18 @@ export const GroupDemand = () => {
        h-[calc(100vh-3rem)] md:h-[calc(100vh-7.6rem)] py-3 pt-[3rem] px-6">
         {/* Display received messages */}
         {
-          newdemands.map((dmd, index) => {
+          newdemands?.map((dmd, index) => {
             return (
 
 
               <Fragment key={index}>
                 <div ref={scrollRef} className={` ${dmd.demand.from === currentUser._id ? "self-end" : "self-start"} min-h-[10rem] h-  max-h-[20rem] w-[90%] sm:w-[70%] md:w-[40%] bg-slate-600 rounded-lg px-1  border-gray-200`} style={{ borderTop: "1rem solid orange", borderBottom: "1px solid white" }}>
                   <div className='flex justify-between'>
-                    <h1 className='sender text-orange-300'>{dmd.user.name.toUpperCase()}</h1>
-                    <div className='text-white/25' >{new Date(dmd.demand.createdAt).toLocaleString()}</div>
+                    <h1 className='sender text-orange-300'>{dmd.user?.name.toUpperCase()}</h1>
+                    <div className='text-white/25' >{new Date(dmd.demand?.createdAt).toLocaleString()}</div>
 
                   </div>
-                  <div className='messageArea  h-[80%] overflow-y-scroll text-2xl font-bold text-white p-5 overflow-auto no-scrollbar  '>{dmd.demand.message}</div>
+                  <div className='messageArea  h-[80%] overflow-y-scroll text-2xl font-bold text-white p-5 overflow-auto no-scrollbar  '>{dmd.demand?.message}</div>
                 </div>
               </Fragment>
 
