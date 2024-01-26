@@ -28,12 +28,13 @@ const user = require("./router/user.rout");
 const group = require("./router/groups.rout");
 const notes = require("./router/notes.rout");
 const demand = require("./router/demand.rout");
-
+const notification = require('./router/notificcation.route')
 
 app.use("/api/v1/user", user);
 app.use("/api/v1/group", group);
 app.use("/api/v1/notes", notes);
 app.use("/api/v1/demand", demand);
+app.use("/api/v1/notification", notification);
 
 
 const server = app.listen(port, () =>
