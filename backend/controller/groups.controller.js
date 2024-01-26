@@ -59,11 +59,11 @@ const createGroup = async (req, resp) => {
           await user.save();
         }
       }
-
+        console.log(storedGroup.title)
       const newNotification = new notification(
         {
           user: req.userId,
-          message:"group created"
+          message:`${req.user.name}, you successfully created a ${storedGroup.title}`
         }
       );
       const savedNotification =  await newNotification.save();
@@ -75,7 +75,6 @@ const createGroup = async (req, resp) => {
         success: true,
         Message: "Group Created Successfullly,",
         data: storedGroup,
-        dataNotification:savedNotification
       });
     }
   } catch (error) {
@@ -106,31 +105,37 @@ const joinGroup = async (req, resp) => {
     user.memberOf.push(Group._id);
     Group.members.push(req.userId);
     await user.save();
-    await Group.save();
+    await Group.save();                         
 
-
-    const newNotification = new notification({
-      notification:[
+    
+    const newNotification = new notification(
         {
           user:req.userId,
-          message:"Group Joined"
+          message:`${req.user.name} ,you successfully joined in ${Group.title} Group`
         }
-      ]
-    })
+      )
     const savedNotification =  await newNotification.save()
     console.log(savedNotification);
     console.log(">>>>>>>>>>> GROUP JOINED SUCCESSFULLY");
     resp.status(200).json({
       status: 200,
       success: true,
-      message: "group joined ",
+      message: "group joined successfully",
       data: Group,
-      notificationData:savedNotification
     });
   } catch (error) {
     console.log(">>>>>>>>>>>", error);
   }
 };
+
+
+
+
+
+
+
+
+
 
 //all groups API
 const allGroups = async (req, resp) => {
