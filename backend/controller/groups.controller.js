@@ -63,7 +63,7 @@ const createGroup = async (req, resp) => {
       const newNotification = new notification(
         {
           user: req.userId,
-          message:`${req.user.name}, you successfully created a ${storedGroup.title}`
+          message:`${req.user.name}, you successfully created a ${storedGroup.title} Group`
         }
       );
       const savedNotification =  await newNotification.save();
