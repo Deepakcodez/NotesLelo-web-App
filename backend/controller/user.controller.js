@@ -1,16 +1,12 @@
 const bcrypt = require("bcrypt");
 const userdb = require("../model/user.model");
 const userModel = userdb.User;
+const nodemailer = require("nodemailer");
+var Mailgen = require('mailgen');
 
-// demo
-const demo = async (req, resp) => {
-  resp.send({
-    status: 200,
-    message: "working demo api",
-  });
-};
 
-//registration
+
+// Registration
 const register = async (req, resp) => {
   const { name, email, password, confirmPassword } = req.body;
 
@@ -18,14 +14,15 @@ const register = async (req, resp) => {
     return resp.status(422).json({
       status: 422,
       success: false,
-      error: "fill all the details",
+      error: "Fill in all the details",
     });
   }
+
   if (password !== confirmPassword) {
     return resp.status(422).json({
       status: 422,
       success: false,
-      error: "confirm password not matchded",
+      error: "Confirm password does not match",
     });
   }
 
@@ -33,7 +30,7 @@ const register = async (req, resp) => {
     return resp.status(422).json({
       status: 422,
       success: false,
-      error: "password should be at least 6 characters",
+      error: "Password should be at least 6 characters",
     });
   }
 
@@ -56,7 +53,57 @@ const register = async (req, resp) => {
 
       const storeData = await user.save();
 
-      // console.log(">>>>>>>>>>> Register successful");
+      // Code for sending email
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "noteslelo.app@gmail.com",
+          pass: "lplj hjxv hmjx lrnw",
+        },
+      });
+
+      var mailGenerator = new Mailgen({
+        theme: 'default',
+        product: {
+          name: 'NotesLelo',
+          link: 'https://yourapp.com/', // Change this URL to your app's URL
+        },
+      });
+
+
+      // Email template
+var emailToSend = {
+  subject: 'Welcome to NotesLelo',
+  body: {
+      greeting: `Dear ${name} ,`,
+      intro: 'Thank you for choosing NotesLelo! We are thrilled to welcome you on board and appreciate the opportunity to serve you.',
+      action: {
+          instructions: 'To get started and confirm your account, please click the button below:',
+          button: {
+              color: '#22BC66', // Optional action button color
+              text: 'Confirm Your Account',
+              link: 'https://yourapp.com/confirm?s=d9729feb74992cc3482b350163a1a010' // Change this URL to the actual confirmation endpoint
+            }
+      },
+      additionalInfo: 'By confirming your account, you\'ll gain access to all the exciting features and benefits that NotesLelo has to offer.',
+      outro: 'If you have any questions or need assistance, feel free to reply to this email. We\'re here to help!',
+      closing: 'Best regards,',
+      signature: 'The NotesLelo Team'
+  }
+};
+
+      // Generate an HTML email with the provided contents
+      var emailBody = mailGenerator.generate(emailToSend);
+
+      let message = {
+        from: 'noteslelo.app@gmail.com',
+        to: email,
+        subject: "Welcome to NotesLelo",
+        html: emailBody,
+      };
+
+      await transporter.sendMail(message);
+
       resp.status(200).json({
         status: 200,
         success: true,
@@ -65,31 +112,29 @@ const register = async (req, resp) => {
       });
     }
   } catch (error) {
-    if (error.name === "ValidationError") {
-      // Mongoose validation error occurred
-      const validationErrors = {};
-      for (const key in error.errors) {
-        validationErrors[key] = error.errors[key].message;
-      }
-
-      console.error("Validation error:", validationErrors);
-      resp.status(422).json({
-        status: 422,
-        success: false,
-        message: "Validation error",
-        validationErrors,
-      });
-    } else {
-      // Other unexpected errors
-      console.error("Error in saving data to db", error);
-      resp.status(500).json({
-        status: 500,
-        success: false,
-        message: "Internal Server Error",
-      });
-    }
+    // Handle errors
+    console.error("Error in saving data to db", error);
+    resp.status(500).json({
+      status: 500,
+      success: false,
+      message: "Internal Server Error",
+    });
   }
 };
+
+// Demo
+const demo = async (req, resp) => {
+  resp.send({
+    status: 200,
+    message: "Working demo API",
+  });
+};
+
+module.exports = {
+  register,
+  demo,
+};
+
 
 //login
 const login = async (req, resp) => {
@@ -108,8 +153,7 @@ const login = async (req, resp) => {
   try {
     const user = await userModel.findOne({ email });
 
-
-    if(!user){
+    if (!user) {
       resp.status(422).send({
         status: 422,
         success: false,
@@ -121,8 +165,7 @@ const login = async (req, resp) => {
       // console.log("Provided password:", password);
       // console.log("Hashed password from the database:", user.password);
       // console.log("Is password match?", isMatch);
-      
-      
+
       if (!isMatch) {
         resp.status(422).send({
           status: 422,
@@ -138,9 +181,7 @@ const login = async (req, resp) => {
         resp.cookie("token", token, {
           expires: new Date(Date.now() + 90000000),
           httpOnly: true,
-
         });
-
 
         const result = {
           user,
@@ -165,31 +206,25 @@ const login = async (req, resp) => {
   }
 };
 
+// is varify to authonenticate user
 
-
-
-// is varify to authonenticate user 
-
-const isVarify = async (req,resp) => {
-
+const isVarify = async (req, resp) => {
   try {
-    const user = await userModel.findOne({_id:req.userId});
+    const user = await userModel.findOne({ _id: req.userId });
     // console.log('>>>>>>>>>>>', user._id,"req id",req.userId)
     resp.status(201).json({
-      status :201,
-      success:true,
+      status: 201,
+      success: true,
       message: "user authenticated",
-      data :user
-    })
+      data: user,
+    });
   } catch (error) {
     resp.status(401).json({
-      status :401,
-      success:false,
+      status: 401,
+      success: false,
       message: "user unauthenticated",
-    
-    })
+    });
   }
-
 };
 
 module.exports = { demo, register, login, isVarify };
