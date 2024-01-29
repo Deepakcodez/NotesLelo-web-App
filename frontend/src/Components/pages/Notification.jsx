@@ -17,7 +17,7 @@ function Notification() {
           },
         });
 
-
+      
         setNotificationData(resp.data.data);
         setLoading(false); // Set loading to false when the data is received
       } catch (error) {
@@ -57,7 +57,7 @@ function Notification() {
                   className='h-[6rem] w-full bg-gradient-to-br from-slate-900 to-slate-700 rounded-lg p-3 '
                   style={{ border: "1px solid #435585" }}
                 >
-                  <h1 className='text-white'>{data.message}</h1>
+                  <h1 className='text-white'> <span className='font-bold text-blue-100 text-lg'>{data.user[0].name.charAt(0).toUpperCase() + data.user[0].name.slice(1)}</span> {data.message} </h1>
                 </div>
               </Fragment>)
             }

@@ -2,11 +2,11 @@ const mongoose = require('mongoose')
 const notificationSchema = new mongoose.Schema({
     
         
-        user:{ 
+        user:[{ 
             type : mongoose.Schema.Types.ObjectId,
             ref : 'User',
            
-            },
+            }],
         message:{
             type : String,
            required : true,

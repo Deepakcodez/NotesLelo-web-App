@@ -1,5 +1,6 @@
 const { notification } = require("../model/notification.model");
 const responseSender = require("../utils/responseSender");
+const mongoose = require("mongoose");
 
 const usernotification = async (req, resp) => {
     try {
@@ -11,7 +12,7 @@ const usernotification = async (req, resp) => {
                 .send(responseSender(false, 400, "Invalid user", null));
         }
 
-        const userNotifications = await notification.find({ user: userId });
+        const userNotifications = await notification.find({ user: userId }).populate('user');;
 
         if (!userNotifications || userNotifications.length === 0) {
             return resp
