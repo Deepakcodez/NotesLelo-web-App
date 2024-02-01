@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
 import { GoPlus } from "react-icons/go";
 import { Context, createGroupContext } from "../../Context";
@@ -16,7 +16,7 @@ function Navbar(props) {
   const popupRef = useRef();
   const {joinGroup,setJoinGroup} = useContext(createGroupContext)
 
-
+  const navigate = useNavigate();
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (!logoRef.current.contains(e.target) && popupRef.current) {
@@ -36,6 +36,9 @@ function Navbar(props) {
   };
 const createGroupHandler=()=>{
   setCreateGroup(true)
+}
+const profileClick=()=>{
+  navigate("profile")
 }
 
   useEffect(() => {
@@ -82,7 +85,9 @@ const createGroupHandler=()=>{
             </div>
           )}
 
-          <div className="h-10 w-10 rounded-full bg-blue-300 items-center justify-center flex  text-white font-semibold text-2xl ">
+          <div
+          onClick={profileClick}
+          className="h-10 w-10 rounded-full bg-blue-300 items-center justify-center flex  text-white font-semibold text-2xl ">
             {avatarSign}
           </div>
         </section>
