@@ -17,6 +17,7 @@ export const Notes = () => {
     const [notesData, setNotesData] = useState([]);
     const [noteSaved, setNoteSaved] = useState([])
     const [notesId, setNotesId] = useState("");
+    
 
     const token = localStorage.getItem("useDataToken")
 
@@ -190,7 +191,7 @@ export const Notes = () => {
                                         {data.notes?._id}
                                         </h1>
                                     </div>
-                                    <div className='footer flex justify-between px-3 text-xl py-2  text-white '>
+                                    <div className='footer flex justify-between items-center px-3 text-xl py-2  text-white '>
                                         <div className='flex gap-2'>
                                             <div onClick={() => { likeClickHandler(data.notes._id) }}>
                                                 {data.notes?.likes.some(userdata => userdata._id === currentUser._id) ?
