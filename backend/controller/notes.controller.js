@@ -115,20 +115,34 @@ const addLikeOrDislike = async (req, resp) => {
     // Check if the user has already liked the notes
     const userLiked = notes.likes.some((id) => id.equals(userId));
 
+    // Find the user by userId
+    const user = await userModel.findById(notes.owner);
+    console.log("notes owner user",user);
+
     if (userLiked) {
       // User has already liked, remove the like (dislike)
 
-      await notes.likes.pull(userId);
+      notes.likes.pull(userId);
+
+      // Remove the note from user's likesOnOwnNotes
+      user.likesOnOwnNotes.pull(userId);
     } else {
       // User has not liked, add the like
-      await notes.likes.push(userId);
+      notes.likes.push(userId);
+      // Add the note to user's likesOnOwnNotes
+      user.likesOnOwnNotes.push(userId);
     }
 
-    // Save the changes to the notes
     await notes.save();
+    await user.save(); // Save the changes to the user
 
     // Fetch the updated notes with user data
-    const updatedNotes = await notesModel.findById(notesId).populate("owner");
+    const updatedNotes = await notesModel
+      .findById(notesId)
+      .populate({
+        path: "owner",
+        populate: { path: "likesOnOwnNotes" },
+      });
 
     return resp
       .status(200)
@@ -142,6 +156,15 @@ const addLikeOrDislike = async (req, resp) => {
   }
 };
 
+
+
+
+
+
+
+
+
+
 const savedNotes = async (req, resp) => {
   const userId = req.userId;
   const { notesId } = req.body;
@@ -150,7 +173,7 @@ const savedNotes = async (req, resp) => {
   }
 
   if (!notesId) {
-   return  resp.send(responseSender(false, 500, "notes id not provided", null));
+    return resp.send(responseSender(false, 500, "notes id not provided", null));
   }
   try {
     const userdata = await userModel.findById(userId);
@@ -197,15 +220,9 @@ const UserSavedNotes = async (req, resp) => {
   }
 };
 
-
-
-
-
-
-
 const userNotes = async (req, resp) => {
   const userNotesArray = req.user.posts;
-  console.log('>>>>>>>>>>>notesId', userNotesArray);
+  console.log(">>>>>>>>>>>notesId", userNotesArray);
 
   if (!userNotesArray) {
     return resp.send(responseSender(false, 500, "Notes not found", null));
@@ -213,19 +230,20 @@ const userNotes = async (req, resp) => {
 
   try {
     const notes = await notesModel.find({ _id: userNotesArray });
-    
+
     if (!notes || notes.length === 0) {
       return resp.send(responseSender(false, 404, "Notes not found", null));
     }
 
     console.log(req.user); // Log user information
-    return resp.send(responseSender(true, 200, "Shared notes fetched successfully", notes));
+    return resp.send(
+      responseSender(true, 200, "Shared notes fetched successfully", notes)
+    );
   } catch (error) {
-    console.error('Error fetching user notes:', error);
+    console.error("Error fetching user notes:", error);
     return resp.send(responseSender(false, 500, "Internal server error", null));
   }
 };
-
 
 module.exports = {
   uploadFile,

@@ -3,6 +3,7 @@ const userdb = require("../model/user.model");
 const userModel = userdb.User;
 const nodemailer = require("nodemailer");
 var Mailgen = require('mailgen');
+const responseSender = require("../utils/responseSender");
 
 
 
@@ -226,5 +227,16 @@ const isVarify = async (req, resp) => {
     });
   }
 };
+
+
+const likesOnOwnNotes=(req,resp)=>{
+  
+    try {
+      
+      
+    } catch (error) {
+      return  resp.send(responseSender(false, 500, "internal server error", null));
+    }
+}
 
 module.exports = { demo, register, login, isVarify };

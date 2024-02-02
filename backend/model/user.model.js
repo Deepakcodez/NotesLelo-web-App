@@ -56,10 +56,10 @@ const userSchema = new mongoose.Schema(
       public_id: String,
       url: String,
     },
-    isOnline:{
-      type  : Boolean,
-      default : false
-    },
+    likesOnOwnNotes:[{
+      type  : mongoose.Schema.Types.ObjectId,
+      ref : "User"
+    }],
     tokens: [
       {
         token: {
