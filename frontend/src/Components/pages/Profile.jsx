@@ -5,9 +5,11 @@ import { FaHeart } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Profile() {
   const { currentUser } = useContext(createGroupContext);
+  const navigate = useNavigate()
   const [profileOptionModal, setProfileOptionModal] = useState(false);
   const popupRef = useRef();
   const optionIconRef = useRef();
@@ -27,6 +29,7 @@ function Profile() {
   }, [popupRef, optionIconRef]);
   
     
+  // logout api
    const logout = async()=>{
     try {
           const resp = await axios.get(`http://localhost:8000/api/v1/user/logout/${currentUser._id}`)
@@ -35,6 +38,12 @@ function Profile() {
     } catch (error) {
       console.log(error);
     }
+   }
+
+   //signup
+   const  signup =()=>{
+      
+    navigate("/signUp")
    }
 
 
@@ -102,7 +111,7 @@ function Profile() {
             </li>
             <li className="hover:bg-slate-600 w-full cursor-pointer py-3 ps-4 ">
               {" "}
-              <h1 >New Account</h1>
+              <h1 onClick={signup} >New Account</h1>
             </li>
             <li className="hover:bg-slate-600 w-full cursor-pointer py-3 ps-4 ">
               {" "}
