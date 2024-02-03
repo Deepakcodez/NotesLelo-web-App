@@ -229,14 +229,33 @@ const isVarify = async (req, resp) => {
 };
 
 
-const likesOnOwnNotes=(req,resp)=>{
-  
-    try {
-      
-      
-    } catch (error) {
-      return  resp.send(responseSender(false, 500, "internal server error", null));
-    }
-}
 
-module.exports = { demo, register, login, isVarify };
+
+
+const logout = async (req, resp) => {
+  const userId = req.params.userId; // Change 'req.resp' to the correct property (params or body) that contains userId
+
+  try {
+    const user = await userModel.findOneAndUpdate(
+      { _id: userId },
+      { $unset: { tokens: 1 } }, // Unset the 'token' field
+      { new: true } // Return the updated document
+    );
+
+    if (!user) {
+      return resp
+        .status(404)
+        .send(responseSender(false, 404, "User not found", null));
+    }
+
+    return resp.status(200).send(responseSender(true, 200, "Logout successful",user));
+  } catch (error) {
+    console.error(error);
+    return resp
+      .status(500)
+      .send(responseSender(false, 500, "Internal server error", null));
+  }
+};
+
+
+module.exports = { demo, register, login, isVarify,logout };
