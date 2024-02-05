@@ -10,7 +10,7 @@ function Notification() {
   useEffect(() => {
     const fetchdata = async () => {
       try {
-        const resp = await axios.get("http://localhost:8000/api/v1/notification/latest_notification", {
+        const resp = await axios.get("https://notes-lelo-app-backend.vercel.app/api/v1/notification/latest_notification", {
           headers: {
             'Content-Type': 'application/json',
             'token': token,

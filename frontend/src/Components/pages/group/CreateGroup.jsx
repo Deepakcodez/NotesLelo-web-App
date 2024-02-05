@@ -34,7 +34,7 @@ export const CreateGroup = () => {
 
       try {
         const response = await axios.post(
-          "http://localhost:8000/api/v1/group/create",
+          "https://notes-lelo-app-backend.vercel.app/api/v1/group/create",
           GroupDetail,
           {
             headers: {

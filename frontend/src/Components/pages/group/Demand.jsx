@@ -19,7 +19,7 @@ export const Demand = () => {
 
         try {
             const resp = await axios.post(
-                'http://localhost:8000/api/v1/demand/post',
+                'https://notes-lelo-app-backend.vercel.app/api/v1/demand/post',
                 {
                     textInput,
                     groupId,
@@ -27,7 +27,7 @@ export const Demand = () => {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'token': token,
+                        'token': token, 
                     },
                 }
             );

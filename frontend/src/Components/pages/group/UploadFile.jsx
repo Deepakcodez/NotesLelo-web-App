@@ -41,7 +41,7 @@ export const UploadFile = () => {
 
 
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/notes/upload-file', data,{ headers: {
+      const response = await axios.post('https://notes-lelo-app-backend.vercel.app/api/v1/notes/upload-file', data,{ headers: {
         'Content-Type': 'multipart/form-data',
         token: token,
         withCredentials: true,

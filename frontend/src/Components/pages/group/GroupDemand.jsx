@@ -17,7 +17,7 @@ export const GroupDemand = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/v1/demand/demands/${groupId}`);
+        const response = await axios.get(`https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`);
         setNewDemands(response.data.data);
         console.log('>>>>>>>>>>>', newdemands)
 

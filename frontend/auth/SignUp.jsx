@@ -39,7 +39,7 @@ function SignUp() {
       alert("confirm password doesn't match");
     } else {
 try {
-  const response = await axios.post('http://localhost:8000/api/v1/user/register',inputValue,{ headers: { 'Content-Type': 'application/json' }})
+  const response = await axios.post('https://notes-lelo-app-backend.vercel.app/api/v1/user/register',inputValue,{ headers: { 'Content-Type': 'application/json' }})
   if (response.status === 200) {
     console.log(response.data); 
     alert("success",response.data.message);

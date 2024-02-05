@@ -21,7 +21,7 @@ export const DeleteGroup = () => {
 
     if (inputId === id) {
       try {
-         const response =  await axios.delete(`http://localhost:8000/api/v1/group/delete/${id}`,
+         const response =  await axios.delete(`https://notes-lelo-app-backend.vercel.app/api/v1/group/delete/${id}`,
           {
             headers: {
               "Content-Type": "application/json",

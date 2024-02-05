@@ -56,7 +56,7 @@ const profileClick=()=>{
         className="flex justify-between gap-3 py-4 items-center px-3 bg-slate-800 border-b-[1px] border-slate-700"
       >
         <NavLink to={"/"} className="font-bold text-xl text-white ">
-          <img src="/src/assets/logo.png" className="h-[2rem]"></img>{" "}
+          <img className="h-[1.5rem] ps-5" src="/src/assets/logo.png" ></img>{" "}
         </NavLink>{" "}
         <section className="rightnav flex items-center gap-3 relative ">
           <div ref={logoRef}>

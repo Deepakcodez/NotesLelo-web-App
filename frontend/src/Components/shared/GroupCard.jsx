@@ -17,7 +17,7 @@ export const GroupCard = () => {
     const fetchingAllGroup = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/group/all",
+          "https://notes-lelo-app-backend.vercel.app/api/v1/group/all",
           {
             headers: {
               "Content-Type": "application/json",

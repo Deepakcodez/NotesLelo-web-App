@@ -51,7 +51,7 @@ export const GroupChat = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/v1/group/${id}`,
+        `https://notes-lelo-app-backend.vercel.app/api/v1/group/${id}`,
         {
           headers: {
             "Content-Type": "application/json",

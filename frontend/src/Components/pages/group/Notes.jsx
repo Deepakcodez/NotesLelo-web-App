@@ -24,7 +24,7 @@ export const Notes = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/v1/notes/groupNotes/${groupId}`, {
+                const response = await axios.get(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`, {
                     headers: {
                         "Content-Type": "application/json",
                         "token": token,
@@ -73,7 +73,7 @@ export const Notes = () => {
 
         try {
             const resp = await axios.put(
-                `http://localhost:8000/api/v1/notes/groupNotes/addLike/${notesId}`,
+                `https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/addLike/${notesId}`,
                 {},
                 {
                     headers: {
@@ -188,7 +188,7 @@ export const Notes = () => {
                                             <h1 className='text-sm text-gray-500 '>{data.user?.name.toUpperCase()}</h1>
                                         </div>
                                         <h1 className='mb-3 overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400'>{data.notes?.description}
-                                        {data.notes?._id}
+                                       
                                         </h1>
                                     </div>
                                     <div className='footer flex justify-between items-center px-3 text-xl py-2  text-white '>

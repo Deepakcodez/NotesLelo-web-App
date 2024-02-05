@@ -54,7 +54,7 @@ function YourNotes() {
     try {
       const fetchData = async () => {
         const resp = await axios.get(
-          'http://localhost:8000/api/v1/notes/your-notes',
+          'https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes',
           {
             headers: {
               'Content-Type': 'application/json',

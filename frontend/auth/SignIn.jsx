@@ -30,7 +30,7 @@ function SignIn() {
       alert("please enter password");
     } else {
       try {
-        const response = await axios.post("http://localhost:8000/api/v1/user/login",inputValue,
+        const response = await axios.post("https://notes-lelo-app-backend.vercel.app/api/v1/user/login",inputValue,
         {
           headers: {
             'Content-Type': 'application/json',
