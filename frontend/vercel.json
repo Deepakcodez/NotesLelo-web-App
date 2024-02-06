@@ -38,11 +38,11 @@
       },
       {
         "src": "/group/*",
-        "dest": "/404" // Redirect any other sub-routes under /group to a 404 page
+        "dest": "/404" 
       },
       {
         "src": "/group",
-        "dest": "/group" // Redirect /group to the main group page
+        "dest": "/group" 
       },
       {
         "src": "/",
@@ -50,7 +50,7 @@
       },
       {
         "src": "/*",
-        "dest": "/404" // Redirect any other routes to a 404 page
+        "dest": "/404" 
       }
     ]
   }
