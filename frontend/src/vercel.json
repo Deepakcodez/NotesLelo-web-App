@@ -1,5 +1,5 @@
 {
-    "routes": [
+    "rewrites": [
       {
         "src": "/signIn",
         "dest": "/signIn"
