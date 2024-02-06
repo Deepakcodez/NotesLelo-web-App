@@ -91,9 +91,9 @@ export const GroupChat = () => {
       <div className=" relative min-h-full h-fit w-fit min-w-full  flex flex-col ">
         <div className="navbar bg-slate-700 shadow-lg w-full h-[3rem] flex items-center">
           <ul className="flex h-full items-center justify-between px-5 w-full">
-            <li className="font-bold text-white text-xl flex items-center gap-2">
+            <li className="font-bold text-white text-xl flex items-center gap-2  w-[15rem]">
               <Link to="/" className="text-3xl md:hidden"><  MdChevronLeft /></Link>
-              {groupData.title.toUpperCase()}
+              {groupData.title ? groupData.title.toUpperCase() : <div className="bg-slate-500/25 w-[13rem] h-[1.5rem] rounded-md animate-pulse duration-1000"></div>}
             </li>
             <ul className="flex gap-3 text-lg text-white hidden md:flex">
               <NavLink to="/group/demand"> <li className={`${location.pathname === "/group/demand" ? "text-orange-400 underline underline-offset-4" : "text-white select-none "}`}>Demand</li></NavLink>

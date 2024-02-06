@@ -1,0 +1,57 @@
+{
+    "routes": [
+      {
+        "src": "/signIn",
+        "dest": "/signIn"
+      },
+      {
+        "src": "/signUp",
+        "dest": "/signUp"
+      },
+      {
+        "src": "/yourNotes",
+        "dest": "/"
+      },
+      {
+        "src": "/notifications",
+        "dest": "/notifications"
+      },
+      {
+        "src": "/savedNotes",
+        "dest": "/savedNotes"
+      },
+      {
+        "src": "/profile",
+        "dest": "/profile"
+      },
+      {
+        "src": "/library",
+        "dest": "/library"
+      },
+      {
+        "src": "/group/demand",
+        "dest": "/group/demand"
+      },
+      {
+        "src": "/group/notes",
+        "dest": "/group/notes"
+      },
+      {
+        "src": "/group/*",
+        "dest": "/404" // Redirect any other sub-routes under /group to a 404 page
+      },
+      {
+        "src": "/group",
+        "dest": "/group" // Redirect /group to the main group page
+      },
+      {
+        "src": "/",
+        "dest": "/"
+      },
+      {
+        "src": "/*",
+        "dest": "/404" // Redirect any other routes to a 404 page
+      }
+    ]
+  }
+  
