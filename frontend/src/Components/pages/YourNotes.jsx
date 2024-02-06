@@ -83,7 +83,7 @@ function YourNotes() {
         loader ?
           <div className='h-full w-full flex  justify-center  items-center'>
 
-            <Lottie  className='h-[10rem]'   animationData={loaderBook} loop={true} />
+            <Lottie  className='h-[5rem]'   animationData={loaderBook} loop={true} />
           </div>
           :
           <div className=" w-[100%]  ">

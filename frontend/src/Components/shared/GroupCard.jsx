@@ -4,10 +4,12 @@ import { IoCopy } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { createGroupContext } from "../../Context";
 
+
+
 export const GroupCard = () => {
   const navigate = useNavigate();
   const { isCreateGroup, setCreateGroup } = useContext(createGroupContext);
-
+ 
   const userIdRefs = useRef([]);
   const [enlargeIcon, setEnlargeIcon] = useState(null);
   const [groups, setGroups] = useState([]);
@@ -16,6 +18,7 @@ export const GroupCard = () => {
   useEffect(() => {
     const fetchingAllGroup = async () => {
       try {
+       
         const response = await axios.get(
           "https://notes-lelo-app-backend.vercel.app/api/v1/group/all",
           {
@@ -26,13 +29,16 @@ export const GroupCard = () => {
           }
         );
         setGroups(response.data.Groups);
+       
+  
       } catch (error) {
         console.log("Error fetching data:", error);
+   
       }
     };
 
     fetchingAllGroup();
-  }, [isCreateGroup]);
+  }, [ isCreateGroup,  ]);
 
   const copyIdHandler = (index) => {
     try {
@@ -55,8 +61,14 @@ export const GroupCard = () => {
     localStorage.setItem("groupId", groupId);
   };
 
+
+
+
   return (
     <>
+     
+
+
       {groups.map((group, index) => (
         <Fragment key={index}>
           <div
@@ -90,5 +102,6 @@ export const GroupCard = () => {
         </Fragment>
       ))}
     </>
-  );
-};
+  )
+}
+

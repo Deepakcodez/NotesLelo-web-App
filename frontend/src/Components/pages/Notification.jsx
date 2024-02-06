@@ -1,6 +1,9 @@
 import axios from 'axios'
 import React, { Fragment, useEffect, useState } from 'react'
 import { format } from 'date-fns';
+import Lottie from "lottie-react";
+import loaderBook from  '../../assets/loaderbook.json';
+
 
 function Notification() {
   const token = localStorage.getItem("useDataToken");
@@ -37,6 +40,12 @@ function Notification() {
 
 
     <>
+    {
+      loading?
+      <div className='h-full w-full flex flex-col  justify-center  items-center'>
+      <Lottie className='h-[5rem]' animationData={loaderBook} loop={true} />
+    </div>:
+  
       <div className=" w-full  ">
         <div className='header h-[2rem] w-full bg-slate-700/25 flex items-center px-3  '
           style={{ borderBottom: "1px solid gray" }}
@@ -67,14 +76,8 @@ function Notification() {
         </div>
 
       </div>
+        }
     </>
-
-
-
-
-
-
-
 
   );
 }

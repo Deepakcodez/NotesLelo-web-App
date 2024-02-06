@@ -95,8 +95,8 @@ export const GroupChat = () => {
               <Link to="/" className="text-3xl md:hidden"><  MdChevronLeft /></Link>
               {groupData.title.toUpperCase()}
             </li>
-            <ul className="flex gap-3 text-lg text-white">
-              <NavLink to="/group/demand"> <li className={`${location.pathname === "/group/demand" ? "text-orange-400 underline underline-offset-4" : "text-white select-none  "}`}>Demand</li></NavLink>
+            <ul className="flex gap-3 text-lg text-white hidden md:flex">
+              <NavLink to="/group/demand"> <li className={`${location.pathname === "/group/demand" ? "text-orange-400 underline underline-offset-4" : "text-white select-none "}`}>Demand</li></NavLink>
               <NavLink to="/group/notes">  <li className={`${location.pathname === "/group/notes" ? "text-blue-400 underline underline-offset-4" : "text-white select-none transition duration-3000 ease-in-out "}`}>Notes</li></NavLink>
 
             </ul>
@@ -108,6 +108,14 @@ export const GroupChat = () => {
 
           </ul>
         </div>
+          <div className='options  flex justify-evenly  md:hidden border-t-[1px] border-slate-400  '>
+            <NavLink to="/group/demand" className="bg-slate-600/25 w-1/2 text-center py-2">
+              <h1 className={`${location.pathname === "/group/demand" ? "text-orange-200":"text-white"} font-bold`}>Demand</h1>
+            </NavLink>
+            <NavLink to="/group/notes" className="bg-slate-600/25 w-1/2 text-center py-2 ">
+              <h1 className={` ${location.pathname === "/group/notes" ? "text-blue-200":"text-white"}  font-bold`}>Notes</h1>
+            </NavLink>
+          </div>
 
 
         <Outlet />

@@ -100,6 +100,7 @@ function Profile() {
 
     } catch (error) {
       console.log('>>>>>>>>>>>', error)
+      
     }
   }, [])
 
@@ -121,7 +122,7 @@ function Profile() {
     
     <div className='h-full w-full relative overflow-y-scroll no-scrollbar pb-[5rem] '>
       {/* Profile top */}
-      <div ref={optionIconRef} className='navbar h-8 w-full  float-end flex justify-end items-center bg-slate-700/25'>
+      <div ref={optionIconRef} className='navbar   h-8 w-full  float-end flex justify-end items-center bg-slate-700/25'>
         <HiOutlineDotsVertical className='text-xl mt-2 me-3 text-white'
           onClick={() => setProfileOptionModal(!profileOptionModal)}
         />

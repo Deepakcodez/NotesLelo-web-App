@@ -9,10 +9,11 @@ export const Context = ({children}) => {
     const [currentUser , setCurrentUser] = useState({})
     const [demand,setDemand] = useState(false)
     const [isUploadPage,setUploadPage] = useState(false)
+    const [homeLoading, setHomeLoading] = useState(true)
 
   return (
 <>
-<createGroupContext.Provider  value={{isCreateGroup,setCreateGroup,isUploadPage,setUploadPage,demand,setDemand,joinGroup,setJoinGroup,clickedGroupId,setClicikedGroupId,groupDeleteOpt,setGroupDeleteOpt ,currentUser , setCurrentUser}} >
+<createGroupContext.Provider  value={{isCreateGroup,homeLoading, setHomeLoading, setCreateGroup,isUploadPage,setUploadPage,demand,setDemand,joinGroup,setJoinGroup,clickedGroupId,setClicikedGroupId,groupDeleteOpt,setGroupDeleteOpt ,currentUser , setCurrentUser}} >
 {children}
 </createGroupContext.Provider>
 </>
