@@ -10,10 +10,11 @@ export const Context = ({children}) => {
     const [demand,setDemand] = useState(false)
     const [isUploadPage,setUploadPage] = useState(false)
     const [homeLoading, setHomeLoading] = useState(true)
+    const [showInviteForm, setInviteForm] = useState(false)
 
   return (
 <>
-<createGroupContext.Provider  value={{isCreateGroup,homeLoading, setHomeLoading, setCreateGroup,isUploadPage,setUploadPage,demand,setDemand,joinGroup,setJoinGroup,clickedGroupId,setClicikedGroupId,groupDeleteOpt,setGroupDeleteOpt ,currentUser , setCurrentUser}} >
+<createGroupContext.Provider  value={{ showInviteForm, setInviteForm , isCreateGroup ,homeLoading, setHomeLoading, setCreateGroup,isUploadPage,setUploadPage,demand,setDemand,joinGroup,setJoinGroup,clickedGroupId,setClicikedGroupId,groupDeleteOpt,setGroupDeleteOpt ,currentUser , setCurrentUser}} >
 {children}
 </createGroupContext.Provider>
 </>

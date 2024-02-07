@@ -8,14 +8,14 @@ import { createGroupContext } from "../../../Context";
 export const GroupChat = () => {
 
   const location = useLocation();
-  const { setGroupDeleteOpt, demand, setDemand, currentUser } = useContext(createGroupContext);
+  const { setGroupDeleteOpt, demand, setDemand, currentUser, showInviteForm, setInviteForm} = useContext(createGroupContext);
   const [option, setOption] = useState(false);
   const optionModelRef = useRef();
   const optionIconRef = useRef();
   const token = localStorage.getItem("useDataToken");
   const id = localStorage.getItem("groupId");
   const navigate = useNavigate();
-
+ 
   const [groupData, setGroupData] = useState({
     title: "",
     description: "",
@@ -86,6 +86,14 @@ export const GroupChat = () => {
     setOption(false);
   };
 
+  // funcion for invite  someone to group
+  // required user email address 
+  // send user   group id through  email for join the group
+  const joinUser =()=>{
+              
+  }
+
+
   return (
     <Fragment>
       <div className=" relative min-h-full h-fit w-fit min-w-full  flex flex-col ">
@@ -129,16 +137,19 @@ export const GroupChat = () => {
               Members{" "}
             </div>
             <div className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer">
-              Docs, and links{" "}
+              All Notes
+            </div>
+           
+            <div className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer"
+            onClick={()=>setInviteForm(true)}
+            >
+              Invite
             </div>
             <div
               className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer"
               onClick={deleteGroupHandler}
             >
               Delete
-            </div>
-            <div className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer">
-              More
             </div>
           </div>
         )}
