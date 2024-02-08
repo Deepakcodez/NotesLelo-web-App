@@ -8,14 +8,14 @@ import { createGroupContext } from "../../../Context";
 export const GroupChat = () => {
 
   const location = useLocation();
-  const { setGroupDeleteOpt, demand, setDemand, currentUser, showInviteForm, setInviteForm} = useContext(createGroupContext);
+  const { setGroupDeleteOpt, demand, setDemand, currentUser, showInviteForm, setInviteForm } = useContext(createGroupContext);
   const [option, setOption] = useState(false);
   const optionModelRef = useRef();
   const optionIconRef = useRef();
   const token = localStorage.getItem("useDataToken");
   const id = localStorage.getItem("groupId");
   const navigate = useNavigate();
- 
+
   const [groupData, setGroupData] = useState({
     title: "",
     description: "",
@@ -89,8 +89,8 @@ export const GroupChat = () => {
   // funcion for invite  someone to group
   // required user email address 
   // send user   group id through  email for join the group
-  const joinUser =()=>{
-              
+  const joinUser = () => {
+
   }
 
 
@@ -103,27 +103,19 @@ export const GroupChat = () => {
               <Link to="/" className="text-3xl md:hidden"><  MdChevronLeft /></Link>
               {groupData.title ? groupData.title.toUpperCase() : <div className="bg-slate-500/25 w-[13rem] h-[1.5rem] rounded-md animate-pulse duration-1000"></div>}
             </li>
-            <ul className="flex gap-3 text-lg text-white hidden md:flex">
-              <NavLink to="/group/demand"> <li className={`${location.pathname === "/group/demand" ? "text-orange-400 underline underline-offset-4" : "text-white select-none "}`}>Demand</li></NavLink>
-              <NavLink to="/group/notes">  <li className={`${location.pathname === "/group/notes" ? "text-blue-400 underline underline-offset-4" : "text-white select-none transition duration-3000 ease-in-out "}`}>Notes</li></NavLink>
-
-            </ul>
-
             <li className="text-white flex items-center gap-3" >
               <div ref={optionIconRef} onClick={optionClickHandler}><SlOptionsVertical /></div>
-
             </li>
-
           </ul>
         </div>
-          <div className='options  flex justify-evenly  md:hidden border-t-[1px] border-slate-400  '>
-            <NavLink to="/group/demand" className="bg-slate-600/25 w-1/2 text-center py-2">
-              <h1 className={`${location.pathname === "/group/demand" ? "text-orange-200":"text-white"} font-bold`}>Demand</h1>
-            </NavLink>
-            <NavLink to="/group/notes" className="bg-slate-600/25 w-1/2 text-center py-2 ">
-              <h1 className={` ${location.pathname === "/group/notes" ? "text-blue-200":"text-white"}  font-bold`}>Notes</h1>
-            </NavLink>
-          </div>
+        <div className='options  flex justify-evenly  border-t-[1px] border-slate-400  '>
+          <NavLink to="/group/demand" className="bg-slate-600/25 w-1/2 text-center py-2 border-r-[1px]">
+            <h1 className={`${location.pathname === "/group/demand" ? "text-orange-200" : "text-white"} font-bold`}>Demand</h1>
+          </NavLink>
+          <NavLink to="/group/notes" className="bg-slate-600/25 w-1/2 text-center py-2 ">
+            <h1 className={` ${location.pathname === "/group/notes" ? "text-blue-300" : "text-white"}  font-bold`}>Notes</h1>
+          </NavLink>
+        </div>
 
 
         <Outlet />
@@ -139,9 +131,9 @@ export const GroupChat = () => {
             <div className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer">
               All Notes
             </div>
-           
+
             <div className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer"
-            onClick={()=>setInviteForm(true)}
+              onClick={() => setInviteForm(true)}
             >
               Invite
             </div>
