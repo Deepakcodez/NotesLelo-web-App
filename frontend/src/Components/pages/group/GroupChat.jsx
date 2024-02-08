@@ -97,7 +97,7 @@ export const GroupChat = () => {
   return (
     <Fragment>
       <div className=" relative min-h-full h-fit w-fit min-w-full  flex flex-col ">
-        <div className="navbar bg-slate-700 shadow-lg w-full h-[3rem] flex items-center">
+        <div className="navbar  bg-slate-700 shadow-lg w-full h-[3rem] flex items-center ">
           <ul className="flex h-full items-center justify-between px-5 w-full">
             <li className="font-bold text-white text-xl flex items-center gap-2  w-[15rem]">
               <Link to="/" className="text-3xl md:hidden"><  MdChevronLeft /></Link>
