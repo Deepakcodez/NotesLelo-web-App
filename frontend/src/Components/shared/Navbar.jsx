@@ -50,7 +50,8 @@ const profileClick=()=>{
   }, [name]);
 
   return (
-    <section className={`navbar ${urlLocation=="/chat"&& "hidden md:block"} `}>
+    <section className={`navbar ${urlLocation === "/group/demand" || urlLocation === "/group/notes" ? "hidden md:block" : ""}`}> 
+
       <div
         style={{}}
         className="flex justify-between gap-3 py-4 items-center px-3 bg-slate-800 border-b-[1px] border-slate-700"

@@ -87,14 +87,14 @@ function YourNotes() {
           </div>
           :
           <div className=" w-[100%]  ">
-            <div className='header h-[2rem] w-[100%] bg-slate-700/25 flex items-center px-3  '
+            <div className='header h-[2rem] w-[100%] bg-slate-700/25 flex items-center px-3   '
               style={{ borderBottom: "1px solid gray" }}
             >
               <h1 className='text-white font-semibold'>Your Notes</h1>
             </div>
 
             {/* data  */}
-            <div className='h-[calc(100%-2rem)] w-full overflow-y-scroll no-scrollbar p-3  '>
+            <div className='h-[calc(100%-2rem)] w-full overflow-y-scroll no-scrollbar px-7 pt-10 '>
               <div className='h-auto w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-center '>
 
 

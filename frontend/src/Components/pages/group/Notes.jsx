@@ -17,7 +17,7 @@ export const Notes = () => {
     const [notesData, setNotesData] = useState([]);
     const [noteSaved, setNoteSaved] = useState([])
     const [notesId, setNotesId] = useState("");
-    
+
 
     const token = localStorage.getItem("useDataToken")
 
@@ -43,7 +43,7 @@ export const Notes = () => {
 
         fetchData(); // Call the fetchData function
 
-    }, [groupId, isUploadPage, notesId]); // Add 'groupId' as a dependency
+    }, [groupId, isUploadPage]); // Add 'groupId' as a dependency
 
     const handleDownload = async (fileUrl, fileName) => {
         try {
@@ -111,25 +111,11 @@ export const Notes = () => {
     }
 
 
-
-
-
-
-
-
-
-
-
     const saveHandler = async (notesId) => {
-        setNotesId(notesId);
-        console.log('>>>>>>>>>>>on click', notesId)
-    
         try {
-            const resp = await axios.post(
-                `http://localhost:8000/api/v1/notes/groupNotes/saveNotes`,
-                {
-                    notesId
-                },
+            const response = await axios.post(
+                `https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/saveNotes/${notesId}`, // Correct endpoint with notesId
+                {}, // No need to send any data in the body
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -138,21 +124,21 @@ export const Notes = () => {
                     withCredentials: true,
                 }
             );
-            console.log('>>>>>>>>>>>', resp.data);
+            console.log('Response:', response.data);
     
             // Update the local state with the modified notes data
             setNotesData((prevNotesData) => {
                 return prevNotesData.map((note) => {
                     if (note.notes._id === notesId) {
                         // Toggle the user's save status
-                        const isUserSaved = note.user.savedNotes.some(userdata => userdata._id === currentUser._id);
+                        const isUserSaved = note.notes.saved.some(userdata => userdata._id === currentUser._id);
                         return {
                             ...note,
-                            user: {
-                                ...note.user,
-                                savedNotes: isUserSaved
-                                    ? note.user.savedNotes.filter(userdata => userdata._id !== currentUser._id)
-                                    : [...note.user.savedNotes, currentUser],
+                            notes: {
+                                ...note.notes,
+                                saved: isUserSaved
+                                    ? note.notes.saved.filter(userdata => userdata._id !== currentUser._id)
+                                    : [...note.notes.saved, currentUser],
                             },
                         };
                     }
@@ -165,7 +151,8 @@ export const Notes = () => {
     };
     
 
-    
+
+
 
 
 
@@ -188,7 +175,7 @@ export const Notes = () => {
                                             <h1 className='text-sm text-gray-500 '>{data.user?.name.toUpperCase()}</h1>
                                         </div>
                                         <h1 className='mb-3 overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400'>{data.notes?.description}
-                                       
+
                                         </h1>
                                     </div>
                                     <div className='footer flex justify-between items-center px-3 text-xl py-2  text-white '>
@@ -201,9 +188,9 @@ export const Notes = () => {
                                             {/* <div></div> */}
                                             <div><LiaComment /></div>
                                             <div onClick={() => { saveHandler(data.notes?._id) }}>
-                                                {
-                                                    data.user?.savedNotes.some(userdata => userdata._id === currentUser._id) ?
-                                                        <GoBookmarkFill /> : <GoBookmark />
+                                                {/* Render save icon based on whether user has saved the note or not */}
+                                                {data.notes?.saved.some(user => user._id === currentUser._id) ?
+                                                    <GoBookmarkFill /> : <GoBookmark />
                                                 }
                                             </div>
                                         </div>

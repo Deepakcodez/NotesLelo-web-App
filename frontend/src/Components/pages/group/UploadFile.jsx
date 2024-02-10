@@ -8,6 +8,8 @@ export const UploadFile = () => {
   const { setUploadPage } = useContext(createGroupContext);
   const fileInputRef = useRef(null);
   const [warning, setWarning] = useState(false);
+  const [ warningMsg, setWarningMsg] = useState("")
+  const [isUploading, setIsUploading] = useState(false);
   const groupId = localStorage.getItem("groupId")
   const [inputData, setInputData] = useState({
     caption: '',
@@ -23,13 +25,14 @@ export const UploadFile = () => {
   };
 
   const uploadFile = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     const fileInput = fileInputRef.current;
     const file = fileInput.files[0];
 
     if (!file || !inputData.caption || !inputData.description) {
       console.log('No file selected');
       setWarning(true)
+      setWarningMsg("something missing")
       return;
     }
 
@@ -37,19 +40,24 @@ export const UploadFile = () => {
     data.append('pdf', file);
     data.append('caption', inputData.caption);
     data.append('description', inputData.description);
-    data.append('groupId', groupId); 
-
-
+    data.append('groupId', groupId);
+    setIsUploading(true)
     try {
-      const response = await axios.post('https://notes-lelo-app-backend.vercel.app/api/v1/notes/upload-file', data,{ headers: {
-        'Content-Type': 'multipart/form-data',
-        token: token,
-        withCredentials: true,
-      },});
-        setUploadPage(false)
+      const response = await axios.post('https://notes-lelo-app-backend.vercel.app/api/v1/notes/upload-file', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          token: token,
+          withCredentials: true,
+        },
+      });
+      setIsUploading(false);
+      setUploadPage(false)
       console.log('File upload response:', response.data);
       // Handle the file upload response as needed
     } catch (error) {
+      setIsUploading(false);
+      setWarning(true)
+      setWarningMsg("Error while uploading")
       console.error('Error uploading file:', error);
     }
 
@@ -71,7 +79,7 @@ export const UploadFile = () => {
                 ref={fileInputRef}
                 type="file"
                 style={{ display: 'none' }}
-                accept="image/*, application/pdf" 
+                accept="image/*, application/pdf"
               />
             </div>
 
@@ -109,7 +117,10 @@ export const UploadFile = () => {
               className="bg-blue-400 rounded md py-1.5 w-full mt-3 hover:bg-blue-500 hover:text-white"
               onClick={uploadFile}
             >
-              Upload
+              {
+                isUploading? "Uploading...":" Upload"
+              }
+           
             </button>
 
             <button
@@ -120,7 +131,7 @@ export const UploadFile = () => {
             </button>
           </form>
           <div className="h-[2rem]">
-            {warning && <h1 className="warning text-slate-400">something missing</h1>}
+            {warning && <h1 className="warning text-slate-400">{warningMsg}</h1>}
           </div>
         </div>
       </div>
