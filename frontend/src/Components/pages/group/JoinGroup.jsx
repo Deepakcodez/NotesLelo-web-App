@@ -2,11 +2,13 @@ import { useContext, useState } from "react";
 import { createGroupContext } from "../../../Context";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import Lottie from "lottie-react";
+import loadingAnimation from '../../../assets/lading.json';
 export const JoinGroup = () => {
 
     const {JoinGroup,setJoinGroup } = useContext(createGroupContext);
     const [warning,setWarning] = useState(false)
+    const [isLoadingBtn, setIsLoadingBtn] = useState(false);
     const navigate = useNavigate()
     const [Id , setId] = useState({"id":""});
     const token = localStorage.getItem("useDataToken");
@@ -28,6 +30,7 @@ export const JoinGroup = () => {
       }
 
       try {
+        setIsLoadingBtn(true)
         const resp = await axios.post('https://notes-lelo-app-backend.vercel.app/api/v1/group/join',Id,
         {
           headers: {
@@ -39,12 +42,14 @@ export const JoinGroup = () => {
         )
         if(resp.status===200){
           navigate("/");
+          setIsLoadingBtn(false)
 
         }
 
       } catch (error) {
         console.log('>>>>>>>>>>>', error)
         navigate("/");
+        setIsLoadingBtn(false)
 
       }
       setJoinGroup(false)
@@ -74,9 +79,14 @@ export const JoinGroup = () => {
               </div>
             </div>
             <button
-            onClick={joinHandler}
-             className="bg-blue-400 rounded md py-1.5 w-full mt-3 hover:bg-blue-500 hover:text-white ">
-              Join
+              className="bg-blue-400 rounded h-[2rem] flex justify-normal items-center  py-1.5 w-full mt-3 hover:bg-blue-500 "
+              onClick={joinHandler}
+            >
+              {isLoadingBtn ? (
+                <Lottie className='h-[5rem] w-full ' animationData={loadingAnimation} loop={true} />
+              ) : (
+                <h1 className="text-center w-full text-white">Submit</h1>
+              )}
             </button>
             <button
               className="bg-red-400 rounded md py-1.5 w-full mt-3 hover:bg-red-500 hover:text-white  "

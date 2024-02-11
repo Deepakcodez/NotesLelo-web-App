@@ -1,11 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import Lottie from "lottie-react";
+import loadingAnimation from '../src/assets/lading.json';
+
 
 function SignIn() {
 
   const navigate = useNavigate();
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const [inputValue, setInputValue] = useState({
     email: "",
@@ -30,25 +33,27 @@ function SignIn() {
       alert("please enter password");
     } else {
       try {
-        const response = await axios.post("https://notes-lelo-app-backend.vercel.app/api/v1/user/login",inputValue,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
-        });
-        if( response.status === 200){
+        setIsLoading(true)
+        const response = await axios.post("https://notes-lelo-app-backend.vercel.app/api/v1/user/login", inputValue,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          });
+        if (response.status === 200) {
           localStorage.setItem("useDataToken", response.data.data.token);
           setInputValue({ email: "", password: "" });
           navigate("/")
         }
+        setIsLoading(false)
         console.log(">>>>>>>>>>>response: ", response.data);
-        alert(response.data.message);
-       
+
       } catch (error) {
+        setIsLoading(false)
         console.log(">>>>>>>>>>>Error:", error);
         alert(error.response.data.message)
-        throw error.response? error.response.data: { message: "Network error" };
+        throw error.response ? error.response.data : { message: "Network error" };
       }
     }
   };
@@ -103,10 +108,14 @@ function SignIn() {
           </div>
 
           <button
-            className="bg-blue-400 rounded md py-1.5 w-full mt-3 hover:bg-blue-500 "
+            className="bg-blue-400 rounded h-[2rem] flex justify-normal items-center  py-1.5 w-full mt-3 hover:bg-blue-500 "
             onClick={loginHandler}
           >
-            Login
+            {isLoading ? (
+              <Lottie className='h-[5rem] w-full ' animationData={loadingAnimation} loop={true} />
+            ) : (
+              <h1 className="text-center w-full text-white">Login</h1>
+            )}
           </button>
           <h5 className="mt-3 font-thin text-gray-400">
             haven&apos;t any account ?{" "}

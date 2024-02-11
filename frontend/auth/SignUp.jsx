@@ -2,9 +2,11 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../src/App.css";
 import axios from "axios";
-
+import Lottie from "lottie-react";
+import loadingAnimation from '../src/assets/lading.json';
 function SignUp() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState({
     name: "",
     email: "",
@@ -20,7 +22,7 @@ function SignUp() {
     });
   };
 
-  const SignUpHandler = async(e) => {
+  const SignUpHandler = async (e) => {
     e.preventDefault();
     const { name, email, password, confirmPassword } = inputValue;
     if (name.trim() === "") {
@@ -38,28 +40,31 @@ function SignUp() {
     } else if (password !== confirmPassword) {
       alert("confirm password doesn't match");
     } else {
-try {
-  const response = await axios.post('https://notes-lelo-app-backend.vercel.app/api/v1/user/register',inputValue,{ headers: { 'Content-Type': 'application/json' }})
-  if (response.status === 200) {
-    console.log(response.data); 
-    alert("success",response.data.message);
-    navigate('/signIn')
-    setInputValue({
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "" 
-    })
+      try {
+        setIsLoading(true)
+        const response = await axios.post('https://notes-lelo-app-backend.vercel.app/api/v1/user/register', inputValue, { headers: { 'Content-Type': 'application/json' } })
+        if (response.status === 200) {
+          console.log(response.data);
+          navigate('/signIn')
+          setInputValue({
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: ""
+          })
+          setIsLoading(false)
 
-  } else {
-    console.error('Signup failed:', response.data.message);
-    // Display an error message to the user
-  }
+        } else {
+          console.error('Signup failed:', response.data.message);
+          // Display an error message to the user
+          setIsLoading(false)
+        }
 
-} catch (error) {
-  console.log('>>>>>>>>>>>',error.response.data.message)
-alert(error.response.data.message)
-}
+      } catch (error) {
+        console.log('>>>>>>>>>>>', error.response.data.message)
+        setIsLoading(false)
+        alert(error.response.data.message)
+      }
 
     }
   };
@@ -158,10 +163,14 @@ alert(error.response.data.message)
           </div>
 
           <button
-            className="bg-blue-400 rounded md py-1.5 w-full mt-3 hover:bg-blue-500 "
+            className="bg-blue-400 rounded-md  h-[2rem] flex justify-normal items-center  py-1.5 w-full mt-3 hover:bg-blue-500 "
             onClick={SignUpHandler}
           >
-            Submit
+            {isLoading ? (
+              <Lottie className='h-[5rem] w-full ' animationData={loadingAnimation} loop={true} />
+            ) : (
+              <h1 className="text-center w-full text-white">Submit</h1>
+            )}
           </button>
           <h5 className="mt-3 font-thin text-gray-400">
             already have an account ?{" "}

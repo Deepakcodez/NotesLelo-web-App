@@ -2,8 +2,12 @@ import React, { useContext, useState } from "react";
 import { createGroupContext } from "../../../Context";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Lottie from "lottie-react";
+import loadingAnimation from '../../../assets/lading.json';
+
 export const DeleteGroup = () => {
   const { groupDeleteOpt, setGroupDeleteOpt } = useContext(createGroupContext);
+  const [isLoadingBtn, setIsLoadingBtn] = useState(false);
   const [inputId, setInputId] = useState("");
   const [warning, setWarning] = useState("");
   const navigate = useNavigate();
@@ -21,6 +25,7 @@ export const DeleteGroup = () => {
 
     if (inputId === id) {
       try {
+        setIsLoadingBtn(true)
          const response =  await axios.delete(`https://notes-lelo-app-backend.vercel.app/api/v1/group/delete/${id}`,
           {
             headers: {
@@ -30,13 +35,14 @@ export const DeleteGroup = () => {
             },
           }
         );
+        setIsLoadingBtn(false)
         navigate("/");
-        setGroupDeleteOpt(false);
-        console.log("Delete successful",);
+        setGroupDeleteOpt(false)
         // Handle success, if needed
       } catch (error) {
         // console.error("Error deleting data", error);
         // console.log('>>>>>>>>>>>', error.response.data.message)
+        setIsLoadingBtn(false)
         setWarning( error.response.data.message)
       }
     }
@@ -69,13 +75,17 @@ export const DeleteGroup = () => {
               </div>
             </div>
             <button
-              onClick={deleteGroup}
-              className="bg-blue-400 rounded md py-1.5 w-full mt-3 hover:bg-blue-500 hover:text-white "
-            >
-              Delete
-            </button>
+            className="bg-blue-400 rounded h-[2rem] flex justify-normal items-center  py-1.5 w-full mt-3 hover:bg-blue-500 "
+            onClick={deleteGroup}
+          >
+            {isLoadingBtn ? (
+              <Lottie className='h-[5rem] w-full ' animationData={loadingAnimation} loop={true} />
+            ) : (
+              <h1 className="text-center w-full text-white">Delete</h1>
+            )}
+          </button>
             <button
-              className="bg-red-400 rounded md py-1.5 w-full mt-3 hover:bg-red-500 hover:text-white  "
+              className="bg-red-400 rounded-md h-[2rem]  py-1.5 w-full mt-3 hover:bg-red-500 hover:text-white  "
               onClick={() => setGroupDeleteOpt(false)}
             >
               Cancel
