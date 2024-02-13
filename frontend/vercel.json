@@ -1,57 +1,12 @@
 {
-    "routes": [
-      {
-        "src": "/signIn",
-        "dest": "/signIn"
-      },
-      {
-        "src": "/signUp",
-        "dest": "/signUp"
-      },
-      {
-        "src": "/yourNotes",
-        "dest": "/"
-      },
-      {
-        "src": "/notifications",
-        "dest": "/notifications"
-      },
-      {
-        "src": "/savedNotes",
-        "dest": "/savedNotes"
-      },
-      {
-        "src": "/profile",
-        "dest": "/profile"
-      },
-      {
-        "src": "/library",
-        "dest": "/library"
-      },
-      {
-        "src": "/group/demand",
-        "dest": "/group/demand"
-      },
-      {
-        "src": "/group/notes",
-        "dest": "/group/notes"
-      },
-      {
-        "src": "/group/*",
-        "dest": "/404" 
-      },
-      {
-        "src": "/group",
-        "dest": "/group" 
-      },
-      {
-        "src": "/",
-        "dest": "/"
-      },
-      {
-        "src": "/*",
-        "dest": "/404" 
-      }
-    ]
-  }
-  
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://notes-lelo-app-backend.vercel.app/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
