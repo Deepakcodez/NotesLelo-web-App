@@ -3,6 +3,7 @@ import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { IoCopy } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { createGroupContext } from "../../Context";
+import { HomePageGhost } from "./ghost/HomePageGhost";
 
 
 
@@ -62,13 +63,14 @@ export const GroupCard = () => {
   };
 
 
+  
 
+  if (!groups.length) {
+    return <HomePageGhost />;
+  }
 
   return (
     <>
-     
-
-
       {groups.map((group, index) => (
         <Fragment key={index}>
           <div
@@ -91,7 +93,7 @@ export const GroupCard = () => {
                 />
                 <IoCopy
                   className={`text-orange-200 hover:text-orange-300 ${
-                    enlargeIcon === index ? "text-xl" : "text-lg"
+                    enlargeIcon === index ? 'text-xl' : 'text-lg'
                   } `}
                   onClick={() => copyIdHandler(index)}
                 />
@@ -102,6 +104,5 @@ export const GroupCard = () => {
         </Fragment>
       ))}
     </>
-  )
-}
-
+  );
+};
