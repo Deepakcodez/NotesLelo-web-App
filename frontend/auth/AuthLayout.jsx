@@ -1,5 +1,6 @@
 import { Outlet, useNavigate,useLocation } from "react-router-dom";
-
+import boy from '../src/assets/boy.jpg'
+import girl from '../src/assets/girl.jpg'
 const AuthLayout = () => {
   const navigate = useNavigate();
   const location  = useLocation()
@@ -21,11 +22,11 @@ const AuthLayout = () => {
     {
       urlLocation==='/signUp'?
 
-      <img src="/src/assets/boy.jpg"
+      <img src={boy}
        alt="boy img"
        className=" hidden xl:block h-screen  w-1/2 object-cover  bg-no-repeat"
         />:
-        <img src="/src/assets/girl.jpg"
+        <img src={girl}
         alt="girl img"
         className=" hidden xl:block h-screen  w-1/2 object-cover  bg-no-repeat"
          />
