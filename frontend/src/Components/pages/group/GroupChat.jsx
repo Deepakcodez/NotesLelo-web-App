@@ -138,7 +138,7 @@ export const GroupChat = () => {
               Invite
             </div>
             <div
-              className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer"
+              className="text-white bg-red-800 hover:bg-red-600 ps-4 py-3 cursor-pointer"
               onClick={deleteGroupHandler}
             >
               Delete

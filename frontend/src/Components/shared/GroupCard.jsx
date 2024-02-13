@@ -41,8 +41,9 @@ export const GroupCard = () => {
     fetchingAllGroup();
   }, [ isCreateGroup,  ]);
 
-  const copyIdHandler = (index) => {
+  const copyIdHandler = (event , index) => {
     try {
+      event.stopPropagation();
       setEnlargeIcon(index);
       setTimeout(() => {
         setEnlargeIcon(null);
@@ -95,7 +96,7 @@ export const GroupCard = () => {
                   className={`text-orange-200 hover:text-orange-300 ${
                     enlargeIcon === index ? 'text-xl' : 'text-lg'
                   } `}
-                  onClick={() => copyIdHandler(index)}
+                  onClick={(event) => copyIdHandler(event, index)}
                 />
               </div>
             </div>

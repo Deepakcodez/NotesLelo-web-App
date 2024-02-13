@@ -10,7 +10,7 @@ import { BsDownload } from "react-icons/bs";
 import { FaFileUpload } from "react-icons/fa";
 import Lottie from "lottie-react";
 import loaderBook from  '../../assets/loaderbook.json';
-import { SavedGhost } from '../shared/ghost/SavedGhost';
+import {  NotesGhost } from '../shared/ghost/NotesGhost';
 
 
 function YourNotes() {
@@ -82,7 +82,7 @@ function YourNotes() {
 
       {
         loader ?
-          <SavedGhost/>
+          <NotesGhost/>
           :
           <div className=" w-[100%]  ">
             <div className='header h-[2rem] w-[100%] bg-slate-700/25 flex items-center px-3   '

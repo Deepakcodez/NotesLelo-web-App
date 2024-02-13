@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 
 export const HomePageGhost = () => {
-    const groups = [1, 2, 3, 4, 5, 6 ];
+    const groups = [1, 2, 3, 4, 5,  ];
     return (
         <Fragment>
             

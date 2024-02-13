@@ -3,6 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
 import { GoPlus } from "react-icons/go";
 import { Context, createGroupContext } from "../../Context";
+import  logo from '../../assets/logo.png'
 
 function Navbar(props) {
   const location  = useLocation()
@@ -57,7 +58,7 @@ const profileClick=()=>{
         className="flex justify-between gap-3 py-4 items-center px-3 bg-slate-800 border-b-[1px] border-slate-700"
       >
         <NavLink to={"/"} className="font-bold text-xl text-white ">
-        <img className="h-[1.5rem] ps-5" src="/src/assets/logo.png" alt="Logo" />
+        <img className="h-[1.5rem] ps-5" src={logo} alt="Logo" />
         </NavLink>{" "}
         <section className="rightnav flex items-center gap-3 relative ">
           <div ref={logoRef}>
