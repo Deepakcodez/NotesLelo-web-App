@@ -9,7 +9,8 @@ import { GoBookmarkFill } from "react-icons/go";
 import { BsDownload } from "react-icons/bs";
 import { FaFileUpload } from "react-icons/fa";
 import Lottie from "lottie-react";
-import loaderBook from  '../../assets/loaderbook.json';
+import loaderBook from '../../assets/loaderbook.json';
+import { SavedGhost } from '../shared/ghost/SavedGhost';
 
 
 function Saved() {
@@ -81,10 +82,7 @@ function Saved() {
 
       {
         loader ?
-          <div className='h-full w-full flex  justify-center  items-center'>
-
-            <Lottie  className='h-[5rem]'   animationData={loaderBook} loop={true} />
-          </div>
+          <SavedGhost />
           :
           <div className=" w-[100%]  ">
             <div className='header h-[2rem] w-[100%] bg-slate-700/25 flex items-center px-3   '
