@@ -18,7 +18,7 @@ const Home = () => {
         <div className="h-full w-full relative flex justify-center">
           <Spline scene="https://prod.spline.design/yUsMpAgC4jEsWpfa/scene.splinecode" />
           <button 
-            className="text-white absolute bottom-[5rem] lg:bottom-[7rem] bg-blue-400 px-3 py-1 border-blue-600 border rounded-lg "   
+            className="text-white absolute bottom-[3rem] lg:bottom-[7rem] bg-blue-400 px-3 py-1 border-blue-600 border rounded-lg "   
             onClick={() => setCreateGroup(true)} 
           >
             Create Group
