@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@splinetool/react-spline": "^2.2.6",
+    "@splinetool/runtime": "^1.0.53",
     "axios": "^1.6.2",
     "build": "^0.1.4",
     "date-fns": "^3.3.1",
