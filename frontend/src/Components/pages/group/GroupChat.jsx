@@ -86,12 +86,7 @@ export const GroupChat = () => {
     setOption(false);
   };
 
-  // funcion for invite  someone to group
-  // required user email address 
-  // send user   group id through  email for join the group
-  const joinUser = () => {
-
-  }
+ 
 
 
   return (
