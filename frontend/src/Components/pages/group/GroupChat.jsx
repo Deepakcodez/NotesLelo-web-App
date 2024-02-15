@@ -8,7 +8,7 @@ import { createGroupContext } from "../../../Context";
 export const GroupChat = () => {
 
   const location = useLocation();
-  const { setGroupDeleteOpt, demand, setDemand, currentUser, showInviteForm, setInviteForm } = useContext(createGroupContext);
+  const { setGroupDeleteOpt, demand, setDemand, currentUser, setShowLeftGroup, setInviteForm } = useContext(createGroupContext);
   const [option, setOption] = useState(false);
   const optionModelRef = useRef();
   const optionIconRef = useRef();
@@ -19,6 +19,7 @@ export const GroupChat = () => {
   const [groupData, setGroupData] = useState({
     title: "",
     description: "",
+    owner : "",
   });
 
 
@@ -59,10 +60,14 @@ export const GroupChat = () => {
           },
         }
       );
+     
       setGroupData({
         title: response.data.data.title,
         description: response.data.data.description,
+        owner : response.data.data.owner[0].owner
       });
+     
+      
     } catch (error) {
       console.log("Error fetching data:", error);
       navigate("/");
@@ -86,7 +91,11 @@ export const GroupChat = () => {
     setOption(false);
   };
 
- 
+  const leftGroupHandler = () => {
+    setShowLeftGroup(true)
+  }
+
+
 
 
   return (
@@ -134,9 +143,9 @@ export const GroupChat = () => {
             </div>
             <div
               className="text-white bg-red-800 hover:bg-red-600 ps-4 py-3 cursor-pointer"
-              onClick={deleteGroupHandler}
+              onClick={groupData?.owner == currentUser._id ? deleteGroupHandler : leftGroupHandler}
             >
-              Delete
+              {groupData?.owner == currentUser._id ? "Delete" : "Left"}
             </div>
           </div>
         )}

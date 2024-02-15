@@ -11,6 +11,7 @@ import { DeleteGroup } from "./pages/group/DeleteGroup";
 import { Demand } from "./pages/group/Demand";
 import { UploadFile } from "./pages/group/UploadFile";
 import { InviteUser } from "./pages/group/InviteUser";
+import { LeftGroup } from "./pages/group/LeftGroup";
 
 function RootLayout() {
  
@@ -18,7 +19,7 @@ function RootLayout() {
   const [chatURL, setChatURL]  = useState(false)
   const navigate = useNavigate();
   const [userDetail, setUserDetail] = useState({}); //use for dynamic value change in sidebar
-  const { isCreateGroup,isUploadPage,setUploadPage, showInviteForm, setInviteForm, setCreateGroup,clickedGroupId, setClickedGroupId ,groupDeleteOpt,setGroupDeleteOpt,joinGroup,setJoinGroup,setCurrentUser,demand} = useContext(createGroupContext);
+  const { isCreateGroup,isUploadPage,setUploadPage, showInviteForm, setInviteForm, setCreateGroup,clickedGroupId, setClickedGroupId ,groupDeleteOpt,setGroupDeleteOpt,joinGroup,setJoinGroup,setCurrentUser,demand, showLeftGroup} = useContext(createGroupContext);
   const currentURL = useLocation().pathname
 
  
@@ -74,6 +75,7 @@ function RootLayout() {
     <>
       <div className="w-full h-full ">
         {showInviteForm && <InviteUser/>}
+        {showLeftGroup && <LeftGroup/>}
         {isCreateGroup && <CreateGroup />}
         {joinGroup && <JoinGroup />}
         {groupDeleteOpt&&<DeleteGroup/>}
