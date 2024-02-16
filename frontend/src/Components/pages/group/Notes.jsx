@@ -159,7 +159,7 @@ export const Notes = () => {
 
     return (
         <>
-            <div className="chatContent relative flex flex-col gap-[7rem] overflow-y-scroll no-scrollbar w-full h-[calc(100vh-10.15rem)] py-3 pt-[3rem] px-6">
+            <div className="chatContent  flex flex-col gap-[7rem] overflow-y-scroll no-scrollbar w-full h-[calc(100vh-10.15rem)] py-3 pt-[3rem] px-6">
 
                 {
 
@@ -208,7 +208,7 @@ export const Notes = () => {
                     })
                 }
 
-                <div className='upload sticky p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end bottom-0' onClick={() => setUploadPage(true)}>
+                <div className='upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3    rem]  md:bottom-[5rem]' onClick={() => setUploadPage(true)}>
                     <FaFileUpload />
                 </div>
             </div>

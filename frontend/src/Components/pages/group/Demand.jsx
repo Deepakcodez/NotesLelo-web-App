@@ -27,7 +27,7 @@ export const Demand = () => {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'token': token, 
+                        'token': token,
                     },
                 }
             );

@@ -43,7 +43,7 @@ export const GroupDemand = () => {
 
   return (
     <>
-      <div className="demandContent relative flex flex-col gap-5 overflow-y-scroll no-scrollbar w-full
+      <div className="demandContent   flex flex-col gap-5 overflow-y-scroll no-scrollbar w-full
        h-[calc(100vh-10.15rem)] py-3 pt-[3rem] px-6">
         
         {
@@ -66,7 +66,7 @@ export const GroupDemand = () => {
             )
           })
         }
-        <div className='demand sticky p-4 mt-[30rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end bottom-[35rem]' onClick={() => setDemand(true)}>
+        <div className='demand absolute p-4 mt-[30rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[2rem]  md:bottom-[5rem]' onClick={() => setDemand(true)}>
           <IoHandLeftOutline />
 
         </div>
