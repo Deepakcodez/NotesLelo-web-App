@@ -7,8 +7,8 @@ import { BsHandThumbsUpFill } from "react-icons/bs";
 import { LiaComment } from "react-icons/lia";
 import { GoBookmark } from "react-icons/go";
 import { GoBookmarkFill } from "react-icons/go";
-
 import { BsDownload } from "react-icons/bs";
+import {motion} from 'framer-motion'
 
 
 export const Notes = () => {
@@ -208,9 +208,13 @@ export const Notes = () => {
                     })
                 }
 
-                <div className='upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem]  md:bottom-[5rem]' onClick={() => setUploadPage(true)}>
+                <motion.div
+                initial={{x:40, opacity:0}}
+                animate={{x:0,opacity:1}}
+                du transition={{ type: "spring", delay:0.3 , duration: 1, stiffness:300 }}
+                className='upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem]  md:bottom-[5rem]' onClick={() => setUploadPage(true)}>
                     <FaFileUpload />
-                </div>
+                </motion.div>
             </div>
         </>
     );
