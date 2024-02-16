@@ -92,7 +92,7 @@ function YourNotes() {
             </div>
 
             {/* data  */}
-            <div className='h-[calc(100%-2rem)] w-full overflow-y-scroll no-scrollbar px-7 pt-10 '>
+            <div className='h-[calc(100%-2rem)] w-full overflow-y-scroll no-scrollbar px-7 pt-10 pb-[5rem] '>
               <div className='h-auto w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-center '>
 
 
@@ -104,16 +104,16 @@ function YourNotes() {
                       <div className='h-[5rem] w-full  text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl'>NOTESLELO</div>
                       <div className='px-2'>
                         <div className='flex justify-between'>
-                          <h1 className=' bg text-lg font-bold tracking-tight text-gray-900 dark:text-white'>{notes.caption}</h1>
+                          <h1 className=' bg text-md font-bold tracking-tight text-gray-900 dark:text-white truncate '>{notes.caption}</h1>
                           <h1 className='text-sm text-gray-500 '>{currentUser.name}</h1>
                         </div>
-                        <h1 className='mb-3 overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400'>{notes.description}
+                        <h1 className='mb-3  overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400'>{notes.description}
 
                         </h1>
                       </div>
                       <div className='footer flex justify-end px-3  py-2  text-white '>
 
-                        <div className='bg-cyan-400 rounded-lg  border-gray-300 border-2 '
+                        <div className='bg-cyan-400 rounded-lg   border-gray-300 border-2 '
                           onClick={() => { handleDownload(notes.pdf, notes?.caption) }}
                         >
                           <div className='text-green-900 p-1 flex gap-2'><span>Download</span><BsDownload className='text-xl' /></div>

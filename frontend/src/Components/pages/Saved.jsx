@@ -104,10 +104,10 @@ function Saved() {
                       <div className='h-[5rem] w-full  text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl'>NOTESLELO</div>
                       <div className='px-2'>
                         <div className='flex justify-between'>
-                          <h1 className=' bg text-lg font-bold tracking-tight text-gray-900 dark:text-white'>{notes.caption}</h1>
+                          <h1 className=' bg  font-bold tracking-tight text-gray-900 dark:text-white text-md truncate'>{notes.caption}</h1>
                           <h1 className='text-sm text-gray-500 '>{currentUser.name}</h1>
                         </div>
-                        <h1 className='mb-3 overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400'>{notes.description}
+                        <h1 className='mb-3 overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400 '>{notes.description}
 
                         </h1>
                       </div>
