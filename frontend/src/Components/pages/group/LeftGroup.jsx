@@ -16,17 +16,19 @@ export const LeftGroup = () => {
 
   const inputHandler = (e) => {
     setInputId(e.target.value);
-    console.log(">>>>>>>>>>>", inputId);
+    // console.log(">>>>>>>>>>>", inputId);
   };
 
-  console.log(">>>>>>>>>>>grp id", id);
-  const deleteGroup = async (e) => {
+ 
+
+
+  const leftGroup = async (e) => {
     e.preventDefault();
 
     if (inputId === id) {
       try {
         setIsLoadingBtn(true)
-         const response =  await axios.delete(`http://localhost:8000/api/v1/group/left/${id}`,
+          await axios.delete(`https://notes-lelo-app-backend.vercel.app/api/v1/group/left/${id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -76,7 +78,7 @@ export const LeftGroup = () => {
             </div>
             <button
             className="bg-blue-400 rounded h-[2rem] flex justify-normal items-center  py-1.5 w-full mt-3 hover:bg-blue-500 "
-            onClick={deleteGroup}
+            onClick={leftGroup}
           >
             {isLoadingBtn ? (
               <Lottie className='h-[5rem] w-full ' animationData={loadingAnimation} loop={true} />

@@ -31,7 +31,7 @@ export const JoinGroup = () => {
 
       try {
         setIsLoadingBtn(true)
-        const resp = await axios.post('http://localhost:8000/api/v1/group/join',Id,
+        const resp = await axios.post('https://notes-lelo-app-backend.vercel.app/api/v1/group/join',Id,
         {
           headers: {
             "Content-Type": "application/json",
