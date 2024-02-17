@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import Lottie from "lottie-react";
 import loaderBook from  '../../assets/loaderbook.json';
 import { NotificationGhost } from '../shared/ghost/NotificationGhost';
+import { motion } from 'framer-motion'
 
 
 function Notification() {
@@ -59,7 +60,15 @@ function Notification() {
 
             {
               notificationData?.reverse().map((data, index) => <Fragment key={index}>
-                <div
+                 <motion.div
+                initial={{y:-50, opacity:0}}
+                  animate={{  opacity:1,y:0 }}
+                  transition={{
+                    ease: "linear",
+                    duration: .2,
+                    delay : (index*.3)
+                    
+                  }}
                   className='h-[6rem] w-full bg-gradient-to-br from-slate-900/25 to-slate-700/25 rounded-lg p-3 flex justify-between'
                   style={{ borderTop: "1px solid #bcc6d1" }}
                 >
@@ -67,7 +76,7 @@ function Notification() {
                   <h1 className='text-white/25 font-light'>
                   {format(new Date(data.createdAt), 'hh:mm a')}
                   </h1>
-                </div>
+                </motion.div>
               </Fragment>)
             }
 

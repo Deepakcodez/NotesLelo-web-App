@@ -4,6 +4,7 @@ import { IoCopy } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { createGroupContext } from "../../Context";
 import { HomePageGhost } from "./ghost/HomePageGhost";
+import { motion  } from 'framer-motion'
 
 export const GroupCard = ({fetching}) => {
   const navigate = useNavigate();
@@ -77,7 +78,16 @@ export const GroupCard = ({fetching}) => {
       <>
         {groups.map((group, index) => (
           <Fragment key={index}>
-            <div
+            <motion.div
+              initial={{ opacity: 0,x:-60 }}
+              animate={{ opacity: 1,x:0 }}
+             transition={{
+              //  ease: "linear",
+              type : "spring",
+              stiffness:150,
+               duration: .2,
+               delay : (index*0.3)
+             }}
               onClick={() => cardClickHandler(group._id)}
               value={group._id}
               className="card bg-slate-500/75 h-40 min-w-[auto] rounded-md shadow-lg border-[1px] border-t-slate-300 hover:border-t-slate-100 border-slate-400/50 hover:shadow-2xl hover:bg-slate-600 hover:scale-[1.009] outline-slate-200/5 outline-1 outline-offset-4 outline"
@@ -102,7 +112,7 @@ export const GroupCard = ({fetching}) => {
                 </div>
               </div>
               <h1 className="p-2 text-slate-200">{group.description}</h1>
-            </div>
+            </motion.div>
           </Fragment>
         ))}
       </>

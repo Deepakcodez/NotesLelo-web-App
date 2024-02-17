@@ -11,6 +11,7 @@ import { FaFileUpload } from "react-icons/fa";
 import Lottie from "lottie-react";
 import loaderBook from '../../assets/loaderbook.json';
 import { SavedGhost } from '../shared/ghost/SavedGhost';
+import { motion } from 'framer-motion'
 
 
 function Saved() {
@@ -100,7 +101,15 @@ function Saved() {
                   notesData?.map((notes, index) => <Fragment key={index}>
 
 
-                    <div className='bg-slate-800 rounded-md' style={{ border: "1px solid gray" }} >
+                    <motion.div
+                      initial={{ opacity: 0,x:-60 }}
+                      animate={{ opacity: 1,x:0 }}
+                      transition={{
+                        ease: "linear",
+                        duration: .2,
+                        delay: (index * .3)
+
+                      }} className='bg-slate-800 rounded-md' style={{ border: "1px solid gray" }} >
                       <div className='h-[5rem] w-full  text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl'>NOTESLELO</div>
                       <div className='px-2'>
                         <div className='flex justify-between'>
@@ -121,7 +130,7 @@ function Saved() {
                       </div>
 
 
-                    </div>
+                    </motion.div>
 
 
 

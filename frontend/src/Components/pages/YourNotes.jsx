@@ -9,8 +9,9 @@ import { GoBookmarkFill } from "react-icons/go";
 import { BsDownload } from "react-icons/bs";
 import { FaFileUpload } from "react-icons/fa";
 import Lottie from "lottie-react";
-import loaderBook from  '../../assets/loaderbook.json';
-import {  NotesGhost } from '../shared/ghost/NotesGhost';
+import loaderBook from '../../assets/loaderbook.json';
+import { NotesGhost } from '../shared/ghost/NotesGhost';
+import { motion  } from 'framer-motion'
 
 
 function YourNotes() {
@@ -82,7 +83,7 @@ function YourNotes() {
 
       {
         loader ?
-          <NotesGhost/>
+          <NotesGhost />
           :
           <div className=" w-[100%]  ">
             <div className='header h-[2rem] w-[100%] bg-slate-700/25 flex items-center px-3   '
@@ -100,7 +101,14 @@ function YourNotes() {
                   notesData?.map((notes, index) => <Fragment key={index}>
 
 
-                    <div className='bg-slate-800 rounded-md' style={{ border: "1px solid gray" }} >
+                    <motion.div
+                      initial={{ opacity: 0,x:-60 }}
+                      animate={{ opacity: 1,x:0 }}
+                      transition={{
+                        ease: "linear",
+                        duration: .2,
+                        delay: (index * 0.3)
+                      }} className='bg-slate-800 rounded-md' style={{ border: "1px solid gray" }} >
                       <div className='h-[5rem] w-full  text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl'>NOTESLELO</div>
                       <div className='px-2'>
                         <div className='flex justify-between'>
@@ -121,7 +129,7 @@ function YourNotes() {
                       </div>
 
 
-                    </div>
+                    </motion.div>
 
 
 

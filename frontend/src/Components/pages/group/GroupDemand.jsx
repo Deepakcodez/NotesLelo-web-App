@@ -3,7 +3,7 @@ import { FaFileUpload } from "react-icons/fa";
 import { createGroupContext } from '../../../Context';
 import axios from 'axios';
 import { IoHandLeftOutline } from "react-icons/io5";
-import { motion,Reorder  } from 'framer-motion'
+import { motion  } from 'framer-motion'
 
 export const GroupDemand = () => {
   const scrollRef = useRef();
@@ -58,6 +58,7 @@ export const GroupDemand = () => {
                   transition={{
                     ease: "linear",
                     duration: .2,
+                    delay : (index*.3)
                     
                   }}
                   ref={scrollRef} className={` ${dmd.demand.from === currentUser._id ? "self-end" : "self-start"} min-h-[10rem] h-  max-h-[20rem] w-[90%] sm:w-[70%] md:w-[40%] bg-slate-600 rounded-lg px-1  border-gray-200`} style={{ borderTop: "1rem solid orange", borderBottom: "1px solid white" }}>
