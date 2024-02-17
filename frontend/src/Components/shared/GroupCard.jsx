@@ -4,9 +4,9 @@ import { IoCopy } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { createGroupContext } from "../../Context";
 import { HomePageGhost } from "./ghost/HomePageGhost";
-import { motion  } from 'framer-motion'
+import { motion } from 'framer-motion'
 
-export const GroupCard = ({fetching}) => {
+export const GroupCard = ({ fetching , refrenceBox}) => {
   const navigate = useNavigate();
   const { isCreateGroup, setCreateGroup } = useContext(createGroupContext);
   const [isLoading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ export const GroupCard = ({fetching}) => {
   useEffect(() => {
     const fetchingAllGroup = async () => {
       setLoading(true); // Set loading state to true
-    
+
       try {
         const response = await axios.get(
           "https://notes-lelo-app-backend.vercel.app/api/v1/group/all",
@@ -30,19 +30,19 @@ export const GroupCard = ({fetching}) => {
           }
         );
         setGroups(response.data.Groups);
-        if(!response.data.Groups.length){
+        if (!response.data.Groups.length) {
           fetching(true)
         }
-        else{
+        else {
           fetching(false)
         }
-      
+
       } catch (error) {
         console.log("Error fetching data:", error);
-        
+
       } finally {
         setLoading(false); // Set loading state to false
-      
+
 
       }
     };
@@ -72,22 +72,26 @@ export const GroupCard = ({fetching}) => {
 
   if (isLoading) {
     console.log("Groups length:", groups.length);
-    return(<HomePageGhost/>)
+    return (<HomePageGhost />)
   } else {
     return (
       <>
         {groups.map((group, index) => (
           <Fragment key={index}>
             <motion.div
-              initial={{ opacity: 0,x:-60 }}
-              animate={{ opacity: 1,x:0 }}
-             transition={{
-              //  ease: "linear",
-              type : "spring",
-              stiffness:150,
-               duration: .2,
-               delay : (index*0.3)
-             }}
+              drag
+              dragConstraints={refrenceBox}
+              whileDrag={{scale:1.2}}
+              dragElastic={.1}
+              initial={{ opacity: 0, x: -60 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{
+                //  ease: "linear",
+                type: "spring",
+                stiffness: 150,
+                duration: .2,
+                delay: (index * 0.3)
+              }}
               onClick={() => cardClickHandler(group._id)}
               value={group._id}
               className="card bg-slate-500/75 h-40 min-w-[auto] rounded-md shadow-lg border-[1px] border-t-slate-300 hover:border-t-slate-100 border-slate-400/50 hover:shadow-2xl hover:bg-slate-600 hover:scale-[1.009] outline-slate-200/5 outline-1 outline-offset-4 outline"
