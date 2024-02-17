@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Lottie from "lottie-react";
 import loadingAnimation from '../../../assets/lading.json';
-
-
+import { mutate } from "swr";
 
 
 export const CreateGroup = () => {
@@ -14,7 +13,7 @@ export const CreateGroup = () => {
   const { isCreateGroup, setCreateGroup } = useContext(createGroupContext);
   const [warning, setWarning] = useState(false)
   const [warningMsg, setWarningMsg] = useState("")
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const token = localStorage.getItem("useDataToken");
   const [GroupDetail, setGroupDetail] = useState({
@@ -54,10 +53,12 @@ export const CreateGroup = () => {
           },
         }
       );
-      console.log('>>>>>>>>>>>', response.status)
+      // console.log('>>>>>>>>>>>', response.status)
       // Check if the API request was successful (you can customize this based on your API response structure)
       if (response.status == 200) {
         // If successful, navigate and reset form
+
+        mutate('https://notes-lelo-app-backend.vercel.app/api/v1/group/all');
         setGroupDetail({
           title: "",
           description: "",

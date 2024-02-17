@@ -1,54 +1,40 @@
 import axios from "axios";
-import { Fragment, useContext, useEffect, useRef, useState } from "react";
+import { Fragment, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { IoCopy } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { createGroupContext } from "../../Context";
 import { HomePageGhost } from "./ghost/HomePageGhost";
 import { motion } from 'framer-motion'
+import useSWR ,{mutate} from 'swr'
 
-export const GroupCard = ({ fetching , refrenceBox}) => {
+
+
+export const GroupCard = ({ fetching, refrenceBox }) => {
   const navigate = useNavigate();
-  const { isCreateGroup, setCreateGroup } = useContext(createGroupContext);
-  const [isLoading, setLoading] = useState(false);
   const userIdRefs = useRef([]);
   const [enlargeIcon, setEnlargeIcon] = useState(null);
   const [groups, setGroups] = useState([]);
   const token = localStorage.getItem("useDataToken");
 
-  useEffect(() => {
-    const fetchingAllGroup = async () => {
-      setLoading(true); // Set loading state to true
-
+  
+  const { data, error} = useSWR('https://notes-lelo-app-backend.vercel.app/api/v1/group/all',
+    async (url) => {
       try {
-        const response = await axios.get(
-          "https://notes-lelo-app-backend.vercel.app/api/v1/group/all",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              token: token,
-            },
-          }
-        );
-        setGroups(response.data.Groups);
-        if (!response.data.Groups.length) {
-          fetching(true)
-        }
-        else {
-          fetching(false)
-        }
+        const resp = await axios(url, {
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+        })
+        return resp.data.Groups
 
       } catch (error) {
-        console.log("Error fetching data:", error);
-
-      } finally {
-        setLoading(false); // Set loading state to false
-
-
+        console.log('>>>>>>>>>>>', error)
       }
-    };
+     
+    }
+  )
 
-    fetchingAllGroup();
-  }, [isCreateGroup]);
 
   const copyIdHandler = (event, index) => {
     try {
@@ -70,18 +56,24 @@ export const GroupCard = ({ fetching , refrenceBox}) => {
     localStorage.setItem("groupId", groupId);
   };
 
-  if (isLoading) {
-    console.log("Groups length:", groups.length);
-    return (<HomePageGhost />)
-  } else {
+  if (error) {
+    console.log("Error fetching data:", error);
+    return <div className="text-white font-semibold text-lg">Error fetching data. Please try again later.🤖</div>;
+  }
+
+  if (!data) {
+    return <HomePageGhost />;
+  }
+
+  else {
     return (
       <>
-        {groups.map((group, index) => (
+        {data?.map((group, index) => (
           <Fragment key={index}>
             <motion.div
               drag
               dragConstraints={refrenceBox}
-              whileDrag={{scale:1.2}}
+              whileDrag={{ scale: 1.2 }}
               dragElastic={.1}
               initial={{ opacity: 0, x: -60 }}
               animate={{ opacity: 1, x: 0 }}

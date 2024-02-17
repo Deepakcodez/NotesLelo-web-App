@@ -13,7 +13,7 @@ const Home = () => {
   };
 
   return (
-    <div ref={constrainRef}  className={` ${isfetching ? "h-full w-full bg-slate-800/25 flex justify-center  " : "pt-20 px-[1rem] md:px-[6rem] justify-center w-full overflow-y-scroll no-scrollbar pb-[30rem] h-auto  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8"}`}>
+    <div ref={constrainRef} className={`${isfetching ? "h-full w-full bg-slate-800/25 flex justify-center" : "pt-20 px-[1rem] md:px-[6rem] justify-center w-full overflow-y-scroll no-scrollbar pb-[30rem] h-auto  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8"}`}>
       <GroupCard fetching={fetchingCheck} refrenceBox={constrainRef} />
       {isfetching && 
         <div className="h-full w-full relative flex justify-center ">
