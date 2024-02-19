@@ -52,7 +52,7 @@ function Saved() {
 
 
 
-  const { data, error } = useSWR('https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes', async (url) => {
+  const { data, error } = useSWR('https://notes-lelo-app-backend.vercel.app/api/v1/notes/savedNotes', async (url) => {
 
   try {
     const resp = await axios(url, {

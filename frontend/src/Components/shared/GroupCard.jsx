@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { createGroupContext } from "../../Context";
 import { HomePageGhost } from "./ghost/HomePageGhost";
 import { motion } from 'framer-motion'
-import useSWR ,{mutate} from 'swr'
+import useSWR  from 'swr'
 
 
 

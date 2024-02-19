@@ -9,6 +9,7 @@ import { GoBookmark } from "react-icons/go";
 import { GoBookmarkFill } from "react-icons/go";
 import { BsDownload } from "react-icons/bs";
 import {motion} from 'framer-motion'
+import { mutate } from 'swr';
 
 
 export const Notes = () => {
@@ -124,7 +125,8 @@ export const Notes = () => {
                     withCredentials: true,
                 }
             );
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
+            mutate('https://notes-lelo-app-backend.vercel.app/api/v1/notes/savedNotes')
     
             // Update the local state with the modified notes data
             setNotesData((prevNotesData) => {
@@ -142,6 +144,7 @@ export const Notes = () => {
                             },
                         };
                     }
+
                     return note;
                 });
             });

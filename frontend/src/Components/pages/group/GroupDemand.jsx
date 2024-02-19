@@ -4,6 +4,8 @@ import { createGroupContext } from '../../../Context';
 import axios from 'axios';
 import { IoHandLeftOutline } from "react-icons/io5";
 import { motion  } from 'framer-motion'
+import useSWR from 'swr';
+import { DemandGhost } from '../../shared/ghost/DemandGhost';
 
 export const GroupDemand = () => {
   const scrollRef = useRef();
@@ -14,21 +16,49 @@ export const GroupDemand = () => {
   const { demand, setDemand, currentUser } = useContext(createGroupContext);
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`);
-        setNewDemands(response.data.data);
-        console.log('>>>>>>>>>>>', newdemands)
+  // useEffect(() => {
+
+    
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(`https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`);
+  //       setNewDemands(response.data.data);
+  //       console.log('>>>>>>>>>>>', newdemands)
 
 
-      } catch (error) {
-        console.log('Error fetching demands:', error);
-      }
-    };
+  //     } catch (error) {
+  //       console.log('Error fetching demands:', error);
+  //     }
+  //   };
 
-    fetchData();
-  }, [groupId, demand]);
+  //   fetchData();
+  // }, [groupId, demand]);
+
+
+
+  
+  const { data, error } = useSWR(`https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`, async (url) => {
+
+  try {
+    const resp = await axios.get(url)
+    console.log('>>>>>>>>>>>', resp.data.data)
+    return resp.data.data;
+
+
+  } catch (error) {
+    console.log('>>>>>>>>>>>', error)
+  }
+}
+
+)
+if (error) {
+  console.log("Error fetching data:", error);
+  return <div className="text-white font-semibold text-lg">Error fetching data. Please try again later.🤖</div>;
+}
+if (!data) {
+  return <DemandGhost />;
+}
+
 
 
   useEffect(() => {
@@ -47,7 +77,7 @@ export const GroupDemand = () => {
        h-[calc(100vh-10.15rem)] py-3 pt-[3rem] px-6">
 
         {
-          newdemands?.map((dmd, index) => {
+          data?.map((dmd, index) => {
             return (
 
 

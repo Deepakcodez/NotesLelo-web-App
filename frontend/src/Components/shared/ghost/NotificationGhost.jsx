@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 
 export const NotificationGhost = () => {
-    const notificationData = [1, 2, 3, 4, 5,]
+    const notificationData = [1, ]
     return (
         <>
             <div className=" w-full  ">

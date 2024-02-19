@@ -20,7 +20,7 @@ function YourNotes() {
   const { currentUser } = useContext(createGroupContext);
   const [notesData, setNotesData] = useState([])
   const [notesId, setNotesId] = useState("");
-  const [loader, setLoader] = useState(true)
+
 
 
 
@@ -50,33 +50,6 @@ function YourNotes() {
 
 
 
-
-
-
-  // useEffect(() => {
-  //   try {
-  //     const fetchData = async () => {
-  //       const resp = await axios.get(
-  //         'https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes',
-  //         {
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //             token,
-  //           },
-  //           withCredentials: true,
-  //         }
-  //       );
-  //       console.log('>>>>>>>>>>>your notes', resp.data.data);
-  //       setNotesData(resp.data.data)
-  //       setLoader(false)
-  //     }
-  //     fetchData()
-
-  //   } catch (error) {
-  //     console.log('>>>>>>>>>>>', error)
-  //   }
-  // }, [notesId,])
-
   const { data, error } = useSWR('https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes', async (url) => {
 
     try {
@@ -87,11 +60,9 @@ function YourNotes() {
         },
         withCredentials: true,
       })
-      if (resp.data.data) {
-        setLoader(false)
-      }
+     
 
-      console.log('>>>>>>>>>>>', resp.data.data)
+      // console.log('>>>>>>>>>>>', resp.data.data)
       return resp.data.data;
 
 

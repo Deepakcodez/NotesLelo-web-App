@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
 import loadingAnimation from '../../../assets/lading.json';
+import { mutate } from "swr";
 
 export const DeleteGroup = () => {
   const { groupDeleteOpt, setGroupDeleteOpt } = useContext(createGroupContext);
@@ -35,6 +36,7 @@ export const DeleteGroup = () => {
             },
           }
         );
+        mutate('https://notes-lelo-app-backend.vercel.app/api/v1/notification/latest_notification')
         setIsLoadingBtn(false)
         navigate("/");
         setGroupDeleteOpt(false)

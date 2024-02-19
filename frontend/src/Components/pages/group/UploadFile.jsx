@@ -2,6 +2,7 @@ import React, { useContext, useRef, useState } from 'react';
 import { createGroupContext } from '../../../Context';
 import { MdDriveFolderUpload } from 'react-icons/md';
 import axios from 'axios';
+import useSWR, { mutate } from 'swr'
 
 export const UploadFile = () => {
   const token = localStorage.getItem("useDataToken")
@@ -52,7 +53,9 @@ export const UploadFile = () => {
       });
       setIsUploading(false);
       setUploadPage(false)
-      console.log('File upload response:', response.data);
+      mutate('https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes')
+      // console.log('File upload response:', response.data);
+      
       // Handle the file upload response as needed
     } catch (error) {
       setIsUploading(false);
