@@ -12,7 +12,7 @@ import Lottie from "lottie-react";
 import loaderBook from '../../assets/loaderbook.json';
 import { SavedGhost } from '../shared/ghost/SavedGhost';
 import { motion } from 'framer-motion'
-
+import useSWR  from 'swr'
 
 function Saved() {
   const token = localStorage.getItem("useDataToken")
@@ -52,39 +52,43 @@ function Saved() {
 
 
 
-  useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const resp = await axios.get(
-          'https://notes-lelo-app-backend.vercel.app/api/v1/notes/savedNotes',
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              token,
-            },
-            withCredentials: true,
-          }
-        );
-        console.log('>>>>>>>>>>>your notes', resp.data.data);
-        setNotesData(resp.data.data)
-        setLoader(false)
-      }
-      fetchData()
+  const { data, error } = useSWR('https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes', async (url) => {
 
-    } catch (error) {
-      console.log('>>>>>>>>>>>', error)
-    }
-  }, [notesId,])
+  try {
+    const resp = await axios(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        token,
+      },
+      withCredentials: true,
+    })
+   
+
+    // console.log('>>>>>>>>>>>', resp.data.data)
+    return resp.data.data;
+
+
+  } catch (error) {
+    console.log('>>>>>>>>>>>', error)
+  }
+}
+
+)
+if (error) {
+  console.log("Error fetching data:", error);
+  return <div className="text-white font-semibold text-lg">Error fetching data. Please try again later.🤖</div>;
+}
+if (!data) {
+  return <SavedGhost />;
+}
+
 
 
 
   return (
     <>
 
-      {
-        loader ?
-          <SavedGhost />
-          :
+      
           <div className=" w-[100%]  ">
             <div className='header h-[2rem] w-[100%] bg-slate-700/25 flex items-center px-3   '
               style={{ borderBottom: "1px solid gray" }}
@@ -98,7 +102,7 @@ function Saved() {
 
 
                 {
-                  notesData?.map((notes, index) => <Fragment key={index}>
+                  data?.map((notes, index) => <Fragment key={index}>
 
 
                     <motion.div
@@ -129,40 +133,12 @@ function Saved() {
                         </div>
                       </div>
 
-
                     </motion.div>
-
-
-
-
-
                   </Fragment>)
                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
               </div>
             </div>
-
           </div>
-      }
-
-
-
     </>
   )
 }
