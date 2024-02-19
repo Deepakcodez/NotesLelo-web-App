@@ -11,7 +11,8 @@ import { FaFileUpload } from "react-icons/fa";
 import Lottie from "lottie-react";
 import loaderBook from '../../assets/loaderbook.json';
 import { NotesGhost } from '../shared/ghost/NotesGhost';
-import { motion  } from 'framer-motion'
+import { motion } from 'framer-motion'
+import useSWR, { mutate } from 'swr'
 
 
 function YourNotes() {
@@ -52,91 +53,119 @@ function YourNotes() {
 
 
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   try {
+  //     const fetchData = async () => {
+  //       const resp = await axios.get(
+  //         'https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes',
+  //         {
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //             token,
+  //           },
+  //           withCredentials: true,
+  //         }
+  //       );
+  //       console.log('>>>>>>>>>>>your notes', resp.data.data);
+  //       setNotesData(resp.data.data)
+  //       setLoader(false)
+  //     }
+  //     fetchData()
+
+  //   } catch (error) {
+  //     console.log('>>>>>>>>>>>', error)
+  //   }
+  // }, [notesId,])
+
+  const { data, error } = useSWR('https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes', async (url) => {
+
     try {
-      const fetchData = async () => {
-        const resp = await axios.get(
-          'https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes',
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              token,
-            },
-            withCredentials: true,
-          }
-        );
-        console.log('>>>>>>>>>>>your notes', resp.data.data);
-        setNotesData(resp.data.data)
+      const resp = await axios(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          token,
+        },
+        withCredentials: true,
+      })
+      if (resp.data.data) {
         setLoader(false)
       }
-      fetchData()
+
+      console.log('>>>>>>>>>>>', resp.data.data)
+      return resp.data.data;
+
 
     } catch (error) {
       console.log('>>>>>>>>>>>', error)
     }
-  }, [notesId,])
+  }
 
+  )
+  if (error) {
+    console.log("Error fetching data:", error);
+    return <div className="text-white font-semibold text-lg">Error fetching data. Please try again later.🤖</div>;
+  }
+  if (!data) {
+    return <NotesGhost />;
+  }
 
 
   return (
     <>
 
-      {
-        loader ?
-          <NotesGhost />
-          :
-          <div className=" w-[100%]  ">
-            <div className='header h-[2rem] w-[100%] bg-slate-700/25 flex items-center px-3   '
-              style={{ borderBottom: "1px solid gray" }}
-            >
-              <h1 className='text-white font-semibold'>Your Notes</h1>
-            </div>
 
-            {/* data  */}
-            <div className='h-[calc(100%-2rem)] w-full overflow-y-scroll no-scrollbar px-7 pt-10 pb-[5rem] '>
-              <div className='h-auto w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-center '>
+      <div className=" w-[100%]  ">
+        <div className='header h-[2rem] w-[100%] bg-slate-700/25 flex items-center px-3   '
+          style={{ borderBottom: "1px solid gray" }}
+        >
+          <h1 className='text-white font-semibold'>Your Notes</h1>
+        </div>
+
+        {/* data  */}
+        <div className='h-[calc(100%-2rem)] w-full overflow-y-scroll no-scrollbar px-7 pt-10 pb-[5rem] '>
+          <div className='h-auto w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-center '>
 
 
-                {
-                  notesData?.map((notes, index) => <Fragment key={index}>
+            {
+              data?.map((notes, index) => <Fragment key={index}>
 
 
-                    <motion.div
-                      initial={{ opacity: 0,x:-60 }}
-                      animate={{ opacity: 1,x:0 }}
-                      transition={{
-                        ease: "linear",
-                        duration: .2,
-                        delay: (index * 0.3)
-                      }} className='bg-slate-800 rounded-md' style={{ border: "1px solid gray" }} >
-                      <div className='h-[5rem] w-full  text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl'>NOTESLELO</div>
-                      <div className='px-2'>
-                        <div className='flex justify-between'>
-                          <h1 className=' bg text-md font-bold tracking-tight text-gray-900 dark:text-white truncate '>{notes.caption}</h1>
-                          <h1 className='text-sm text-gray-500 '>{currentUser.name}</h1>
-                        </div>
-                        <h1 className='mb-3  overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400'>{notes.description}
+                <motion.div
+                  initial={{ opacity: 0, x: -60 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    ease: "linear",
+                    duration: .2,
+                    delay: (index * 0.3)
+                  }} className='bg-slate-800 rounded-md' style={{ border: "1px solid gray" }} >
+                  <div className='h-[5rem] w-full  text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl'>NOTESLELO</div>
+                  <div className='px-2'>
+                    <div className='flex justify-between'>
+                      <h1 className=' bg text-md font-bold tracking-tight text-gray-900 dark:text-white truncate '>{notes.caption}</h1>
+                      <h1 className='text-sm text-gray-500 '>{currentUser.name}</h1>
+                    </div>
+                    <h1 className='mb-3  overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400'>{notes.description}
 
-                        </h1>
-                      </div>
-                      <div className='footer flex justify-end px-3  py-2  text-white '>
+                    </h1>
+                  </div>
+                  <div className='footer flex justify-end px-3  py-2  text-white '>
 
-                        <div className='bg-cyan-400 rounded-lg   border-gray-300 border-2 '
-                          onClick={() => { handleDownload(notes.pdf, notes?.caption) }}
-                        >
-                          <div className='text-green-900 p-1 flex gap-2'><span>Download</span><BsDownload className='text-xl' /></div>
-                        </div>
-                      </div>
+                    <div className='bg-cyan-400 rounded-lg   border-gray-300 border-2 '
+                      onClick={() => { handleDownload(notes.pdf, notes?.caption) }}
+                    >
+                      <div className='text-green-900 p-1 flex gap-2'><span>Download</span><BsDownload className='text-xl' /></div>
+                    </div>
+                  </div>
 
 
-                    </motion.div>
+                </motion.div>
 
 
 
 
 
-                  </Fragment>)
-                }
+              </Fragment>)
+            }
 
 
 
@@ -153,12 +182,12 @@ function YourNotes() {
 
 
 
-
-              </div>
-            </div>
 
           </div>
-      }
+        </div>
+
+      </div>
+
 
 
 
