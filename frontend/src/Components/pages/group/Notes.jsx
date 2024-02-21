@@ -132,45 +132,40 @@ export const Notes = () => {
 
 
     const saveHandler = async (notesId) => {
-        try {
-            const response = await axios.post(
-                `https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/saveNotes/${notesId}`, // Correct endpoint with notesId
-                {}, // No need to send any data in the body
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'token': token,
-                    },
-                    withCredentials: true,
+        // Optimistically update the cache
+        mutate(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`, (currentData) => {
+            return currentData.map(note => {
+                if (note.notes._id === notesId) {
+                    const isUserSaved = note.notes.saved.some(userdata => userdata._id === currentUser._id);
+                    const updatedSaved = isUserSaved
+                        ? note.notes.saved.filter(userdata => userdata._id !== currentUser._id)
+                        : [...note.notes.saved, currentUser]; // Assuming currentUser object structure is correct and matches the expected format
+    
+                    return { ...note, notes: { ...note.notes, saved: updatedSaved } };
                 }
-            );
-            // console.log('Response:', response.data);
-            mutate('https://notes-lelo-app-backend.vercel.app/api/v1/notes/savedNotes')
-
-            // Update the local state with the modified notes data
-            setNotesData((prevNotesData) => {
-                return prevNotesData.map((note) => {
-                    if (note.notes._id === notesId) {
-                        // Toggle the user's save status
-                        const isUserSaved = note.notes.saved.some(userdata => userdata._id === currentUser._id);
-                        return {
-                            ...note,
-                            notes: {
-                                ...note.notes,
-                                saved: isUserSaved
-                                    ? note.notes.saved.filter(userdata => userdata._id !== currentUser._id)
-                                    : [...note.notes.saved, currentUser],
-                            },
-                        };
-                    }
-
-                    return note;
-                });
+                return note;
             });
+        }, false); // 'false' to not revalidate immediately, as we're going to call the server next
+    
+        try {
+            // Now, send the save request to the server
+            await axios.post(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/saveNotes/${notesId}`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': token,
+                },
+                withCredentials: true,
+            });
+    
+            // Optionally revalidate the cache after the server response
+            mutate(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`);
         } catch (error) {
-            console.log('Error saving notes:', error);
+            console.error('Error saving note:', error);
+            // Optionally, rollback the optimistic update here if the request fails
         }
     };
+    
+
 
 
 
