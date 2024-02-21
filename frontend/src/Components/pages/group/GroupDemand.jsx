@@ -16,24 +16,13 @@ export const GroupDemand = () => {
   const { demand, setDemand, currentUser } = useContext(createGroupContext);
 
 
-  // useEffect(() => {
-
-    
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(`https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`);
-  //       setNewDemands(response.data.data);
-  //       console.log('>>>>>>>>>>>', newdemands)
 
 
-  //     } catch (error) {
-  //       console.log('Error fetching demands:', error);
-  //     }
-  //   };
+  useEffect(() => {
 
-  //   fetchData();
-  // }, [groupId, demand]);
-
+    // Scroll to the bottom of the messages when they change
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
 
   
@@ -58,14 +47,6 @@ if (error) {
 if (!data) {
   return <DemandGhost />;
 }
-
-
-
-  useEffect(() => {
-
-    // Scroll to the bottom of the messages when they change
-    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
 
 
 

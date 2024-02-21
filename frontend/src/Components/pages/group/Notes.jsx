@@ -8,8 +8,8 @@ import { LiaComment } from "react-icons/lia";
 import { GoBookmark } from "react-icons/go";
 import { GoBookmarkFill } from "react-icons/go";
 import { BsDownload } from "react-icons/bs";
-import {motion} from 'framer-motion'
-import { mutate } from 'swr';
+import { motion } from 'framer-motion'
+import useSWR, { mutate } from 'swr';
 
 
 export const Notes = () => {
@@ -22,29 +22,55 @@ export const Notes = () => {
 
     const token = localStorage.getItem("useDataToken")
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await axios.get(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`, {
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     "token": token,
+    //                 },
+    //                 withCredentials: true,
+    //             });
+    //             // console.log('>>>>>>>>>>>', response.data.data[0].user)
+    //             setNotesData(response.data.data);
+    //             setNoteSaved(response.data.data)
+
+    //         } catch (error) {
+    //             console.error("Error fetching notes:", error);
+    //             // Handle error as needed
+    //         }
+    //     };
+
+    //     fetchData(); // Call the fetchData function
+
+    // }, [groupId, isUploadPage]); // Add 'groupId' as a dependency
+
+    const fetcher = async (url) => {
+        const response = await axios.get(url, {
+            headers: {
+                "Content-Type": "application/json",
+                "token": token,
+            },
+            withCredentials: true,
+        });
+        return response.data.data;
+    };
+
+    const { data, error } = useSWR(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`, fetcher);
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "token": token,
-                    },
-                    withCredentials: true,
-                });
-                // console.log('>>>>>>>>>>>', response.data.data[0].user)
-                setNotesData(response.data.data);
-                setNoteSaved(response.data.data)
+        setNotesData(data);
+        setNoteSaved(data)
+    }, [data]);
 
-            } catch (error) {
-                console.error("Error fetching notes:", error);
-                // Handle error as needed
-            }
-        };
+    // Your existing event handlers (handleDownload, likeClickHandler, saveHandler) go here unchanged.
 
-        fetchData(); // Call the fetchData function
+    if (error) return <div>Error fetching data. Please try again later.</div>;
+    if (!data) return <div>Loading...</div>;
 
-    }, [groupId, isUploadPage]); // Add 'groupId' as a dependency
+
+
 
     const handleDownload = async (fileUrl, fileName) => {
         try {
@@ -70,46 +96,39 @@ export const Notes = () => {
     };
 
     const likeClickHandler = async (notesId) => {
-        setNotesId(notesId)
-
-        try {
-            const resp = await axios.put(
-                `https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/addLike/${notesId}`,
-                {},
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'token': token,
-                    },
-                    withCredentials: true,
+        // Optimistically update the cache
+        mutate(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`, (currentData) => {
+            return currentData.map(note => {
+                if (note.notes._id === notesId) {
+                    const isLiked = note.notes.likes.some(user => user._id === currentUser._id);
+                    const updatedLikes = isLiked
+                        ? note.notes.likes.filter(user => user._id !== currentUser._id)
+                        : [...note.notes.likes, { _id: currentUser._id }]; // Assuming user object structure
+    
+                    return { ...note, notes: { ...note.notes, likes: updatedLikes } };
                 }
-            );
-            // console.log('>>>>>>>>>>>', resp.data.data)
-
-            // Update the local state with the modified notes data
-            setNotesData((prevNotesData) => {
-                return prevNotesData.map((note) => {
-                    if (note.notes._id === notesId) {
-                        // Toggle the user's like status
-                        const isUserLiked = note.notes.likes.some(userdata => userdata._id === currentUser._id);
-                        return {
-                            ...note,
-                            notes: {
-                                ...note.notes,
-                                likes: isUserLiked
-                                    ? note.notes.likes.filter(userdata => userdata._id !== currentUser._id)
-                                    : [...note.notes.likes, currentUser],
-                            },
-                        };
-                    }
-                    return note;
-                });
+                return note;
             });
-
+        }, false); // 'false' to not revalidate immediately, as we're going to call the server next
+    
+        try {
+            // Now, send the like request to the server
+            await axios.put(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/addLike/${notesId}`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': token,
+                },
+                withCredentials: true,
+            });
+    
+            // Optionally revalidate the cache after the server response
+            mutate(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`);
         } catch (error) {
-            console.log('>>>>>>>>>>>', error);
+            console.error('Error updating like status:', error);
+            // Optionally, rollback the optimistic update here if the request fails
         }
-    }
+    };
+    
 
 
     const saveHandler = async (notesId) => {
@@ -127,7 +146,7 @@ export const Notes = () => {
             );
             // console.log('Response:', response.data);
             mutate('https://notes-lelo-app-backend.vercel.app/api/v1/notes/savedNotes')
-    
+
             // Update the local state with the modified notes data
             setNotesData((prevNotesData) => {
                 return prevNotesData.map((note) => {
@@ -152,7 +171,7 @@ export const Notes = () => {
             console.log('Error saving notes:', error);
         }
     };
-    
+
 
 
 
@@ -166,7 +185,7 @@ export const Notes = () => {
 
                 {
 
-                    notesData?.map((data, index) => {
+                    data?.map((data, index) => {
                         return (
                             <Fragment key={index}>
 
@@ -212,10 +231,10 @@ export const Notes = () => {
                 }
 
                 <motion.div
-                initial={{x:40, opacity:0}}
-                animate={{x:0,opacity:1}}
-                du transition={{ type: "spring", delay:0.3 , duration: 1, stiffness:300 }}
-                className='upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem]  md:bottom-[5rem]' onClick={() => setUploadPage(true)}>
+                    initial={{ x: 40, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    du transition={{ type: "spring", delay: 0.3, duration: 1, stiffness: 300 }}
+                    className='upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem]  md:bottom-[5rem]' onClick={() => setUploadPage(true)}>
                     <FaFileUpload />
                 </motion.div>
             </div>
