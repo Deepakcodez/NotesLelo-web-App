@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { FaFileUpload } from "react-icons/fa";
 import { createGroupContext } from '../../../Context';
 import axios from 'axios';
@@ -18,33 +18,11 @@ export const Notes = () => {
     const [notesData, setNotesData] = useState([]);
     const [noteSaved, setNoteSaved] = useState([])
     const [notesId, setNotesId] = useState("");
-
+    const scrollRef = useRef();
 
     const token = localStorage.getItem("useDataToken")
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await axios.get(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`, {
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                     "token": token,
-    //                 },
-    //                 withCredentials: true,
-    //             });
-    //             // console.log('>>>>>>>>>>>', response.data.data[0].user)
-    //             setNotesData(response.data.data);
-    //             setNoteSaved(response.data.data)
-
-    //         } catch (error) {
-    //             console.error("Error fetching notes:", error);
-    //             // Handle error as needed
-    //         }
-    //     };
-
-    //     fetchData(); // Call the fetchData function
-
-    // }, [groupId, isUploadPage]); // Add 'groupId' as a dependency
+    
 
     const fetcher = async (url) => {
         const response = await axios.get(url, {
@@ -93,6 +71,8 @@ export const Notes = () => {
             console.error('Error downloading file:', error);
         }
     };
+
+
 
     const likeClickHandler = async (notesId) => {
         // Optimistically update the cache
@@ -163,7 +143,14 @@ export const Notes = () => {
             // Optionally, rollback the optimistic update here if the request fails
         }
     };
+    
 
+    
+  useEffect(() => {
+
+    // Scroll to the bottom of the messages when they change
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
 
 
@@ -192,7 +179,9 @@ export const Notes = () => {
                                         duration: .2,
                                         delay: (index * .3)
 
-                                    }} className={`  ${data.notes?.owner === currentUser._id ? "self-end" : "self-start"}  flex flex-col  rounded-md h-[15rem] w-[15rem] sm:w-[20rem] bg-slate-700 border-gray-200`} style={{ border: "1px solid gray" }} >
+                                    }}
+                                    ref={scrollRef}
+                                    className={`  ${data.notes?.owner === currentUser._id ? "self-end" : "self-start"}  flex flex-col  rounded-md h-[15rem] w-[15rem] sm:w-[20rem] bg-slate-700 border-gray-200`} style={{ border: "1px solid gray" }} >
                                     <div className='h-[5rem] w-full  text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl'>NOTESLELO</div>
                                     <div className='px-2'>
                                         <div className='flex justify-between'>
