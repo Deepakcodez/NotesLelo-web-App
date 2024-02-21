@@ -105,7 +105,7 @@ export const GroupChat = () => {
           <ul className="flex h-full items-center justify-between px-5 w-full">
             <li className="font-bold text-white text-xl flex items-center gap-2  w-[15rem]">
               <Link to="/" className="text-3xl md:hidden"><  MdChevronLeft /></Link>
-              {groupData.title ? groupData.title.toUpperCase() : <div className="bg-slate-500/25 w-[13rem] h-[1.5rem] rounded-md animate-pulse duration-1000"></div>}
+              {groupData.title ?  groupData.title.toUpperCase() : <div className="bg-slate-500/25 w-[13rem] h-[1.5rem] rounded-md animate-pulse duration-1000"></div>}
             </li>
             <li className="text-white flex items-center gap-3" >
               <div ref={optionIconRef} onClick={optionClickHandler}><SlOptionsVertical /></div>

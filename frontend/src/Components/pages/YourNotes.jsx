@@ -105,7 +105,8 @@ function YourNotes() {
                   initial={{ opacity: 0, x: -60 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{
-                    ease: "linear",
+                    type: "spring",
+                    stiffness: 150,
                     duration: .2,
                     delay: (index * 0.3)
                   }} className='bg-slate-800 rounded-md' style={{ border: "1px solid gray" }} >
