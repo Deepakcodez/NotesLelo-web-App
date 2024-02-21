@@ -64,10 +64,9 @@ export const Notes = () => {
         setNoteSaved(data)
     }, [data]);
 
-    // Your existing event handlers (handleDownload, likeClickHandler, saveHandler) go here unchanged.
 
-    if (error) return <div>Error fetching data. Please try again later.</div>;
-    if (!data) return <div>Loading...</div>;
+
+
 
 
 
@@ -104,13 +103,13 @@ export const Notes = () => {
                     const updatedLikes = isLiked
                         ? note.notes.likes.filter(user => user._id !== currentUser._id)
                         : [...note.notes.likes, { _id: currentUser._id }]; // Assuming user object structure
-    
+
                     return { ...note, notes: { ...note.notes, likes: updatedLikes } };
                 }
                 return note;
             });
         }, false); // 'false' to not revalidate immediately, as we're going to call the server next
-    
+
         try {
             // Now, send the like request to the server
             await axios.put(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/addLike/${notesId}`, {}, {
@@ -120,7 +119,7 @@ export const Notes = () => {
                 },
                 withCredentials: true,
             });
-    
+
             // Optionally revalidate the cache after the server response
             mutate(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`);
         } catch (error) {
@@ -128,7 +127,7 @@ export const Notes = () => {
             // Optionally, rollback the optimistic update here if the request fails
         }
     };
-    
+
 
 
     const saveHandler = async (notesId) => {
@@ -140,13 +139,13 @@ export const Notes = () => {
                     const updatedSaved = isUserSaved
                         ? note.notes.saved.filter(userdata => userdata._id !== currentUser._id)
                         : [...note.notes.saved, currentUser]; // Assuming currentUser object structure is correct and matches the expected format
-    
+
                     return { ...note, notes: { ...note.notes, saved: updatedSaved } };
                 }
                 return note;
             });
         }, false); // 'false' to not revalidate immediately, as we're going to call the server next
-    
+
         try {
             // Now, send the save request to the server
             await axios.post(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/saveNotes/${notesId}`, {}, {
@@ -156,7 +155,7 @@ export const Notes = () => {
                 },
                 withCredentials: true,
             });
-    
+
             // Optionally revalidate the cache after the server response
             mutate(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`);
         } catch (error) {
@@ -164,11 +163,12 @@ export const Notes = () => {
             // Optionally, rollback the optimistic update here if the request fails
         }
     };
-    
 
 
 
 
+    if (error) return <div>Error fetching data. Please try again later.</div>;
+    if (!data) return <div>Loading...</div>;
 
 
 
@@ -184,7 +184,15 @@ export const Notes = () => {
                         return (
                             <Fragment key={index}>
 
-                                <div className={`  ${data.notes?.owner === currentUser._id ? "self-end" : "self-start"}  flex flex-col  rounded-md h-[15rem] w-[15rem] sm:w-[20rem] bg-slate-700 border-gray-200`} style={{ border: "1px solid gray" }} >
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1, }}
+                                    transition={{
+                                        ease: "linear",
+                                        duration: .2,
+                                        delay: (index * .3)
+
+                                    }} className={`  ${data.notes?.owner === currentUser._id ? "self-end" : "self-start"}  flex flex-col  rounded-md h-[15rem] w-[15rem] sm:w-[20rem] bg-slate-700 border-gray-200`} style={{ border: "1px solid gray" }} >
                                     <div className='h-[5rem] w-full  text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl'>NOTESLELO</div>
                                     <div className='px-2'>
                                         <div className='flex justify-between'>
@@ -215,7 +223,7 @@ export const Notes = () => {
                                             <div className='text-green-900 p-1'><BsDownload /></div>
                                         </div>
                                     </div>
-                                </div>
+                                </motion.div>
 
 
 
