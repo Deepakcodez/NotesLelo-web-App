@@ -54,6 +54,7 @@ export const UploadFile = () => {
       setIsUploading(false);
       setUploadPage(false)
       mutate('https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes')
+      mutate(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`)
       // console.log('File upload response:', response.data);
       
       // Handle the file upload response as needed

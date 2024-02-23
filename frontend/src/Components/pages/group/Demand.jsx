@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { createGroupContext } from '../../../Context';
 import axios from 'axios';
+import { mutate } from 'swr';
 
 export const Demand = () => {
     const { setDemand } = useContext(createGroupContext);
+    const [isPosting, setPosting] = useState(false)
     const [warning, setWarning] = useState(false);
     const [textInput, setTextInput] = useState("");
     const groupId = localStorage.getItem('groupId');
@@ -18,6 +20,7 @@ export const Demand = () => {
         }
 
         try {
+            setPosting(true)
             const resp = await axios.post(
                 'https://notes-lelo-app-backend.vercel.app/api/v1/demand/post',
                 {
@@ -33,6 +36,7 @@ export const Demand = () => {
             );
 
             if (resp.data.status === 200) {
+                mutate(`https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`)
                 setDemand(false);
             }
         } catch (error) {
@@ -73,7 +77,7 @@ export const Demand = () => {
                         type="submit"
                         className="bg-blue-400 rounded md py-1.5 w-full mt-3 hover:bg-blue-500 hover:text-white"
                     >
-                        Post
+                        {!isPosting? "Post" : " Posting......."}
                     </button>
                     <button
                         onClick={() => setDemand(false)}

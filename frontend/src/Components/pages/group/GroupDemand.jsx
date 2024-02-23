@@ -3,9 +3,11 @@ import { FaFileUpload } from "react-icons/fa";
 import { createGroupContext } from '../../../Context';
 import axios from 'axios';
 import { IoHandLeftOutline } from "react-icons/io5";
-import { motion  } from 'framer-motion'
+import { motion } from 'framer-motion'
 import useSWR from 'swr';
-import { DemandGhost } from '../../shared/ghost/DemandGhost';
+import Lottie from "lottie-react";
+import loaderBook from '.././../../assets/loaderbook.json';
+
 
 export const GroupDemand = () => {
   const scrollRef = useRef();
@@ -25,28 +27,33 @@ export const GroupDemand = () => {
   }, []);
 
 
-  
+
   const { data, error } = useSWR(`https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`, async (url) => {
 
-  try {
-    const resp = await axios.get(url)
-    console.log('>>>>>>>>>>>', resp.data.data)
-    return resp.data.data;
+    try {
+      const resp = await axios.get(url)
+      console.log('>>>>>>>>>>>', resp.data.data)
+      return resp.data.data;
 
 
-  } catch (error) {
-    console.log('>>>>>>>>>>>', error)
+    } catch (error) {
+      console.log('>>>>>>>>>>>', error)
+    }
   }
-}
 
-)
-if (error) {
-  console.log("Error fetching data:", error);
-  return <div className="text-white font-semibold text-lg">Error fetching data. Please try again later.🤖</div>;
-}
-if (!data) {
-  return <DemandGhost />;
-}
+  )
+  if (error) {
+    console.log("Error fetching data:", error);
+    return <div className="text-white font-semibold text-lg">Error fetching data. Please try again later.🤖</div>;
+  }
+  if (!data) {
+    return (
+      <div className="flex h-[80vh] w-full justify-center items-center">
+        <Lottie className='h-[5rem]' animationData={loaderBook} loop={true} />
+      </div>
+    )
+
+  }
 
 
 
@@ -64,13 +71,13 @@ if (!data) {
 
               <Fragment key={index}>
                 <motion.div
-                initial={{ opacity:0}}
-                  animate={{  opacity:1, }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, }}
                   transition={{
                     ease: "linear",
                     duration: .2,
-                    delay : (index*.3)
-                    
+                    delay: (index * .3)
+
                   }}
                   ref={scrollRef} className={` ${dmd.demand.from === currentUser._id ? "self-end" : "self-start"} min-h-[10rem] h-  max-h-[20rem] w-[90%] sm:w-[70%] md:w-[40%] bg-slate-600 rounded-lg px-1  border-gray-200`} style={{ borderTop: "1rem solid orange", borderBottom: "1px solid white" }}>
                   <div className='flex justify-between'>

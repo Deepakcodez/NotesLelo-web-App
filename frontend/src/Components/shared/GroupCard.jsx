@@ -27,7 +27,7 @@ export const GroupCard = ({ fetching, refrenceBox }) => {
           },
         })
         console.log('>>>>>>>>>>>', resp.data.Groups)
-        if (!resp.data.data) {
+        if (resp.data.Groups.length==0) {
           fetching(true)
         }
         return resp.data.Groups

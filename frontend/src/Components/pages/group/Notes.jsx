@@ -10,7 +10,8 @@ import { GoBookmarkFill } from "react-icons/go";
 import { BsDownload } from "react-icons/bs";
 import { motion } from 'framer-motion'
 import useSWR, { mutate } from 'swr';
-
+import Lottie from "lottie-react";
+import loaderBook from '.././../../assets/loaderbook.json';
 
 export const Notes = () => {
     const groupId = localStorage.getItem("groupId");
@@ -22,7 +23,7 @@ export const Notes = () => {
 
     const token = localStorage.getItem("useDataToken")
 
-    
+
 
     const fetcher = async (url) => {
         const response = await axios.get(url, {
@@ -143,19 +144,23 @@ export const Notes = () => {
             // Optionally, rollback the optimistic update here if the request fails
         }
     };
-    
 
-    
-  useEffect(() => {
 
-    // Scroll to the bottom of the messages when they change
-    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
+
+    useEffect(() => {
+
+        // Scroll to the bottom of the messages when they change
+        scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, []);
 
 
 
     if (error) return <div>Error fetching data. Please try again later.</div>;
-    if (!data) return <div>Loading...</div>;
+    // if (!data) return (
+    //     <div className="flex h-[70vh] w-full justify-center items-center">
+    //         <Lottie className='h-[5rem]' animationData={loaderBook} loop={true} />
+    //     </div>
+    // );
 
 
 
@@ -194,13 +199,13 @@ export const Notes = () => {
                                     </div>
                                     <div className='footer flex justify-between items-center px-3 text-xl py-2  text-white '>
                                         <div className='flex gap-2'>
-                                            <motion.div whileTap={{ scale: 0.75 }}onClick={() => { likeClickHandler(data.notes._id) }}>
+                                            <motion.div whileTap={{ scale: 0.75 }} onClick={() => { likeClickHandler(data.notes._id) }}>
                                                 {data.notes?.likes.some(userdata => userdata._id === currentUser._id) ?
                                                     <BsHandThumbsUpFill className='text-red-400' /> : <BsHandThumbsUp />
                                                 }
                                             </motion.div>
                                             {/* <div></div> */}
-                                            <motion.div whileTap={{ scale: 0.75 ,}}><LiaComment /></motion.div>
+                                            <motion.div whileTap={{ scale: 0.75, }}><LiaComment /></motion.div>
                                             <motion.div whileTap={{ scale: 0.75 }} onClick={() => { saveHandler(data.notes?._id) }}>
                                                 {/* Render save icon based on whether user has saved the note or not */}
                                                 {data.notes?.saved.some(user => user._id === currentUser._id) ?
@@ -208,7 +213,7 @@ export const Notes = () => {
                                                 }
                                             </motion.div>
                                         </div>
-                                        <motion.div whileTap={{ scale: 0.85 }} className='bg-cyan-400 rounded-lg border-gray-300 border-2 hover:bg-cyan-500 hover:shadow-md ' onClick={() => { handleDownload(data.notes?.pdf, data.notes?.caption) }}>
+                                        <motion.div whileTap={{ scale: 0.85 }} className='  bg-cyan-400 rounded-lg border-gray-300 border-2 hover:bg-cyan-500 hover:shadow-md ' onClick={() => { handleDownload(data.notes?.pdf, data.notes?.caption) }}>
                                             <div className='text-green-900 p-1'><BsDownload /></div>
                                         </motion.div>
                                     </div>
@@ -226,7 +231,7 @@ export const Notes = () => {
                     initial={{ x: 40, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     du transition={{ type: "spring", delay: 0.3, duration: 1, stiffness: 300 }}
-                    className='upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem]  md:bottom-[5rem]' onClick={() => setUploadPage(true)}>
+                    className=' h-[5rem ] upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem]  md:bottom-[5rem]' onClick={() => setUploadPage(true)}>
                     <FaFileUpload />
                 </motion.div>
             </div>

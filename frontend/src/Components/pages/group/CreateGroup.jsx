@@ -58,8 +58,7 @@ export const CreateGroup = () => {
       if (response.status == 200) {
         // If successful, navigate and reset form
 
-        mutate('https://notes-lelo-app-backend.vercel.app/api/v1/group/all',
-        'https://notes-lelo-app-backend.vercel.app/api/v1/notification/latest_notification');
+        mutate('https://notes-lelo-app-backend.vercel.app/api/v1/group/all');
         setGroupDetail({
           title: "",
           description: "",
