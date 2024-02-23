@@ -51,7 +51,7 @@ function Sidebar() {
 
   return (
     <>
-    <div className="h-full bg-slate-800/75">
+    <div className="h-full bg-slate-800/75  border-r-[.5px] border-gray-400/25">
       <section className=" sidebar  hidden  md:inline-block  ">
         <motion.div
           animate={{
