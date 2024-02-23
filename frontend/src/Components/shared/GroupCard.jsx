@@ -26,6 +26,10 @@ export const GroupCard = ({ fetching, refrenceBox }) => {
             token: token,
           },
         })
+        console.log('>>>>>>>>>>>', resp.data.Groups)
+        if (!resp.data.data) {
+          fetching(true)
+        }
         return resp.data.Groups
 
       } catch (error) {
@@ -61,7 +65,7 @@ export const GroupCard = ({ fetching, refrenceBox }) => {
     return <div className="text-white font-semibold text-lg">Error fetching data. Please try again later.🤖</div>;
   }
 
-  if (!data) {
+  if (!data ) {
     return <HomePageGhost />;
   }
 
