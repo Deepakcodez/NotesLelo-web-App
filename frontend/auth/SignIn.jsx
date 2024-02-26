@@ -3,13 +3,15 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
 import loadingAnimation from '../src/assets/lading.json';
+import { Alert } from "../src/Components/shared/Alert";
 
 
 function SignIn() {
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-
+  const [alertmsg, setAlertmsg] = useState(null)
+  const [alertType, setAlertType] = useState('')
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
@@ -26,12 +28,20 @@ function SignIn() {
     e.preventDefault();
     const { email, password } = inputValue;
     if (email.trim() === "") {
-      alert("please enter email");
+      setAlertmsg("Please Fill credentials")
+      setAlertType("warning")
     } else if (!email.includes("@")) {
-      alert("please enter valid email");
+      setAlertmsg("Enter Valid Email  ")
+      setAlertType("warning")
     } else if (password.trim() === "") {
-      alert("please enter password");
-    } else {
+      setAlertmsg("Enter Your Secret Password")
+      setAlertType("warning")
+    }
+    else if(password.trim().length < 6){
+      setAlertmsg("Password Character less than minimum")
+      setAlertType("warning")
+    }
+    else {
       try {
         setIsLoading(true)
         const response = await axios.post("https://notes-lelo-app-backend.vercel.app/api/v1/user/login", inputValue,
@@ -51,8 +61,12 @@ function SignIn() {
 
       } catch (error) {
         setIsLoading(false)
-        console.log(">>>>>>>>>>>Error:", error);
-        alert(error.response.data.message)
+        // console.log(">>>>>>>>>>>Error:", error);
+        // alert(error.response.data.message)
+        setAlertmsg(error.response.data.message)
+        setAlertType("error")
+      
+
         throw error.response ? error.response.data : { message: "Network error" };
       }
     }
@@ -62,7 +76,7 @@ function SignIn() {
     <>
       <div className=" w-[90%] sm:w-[30rem] text-center bg-transparent relative z-40">
         <h1 className="text-xl font-bold mb-6 text-white">📃Notes lelo
-          <h1 className="text-xs font-thin">Social media for student</h1>
+          <h1 className="text-xs font-thin">Social media for students</h1>
         </h1>
         <h3 className="text-2xl font-bold mb-1 text-white"> Log in to your account</h3>
         <h5 className="text-xs text-gray-400">
@@ -77,7 +91,7 @@ function SignIn() {
             Email
           </label>
           <div className="mb-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 ">
+            <div className="flex  rounded-md shadow-sm ring-1 ring-inset focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 ">
               <input
                 type="text"
                 name="email"
@@ -129,6 +143,12 @@ function SignIn() {
       </div>
       <div className="circle h-80 w-80 opacity-30  sm:opacity-50 rounded-full bg-blue-600 sm:bg-blue-600 absolute top-0 left-0 z-1  blur-3xl "></div>
       <div className="circle h-80 w-80 opacity-5   rounded-full  sm:bg-red-400 absolute  left-0 z-1  blur-3xl "></div>
+
+      {
+        alertmsg &&
+
+        <Alert msg={alertmsg }  type={alertType} setmsg={setAlertmsg} />
+      }
     </>
   );
 }

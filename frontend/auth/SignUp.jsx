@@ -73,7 +73,7 @@ function SignUp() {
     <>
       <div className=" w-[90%] sm:w-[30rem] text-center bg-transparent relative z-40">
         <h1 className="text-xl font-bold mb-6 bg-transparent text-white">📃Notes lelo
-          <h1 className="text-xs font-thin">Social media for student</h1>
+          <h1 className="text-xs font-thin">Social media for students</h1>
         </h1>
         <h3 className="text-2xl font-bold mb-1 bg-transparent text-white">
           {" "}
