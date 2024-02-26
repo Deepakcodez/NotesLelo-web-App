@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import errorimg from '../assets/404.png'
 function PageNotFound() {
   const navigate = useNavigate();
 
@@ -12,10 +12,10 @@ function PageNotFound() {
 
   return (
     <>
-      <h1 className="flex flex-1 justify-center h-screen w-screen   items-center flex-col py-10">
+      <h1 className="flex flex-1 justify-center  w-auto   items-center flex-col py-10">
         <img
           className="h-80"
-          src="/src/assets/404.png"
+          src={errorimg}
           alt="page not found"
         />
       </h1>
