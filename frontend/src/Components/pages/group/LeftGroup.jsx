@@ -25,7 +25,7 @@ export const LeftGroup = () => {
   const leftGroup = async (e) => {
     e.preventDefault();
 
-    if (inputId === id) {
+    if (inputId.trim() === id) {
       try {
         setIsLoadingBtn(true)
           await axios.delete(`https://notes-lelo-app-backend.vercel.app/api/v1/group/left/${id}`,

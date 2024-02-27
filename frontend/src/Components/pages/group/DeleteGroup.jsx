@@ -24,7 +24,7 @@ export const DeleteGroup = () => {
   const deleteGroup = async (e) => {
     e.preventDefault();
 
-    if (inputId === id) {
+    if (inputId.trim() === id) {
       try {
         setIsLoadingBtn(true)
          const response =  await axios.delete(`https://notes-lelo-app-backend.vercel.app/api/v1/group/delete/${id}`,

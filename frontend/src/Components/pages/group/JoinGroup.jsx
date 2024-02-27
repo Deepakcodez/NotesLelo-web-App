@@ -6,54 +6,50 @@ import Lottie from "lottie-react";
 import loadingAnimation from '../../../assets/lading.json';
 export const JoinGroup = () => {
 
-    const {JoinGroup,setJoinGroup } = useContext(createGroupContext);
+    const {setJoinGroup } = useContext(createGroupContext);
     const [warning,setWarning] = useState(false)
     const [isLoadingBtn, setIsLoadingBtn] = useState(false);
     const navigate = useNavigate()
-    const [Id , setId] = useState({"id":""});
+    const [groupId , setGroupId] = useState('');
     const token = localStorage.getItem("useDataToken");
 
     const inputHandler = (e) => {
-      const { name, value } = e.target;
-      setId({
-        ...Id,
-        [name]: value,
-      });
+      setGroupId(e.target.value);
     };
 
-    const joinHandler=async(e)=>{
-      e.preventDefault()
-
-      if(!Id.id){
-          setWarning(true)
-          return;
+    const joinHandler = async (e) => {
+      e.preventDefault();
+    
+      if (!groupId) {
+        setWarning(true);
+        return;
       }
-
+    
       try {
-        setIsLoadingBtn(true)
-        const resp = await axios.post('https://notes-lelo-app-backend.vercel.app/api/v1/group/join',Id,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            token: token,
-            withCredentials: true,
-          },
-        }
-        )
-        if(resp.status===200){
+        setIsLoadingBtn(true);
+        const resp = await axios.post(
+          `https://notes-lelo-app-backend.vercel.app/api/v1/group/join`,
+          {groupId}, 
+          {
+            headers: {
+              "Content-Type": "application/json",
+              token: token,
+              withCredentials: true,
+            },
+          }
+        );
+        if (resp.status === 200) {
           navigate("/");
-          setIsLoadingBtn(false)
-
+          setIsLoadingBtn(false);
         }
-
       } catch (error) {
-        console.log('>>>>>>>>>>>', error)
+        console.log("Error:", error);
         navigate("/");
-        setIsLoadingBtn(false)
-
+        setIsLoadingBtn(false);
       }
-      setJoinGroup(false)
-    }
+      setJoinGroup(false);
+    };
+    
 
   return (
     <>
@@ -71,8 +67,8 @@ export const JoinGroup = () => {
                 <input
                   type="text"
                   name="id"
-                  value={Id.id}
-                  onChange={inputHandler}
+                  value={groupId}
+                  onChange={(e)=>inputHandler(e)}
                   placeholder="Enter Group ID"
                   className="block flex-1 border-0 text-white bg-transparent py-1.5 pl-1 bg-gray-700   rounded-md text-white-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 />
