@@ -4,11 +4,12 @@ import { MdChevronLeft } from "react-icons/md";
 import axios from "axios";
 import { Link, NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { createGroupContext } from "../../../Context";
+import { GroupDetails } from "./GroupDetails";
 
 export const GroupChat = () => {
 
   const location = useLocation();
-  const { setGroupDeleteOpt, demand, setDemand, currentUser, setShowLeftGroup, setInviteForm } = useContext(createGroupContext);
+  const { setGroupDeleteOpt, demand, setDemand, currentUser, setShowLeftGroup, setInviteForm ,showGroupMembers, setGroupMembers} = useContext(createGroupContext);
   const [option, setOption] = useState(false);
   const optionModelRef = useRef();
   const optionIconRef = useRef();
@@ -129,7 +130,7 @@ export const GroupChat = () => {
             ref={optionModelRef}
             className="optionModel  absolute right-5 top-9 bg-slate-800 w-[10rem] rounded-md h-auto min-h-[2rem] shadow-md py-2"
           >
-            <div className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer">
+            <div className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer" onClick={()=>setGroupMembers(!showGroupMembers)}>
               Members{" "}
             </div>
             <div className="text-white hover:bg-slate-600 ps-4 py-3 cursor-pointer">
@@ -149,6 +150,9 @@ export const GroupChat = () => {
             </div>
           </div>
         )}
+     
+     {showGroupMembers && <GroupDetails/>}
+       
 
       </div>
     </Fragment>

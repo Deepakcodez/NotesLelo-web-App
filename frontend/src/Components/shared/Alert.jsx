@@ -33,7 +33,7 @@ export const Alert = ({ msg ,setmsg,  type}) => {
                 clipRule="evenodd"
               />
             </svg>
-            <strong className="block font-medium">Something went wrong</strong>
+            <strong className="block font-medium">Noteslelo</strong>
           </div>
           <p className={`mt-2 text-sm ${type === "error" ? 'text-red-700' : type === 'warning' ? 'text-yellow-700' : ''}`}>{msg}</p>
         </motion.div>

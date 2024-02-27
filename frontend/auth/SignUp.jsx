@@ -4,8 +4,11 @@ import "../src/App.css";
 import axios from "axios";
 import Lottie from "lottie-react";
 import loadingAnimation from '../src/assets/lading.json';
+import { Alert } from "../src/Components/shared/Alert";
 function SignUp() {
   const navigate = useNavigate();
+  const [alertmsg, setAlertmsg] = useState(null)
+  const [alertType, setAlertType] = useState('')
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState({
     name: "",
@@ -26,19 +29,26 @@ function SignUp() {
     e.preventDefault();
     const { name, email, password, confirmPassword } = inputValue;
     if (name.trim() === "") {
-      alert("please enter name");
+      setAlertmsg("Enter Name  ")
+      setAlertType("warning")
     } else if (email.trim() === "") {
-      alert("please enter email");
+      setAlertmsg("Enter Email")
+      setAlertType("warning")
     } else if (!email.includes("@")) {
-      alert("please enter valid email");
+      setAlertmsg("Enter Valid Email  ")
+      setAlertType("warning")
     } else if (password.trim() === "") {
-      alert("please enter password");
+      setAlertmsg("Enter password  ")
+      setAlertType("warning")
     } else if (password.length < 6) {
-      alert("password must be 6 character");
+      setAlertmsg("Password must be 6 character  ")
+      setAlertType("warning")
     } else if (confirmPassword.trim() === "") {
-      alert("please confirm password");
+      setAlertmsg("Confirm password ")
+      setAlertType("warning")
     } else if (password !== confirmPassword) {
-      alert("confirm password doesn't match");
+      setAlertmsg("Password didn't matched")
+      setAlertType("warning")
     } else {
       try {
         setIsLoading(true)
@@ -61,9 +71,11 @@ function SignUp() {
         }
 
       } catch (error) {
-        console.log('>>>>>>>>>>>', error.response.data.message)
+        // console.log('>>>>>>>>>>>', error.response.data.message)
         setIsLoading(false)
         alert(error.response.data.message)
+        setAlertmsg(error.response.data.message)
+        setAlertType("error")
       }
 
     }
@@ -184,6 +196,11 @@ function SignUp() {
       </div>
       <div className="circle h-80 w-80 opacity-30  sm:opacity-50 rounded-full bg-blue-600 sm:bg-blue-600 absolute top-0 left-0 z-1  blur-3xl "></div>
       <div className="circle h-80 w-80 opacity-5   rounded-full  sm:bg-red-400 absolute  left-0 z-1  blur-3xl "></div>
+      {
+        alertmsg &&
+
+        <Alert msg={alertmsg }  type={alertType} setmsg={setAlertmsg} />
+      }
     </>
   );
 }
