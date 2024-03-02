@@ -96,6 +96,7 @@ function Sidebar() {
                       animate="show"
                       exit="hidden"
                       className="whitespace-nowrap text-white"
+                      
                     >
                       {items.title}
                     </motion.div>
@@ -106,6 +107,7 @@ function Sidebar() {
           </section>
         </motion.div>
       </section>
+    
       </div>
     </>
   );

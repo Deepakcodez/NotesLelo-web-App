@@ -20,7 +20,6 @@ import { GroupChat } from "./Components/pages/group/GroupChat";
 import {  GroupDemand } from "./Components/pages/group/GroupDemand";
 import { Notes } from "./Components/pages/group/Notes";
 
-
 function App() {
 
   return (

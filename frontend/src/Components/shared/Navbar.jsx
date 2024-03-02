@@ -4,6 +4,8 @@ import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
 import { GoPlus } from "react-icons/go";
 import { Context, createGroupContext } from "../../Context";
 import  logo from '../../assets/logo.png'
+import {motion} from 'framer-motion'
+
 
 function Navbar(props) {
   const location  = useLocation()
@@ -61,16 +63,20 @@ const profileClick=()=>{
         <img className="h-[1.5rem] ps-5" src={logo} alt="Logo" />
         </NavLink>{" "}
         <section className="rightnav flex items-center gap-3 relative ">
-          <div ref={logoRef}>
+          <div ref={logoRef}   >
             <GoPlus
               className="text-4xl text-white bg-transparent rounded-full p-[.2rem] hover:bg-slate-700"
               onClick={addHandler}
+             
             />
           </div>
 
           {/* popup */}
           {ispopUp && (
-            <div
+            <motion.div
+            initial={{ opacity: 0, scale: 0 ,translateY:-50}}
+            animate={{ opacity: 1, scale: 1 , translateY:30 ,}}
+            transition={{ type: "spring", stiffness: 500, damping: 25 ,}}
               ref={popupRef}
               className="popup absolute z-30 bg-slate-500 text-white shadow-lg py-1 w-[10rem]  top-8 end-10 rounded-sm  "
             >
@@ -84,7 +90,7 @@ const profileClick=()=>{
                   <h1 onClick={()=>setJoinGroup(true)}>Join Group</h1>
                 </li>
               </ul>
-            </div>
+            </motion.div>
           )}
 
           <div
@@ -94,6 +100,7 @@ const profileClick=()=>{
           </div>
         </section>
       </div>
+      
     </section>
   );
 }
