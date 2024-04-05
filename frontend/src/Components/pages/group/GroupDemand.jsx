@@ -44,7 +44,7 @@ export const GroupDemand = () => {
   )
   if (error) {
     console.log("Error fetching data:", error);
-    return <div className="text-white font-semibold text-lg">Error fetching data. Please try again later.🤖</div>;
+    return <div className="text-white p-5 text-white font-semibold text-lg">Error fetching data. Please try again later.🤖</div>;
   }
   if (!data) {
     return (
