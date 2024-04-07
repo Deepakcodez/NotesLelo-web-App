@@ -21,6 +21,8 @@ function Profile() {
   const token = localStorage.getItem("useDataToken")
 
   useEffect(() => {
+
+    console.log('>>>>>>>>>>>current user', currentUser)
     const handleClickOutside = (e) => {
       if (popupRef.current && !popupRef.current.contains(e.target) && optionIconRef.current && !optionIconRef.current.contains(e.target)) {
         setProfileOptionModal(false);
@@ -113,7 +115,7 @@ function Profile() {
 
   if (!currentUser || !currentUser.name || loader) {
     // You can return a loading indicator or handle this case accordingly
-    return <div className='h-screen w-full flex justify-center items-center  overflow-y-scroll no-scrollbar'>
+    return <div className='h-screen w-full flex justify-center items-center  overflow-y-scroll no-scrollbar '>
        <Lottie className='h-[5rem]' animationData={loaderBook} loop={true} />
     </div>;
   }
@@ -148,7 +150,7 @@ function Profile() {
 
           </div>
           <div className='flex flex-col justify-center items-center gap-1'>
-            <h1 className='text-white text-4xl  font-semibold'>40</h1>
+            <h1 className='text-white text-4xl  font-semibold'>{currentUser?.ownNotesSaves?.length}</h1>
             <FaBookmark className='text-blue-400 text-3xl' />
             <h1 className='text-white '>Saves</h1>
           </div>
