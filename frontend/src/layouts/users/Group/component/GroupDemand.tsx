@@ -7,19 +7,12 @@ import useSWR from "swr";
 import Lottie from "lottie-react";
 import loaderBook from "../../../../assets/loaderbook.json";
 
-interface Demand {
-  from: string;
-  message: string;
-  createdAt: string;
-  user?: {
-    name: string;
-  };
-}
+
 
 export const GroupDemand: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const groupId = localStorage.getItem("groupId") as string;
-  const [newDemands, setNewDemands] = useState<Demand[]>([]);
+  const [newDemands, setNewDemands] = useState<any[]>([]);
 
   const { demand, setDemand, currentUser } = useContext<any>(createGroupContext);
 
@@ -28,7 +21,7 @@ export const GroupDemand: React.FC = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [newDemands]); // Ensure this runs when new demands are added
 
-  const { data, error } = useSWR<Demand[]>(
+  const { data, error } = useSWR<any[]>(
     `https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`,
     async (url: string) => {
       try {
@@ -41,6 +34,11 @@ export const GroupDemand: React.FC = () => {
       }
     }
   );
+
+  useEffect(() =>{
+    if (data) {
+      console.log('>>>>>>>>>>>data', data) }
+  },[data])
 
   if (error) {
     console.log("Error fetching data:", error);
@@ -64,7 +62,7 @@ export const GroupDemand: React.FC = () => {
       <div
         className="demandContent flex flex-col gap-5 overflow-y-scroll no-scrollbar w-full h-[calc(100vh-10.15rem)] py-3 pt-[3rem] px-6"
       >
-        {data.map((dmd, index) => (
+        {data?.map((dmd, index) => (
           <Fragment key={index}>
             <motion.div
               initial={{ opacity: 0 }}
@@ -90,11 +88,11 @@ export const GroupDemand: React.FC = () => {
                   {dmd.user?.name.toUpperCase()}
                 </h1>
                 <div className="text-white/25">
-                  {new Date(dmd.createdAt).toLocaleString()}
+                  {new Date(dmd.demand.createdAt).toLocaleString()}
                 </div>
               </div>
               <div className="messageArea h-[80%] overflow-y-scroll text-2xl font-bold text-white p-5 overflow-auto no-scrollbar">
-                {dmd.message}
+                {dmd?.demand?.message || "Something wrong"}
               </div>
             </motion.div>
           </Fragment>
