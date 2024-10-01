@@ -115,10 +115,10 @@ export const GroupChat = () => {
         </div>
         <div className='options  flex justify-evenly  border-t-[1px] border-slate-400  '>
           <NavLink to="/group/demand" className="bg-slate-600/25 w-1/2 text-center py-2 border-r-[1px]">
-            <h1 className={`${location.pathname === "/group/demand" ? "text-orange-200" : "text-white"} font-bold`}>Demand</h1>
+            <h1 className={`${location.pathname === "/group/demand" ? "text-orange-400" : "text-white"} font-bold`}>Demand</h1>
           </NavLink>
           <NavLink to="/group/notes" className="bg-slate-600/25 w-1/2 text-center py-2 ">
-            <h1 className={` ${location.pathname === "/group/notes" ? "text-blue-300" : "text-white"}  font-bold`}>Notes</h1>
+            <h1 className={` ${location.pathname === "/group/notes" ? "text-blue-400" : "text-white"}  font-bold`}>Notes</h1>
           </NavLink>
         </div>
 
