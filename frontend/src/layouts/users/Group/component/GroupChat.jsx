@@ -145,7 +145,7 @@ export const GroupChat = () => {
             <h1
               className={` ${
                 location.pathname === "/group/notes"
-                  ? "text-blue-300"
+                  ? "text-pink-300"
                   : "text-white"
               }  font-bold`}
             >
@@ -154,7 +154,7 @@ export const GroupChat = () => {
           </NavLink>
         </div>
 
-        <Outlet />
+        <Outlet/>
 
         {option && (
           <div
