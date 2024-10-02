@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { BsDownload } from "react-icons/bs";
 import Lottie from "lottie-react";
 import loaderBook from '../../../../assets/loaderbook.json';
+import handleDownload from '@/utils/handleDownload';
+
 
 // Define the structure of a note
 interface Note {
@@ -17,17 +19,9 @@ interface Note {
   pdf: { url: string }; // Assuming pdf has a url property
 }
 
-// Define the structure of the current user
-interface User {
-  _id: string;
-  name: string;
-  posts: Array<any>; // You may want to replace `any` with a more specific type
-  likesOnOwnNotes: Array<any>; // Same here
-  ownNotesSaves: Array<any>; // Same here
-}
 
 const Profile: React.FC = () => {
-  const { currentUser } = useContext(createGroupContext) as { currentUser: User };
+  const {currentUser } = useContext<any>(createGroupContext);
   const [notesData, setNotesData] = useState<Note[]>([]);
   const [loader, setLoader] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -37,7 +31,6 @@ const Profile: React.FC = () => {
   const token = localStorage.getItem("useDataToken");
 
   useEffect(() => {
-    console.log('>>>>>>>>>>>current user', currentUser);
 
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -76,28 +69,7 @@ const Profile: React.FC = () => {
     navigate("/signUp");
   };
 
-  const handleDownload = async (fileUrl: string, fileName: string) => {
-    try {
-      const response = await axios.get(fileUrl, { responseType: 'blob' });
-      const blob = new Blob([response.data], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
 
-      // Create a virtual anchor element
-      const anchor = document.createElement('a');
-      anchor.href = url;
-      anchor.download = fileName;
-
-      // Simulate a click on the anchor element to trigger the download
-      document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
-
-      // Release the Object URL
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Error downloading file:', error);
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {

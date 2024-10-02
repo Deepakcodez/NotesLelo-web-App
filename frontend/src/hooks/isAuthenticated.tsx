@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import axios from "axios";
 import { useToken } from "./Token";
 
 export const useAuth = () => {
   const [userDetail, setUserDetail] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const[isError,setIsError] = useState<boolean>(false)
-  const {token} = useToken();
+  const [isError, setIsError] = useState<boolean>(false);
+  const { token } = useToken();
 
-
-  const isAuthenticated = async () => {
+  // Memoize the authentication function to prevent unnecessary re-creations
+  const isAuthenticated = useCallback(async () => {
     try {
       if (!token) {
-        console.log('>>>>>>>>>>>no token', token)
-        setIsError(true)
-        setIsLoading(false)
+        setIsError(true);
+        setIsLoading(false);
         return;
       }
       const response = await axios.get(
@@ -26,23 +25,26 @@ export const useAuth = () => {
           },
         }
       );
-
       setUserDetail(response.data.data);
       setIsLoading(false);
 
       if (!response.data) {
-          setIsError(true)
+        setIsError(true);
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error("Error in isAuthenticated:", error);
       setIsLoading(false);
-      setIsError(true)
+      setIsError(true);
     }
-  };
+  }, [token]); // Only recreate this function when `token` changes
 
   useEffect(() => {
     isAuthenticated();
-  }, [token]);
+  }, [isAuthenticated]); // Use the memoized `isAuthenticated`
 
-  return { userDetail, isLoading, isError };
+  // Memoize the return values to prevent unnecessary re-renders
+  return useMemo(
+    () => ({ userDetail, isLoading, isError }),
+    [userDetail, isLoading, isError]
+  );
 };

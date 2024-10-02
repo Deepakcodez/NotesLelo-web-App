@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks";
 function RootUserLayout() {
   const [chatURL, setChatURL] = useState<boolean>(false);
   const navigate = useNavigate();
+  const currentURL = useLocation().pathname;
   const {
     isCreateGroup,
     isUploadPage,
@@ -19,21 +20,21 @@ function RootUserLayout() {
     joinGroup,
     demand,
     showLeftGroup,
+    setCurrentUser,
   } = useContext<any>(createGroupContext);
-  const currentURL = useLocation().pathname;
-  const{userDetail, isLoading,isError} = useAuth();
+const {userDetail, isLoading, isError} = useAuth()
 
   useEffect(() => {
     if (currentURL == "/chat") {
       setChatURL(true);
     }
-    console.log('>>>>>>>>>>>user', userDetail)
   }, [setChatURL, chatURL, navigate, userDetail]);
 
   useEffect(() => {
     if (!isLoading && (!userDetail || isError)) {
       navigate("/signIn");
     }
+    setCurrentUser(userDetail);
   },[userDetail, isLoading, isError])
 
   if (isLoading) {
