@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
-import { createGroupContext } from '../../Context';
+import { createGroupContext } from '../../../../Context';
 import { FaBook } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa";
@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { BsDownload } from "react-icons/bs";
 import Lottie from "lottie-react";
-import loaderBook from  '../../assets/loaderbook.json';
+import loaderBook from '../../../../assets/loaderbook.json';
 
 // Define the structure of a note
 interface Note {

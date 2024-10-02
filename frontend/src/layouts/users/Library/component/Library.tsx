@@ -1,6 +1,6 @@
 import React from 'react'
 import Lottie from "lottie-react";
-import loaderBook from  '../../assets/loaderbook.json';
+import loaderBook from  '../../../../assets/loaderbook.json';
 export const Library:React.FC = () => {
   return (
     <>

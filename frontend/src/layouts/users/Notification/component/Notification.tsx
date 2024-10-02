@@ -2,10 +2,10 @@ import axios from 'axios';
 import React, { Fragment } from 'react';
 import { format } from 'date-fns';
 import Lottie from "lottie-react";
-import loaderBook from '../../assets/loaderbook.json';
+import loaderBook from '../../../../assets/loaderbook.json';
 import { motion } from 'framer-motion';
 import useSWR from 'swr';
-import { NotificationGhost } from '../shared/ghost/NotificationGhost';
+import { NotificationGhost } from '../../../../Components/shared/ghost/NotificationGhost';
 
 // Define the structure of a notification
 interface User {
@@ -23,7 +23,7 @@ const Notification: React.FC = () => {
 
   const { data, error } = useSWR<NotificationData[]>(
     'https://notes-lelo-app-backend.vercel.app/api/v1/notification/latest_notification',
-    async (url:any) => {
+    async (url: any) => {
       try {
         const resp = await axios(url, {
           headers: {

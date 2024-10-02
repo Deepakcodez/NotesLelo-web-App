@@ -1,10 +1,10 @@
 import { Fragment, useContext, useState } from 'react';
-import { createGroupContext } from "../../Context";
+import { createGroupContext } from "../../../../Context";
 import axios from 'axios';
 import { BsDownload } from "react-icons/bs";
 import { motion } from 'framer-motion';
 import useSWR from 'swr';
-import { SavedGhost } from '../shared/ghost/SavedGhost';
+import { SavedGhost } from '../../../../Components/shared/ghost/SavedGhost';
 
 // Define the structure of a note
 interface Note {
@@ -41,7 +41,7 @@ const Saved: React.FC = () => {
     }
   };
 
-  const { data, error } = useSWR<Note[]>('https://notes-lelo-app-backend.vercel.app/api/v1/notes/savedNotes', async (url:any) => {
+  const { data, error } = useSWR<Note[]>('https://notes-lelo-app-backend.vercel.app/api/v1/notes/savedNotes', async (url: any) => {
     try {
       const resp = await axios(url, {
         headers: {

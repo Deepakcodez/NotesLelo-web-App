@@ -1,12 +1,12 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
-import { createGroupContext } from "../../Context";
+import { createGroupContext } from "../../../../Context";
 import axios from 'axios';
 import { BsDownload } from "react-icons/bs";
 import Lottie from "lottie-react";
-import loaderBook from '../../assets/loaderbook.json';
+import loaderBook from '../../../../assets/loaderbook.json';
 import { motion } from 'framer-motion';
 import useSWR from 'swr';
-import { NotesGhost } from '../shared/ghost/NotesGhost';
+import { NotesGhost } from '../../../../Components/shared/ghost/NotesGhost';
 
 // Define interfaces for notes data
 interface Note {
