@@ -12,7 +12,7 @@ import {
 import { createGroupContext } from "../../../../Context";
 import { GroupDetails } from "./GroupDetails";
 
-export const GroupChat = () => {
+export const GroupLayout = () => {
   const location = useLocation();
   const {
     setGroupDeleteOpt,

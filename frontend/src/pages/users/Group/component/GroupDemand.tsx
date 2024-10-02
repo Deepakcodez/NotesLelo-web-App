@@ -44,7 +44,7 @@ export const GroupDemand: React.FC = () => {
     console.log("Error fetching data:", error);
     return (
       <div className="text-white p-5 font-semibold text-lg">
-        Error fetching data. Please try again later.🤖
+        Error fetching data. Please try again later.🤖  
       </div>
     );
   }
@@ -97,6 +97,9 @@ export const GroupDemand: React.FC = () => {
             </motion.div>
           </Fragment>
         ))}
+
+
+        
         <motion.div
           initial={{ x: 40, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}

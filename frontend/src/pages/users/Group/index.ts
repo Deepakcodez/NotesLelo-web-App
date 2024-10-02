@@ -8,7 +8,7 @@ import { LeftGroup } from "./component/LeftGroup";
 import { GroupDetails } from "./component/GroupDetails";
 import { GroupDemand } from "./component/GroupDemand";
 import { Notes } from "./component/Notes";
-import { GroupChat } from "./component";
+import { GroupLayout } from "./component";
 
 export {
     CreateGroup,
@@ -21,8 +21,5 @@ export {
     GroupDetails,
     GroupDemand,
     Notes,
-    GroupChat
-
-
-
+    GroupLayout,
 }

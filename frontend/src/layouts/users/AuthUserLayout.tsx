@@ -2,7 +2,7 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { BoyImage, GirlImage } from "@/constant/imagePath";
 
-const AuthLayout: React.FC = () => {
+const AuthUserLayout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const urlLocation = location.pathname;
@@ -38,4 +38,4 @@ const AuthLayout: React.FC = () => {
   );
 };
 
-export default AuthLayout;
+export default AuthUserLayout;

@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { createGroupContext } from "../Context";
-import Navbar from "./shared/Navbar";
-import Sidebar from "./shared/Sidebar";
-import BottomBar from "./shared/BottomBar";
-import { CreateGroup, DeleteGroup, Demand, InviteUser, JoinGroup, LeftGroup, UploadFile } from "@/layouts/users/Group";
-import { Loading } from "./shared/Loading";
+import { createGroupContext } from "../../Context";
+import Navbar from "../../Components/shared/Navbar";
+import Sidebar from "../../Components/shared/Sidebar";
+import BottomBar from "../../Components/shared/BottomBar";
+import { CreateGroup, DeleteGroup, Demand, InviteUser, JoinGroup, LeftGroup, UploadFile } from "@/pages/users/Group";
+import { Loading } from "../../Components/shared/Loading";
 import axios from "axios";
 
-function RootLayout() {
+function RootUserLayout() {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [chatURL, setChatURL] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -91,11 +91,10 @@ function RootLayout() {
         <Navbar userDetail={userDetail} />
 
         <div
-          className={`  flex ${
-            chatURL
+          className={`  flex ${chatURL
               ? "h-full md:h-[calc(100%-4.55rem)]"
               : "h-[calc(100%-4.55rem)]"
-          }   `}
+            }   `}
         >
           <Sidebar />
 
@@ -109,4 +108,4 @@ function RootLayout() {
   );
 }
 
-export default RootLayout;
+export default RootUserLayout;
