@@ -6,73 +6,50 @@ import Sidebar from "../../Components/shared/Sidebar";
 import BottomBar from "../../Components/shared/BottomBar";
 import { CreateGroup, DeleteGroup, Demand, InviteUser, JoinGroup, LeftGroup, UploadFile } from "@/pages/users/Group";
 import { Loading } from "../../Components/shared/Loading";
-import axios from "axios";
+import { useAuth } from "@/hooks";
 
 function RootUserLayout() {
-  const [isLoading, setLoading] = useState<boolean>(true);
   const [chatURL, setChatURL] = useState<boolean>(false);
   const navigate = useNavigate();
-  const [userDetail, setUserDetail] = useState<any>({}); //use for dynamic value change in sidebar
   const {
     isCreateGroup,
     isUploadPage,
-    setUploadPage,
     showInviteForm,
-    setInviteForm,
-    setCreateGroup,
-    clickedGroupId,
-    setClickedGroupId,
     groupDeleteOpt,
-    setGroupDeleteOpt,
     joinGroup,
-    setJoinGroup,
-    setCurrentUser,
     demand,
     showLeftGroup,
   } = useContext<any>(createGroupContext);
   const currentURL = useLocation().pathname;
+  const{userDetail, isLoading,isError} = useAuth();
 
   useEffect(() => {
-    const isAuthenticated = async () => {
-      try {
-        let token = localStorage.getItem("useDataToken");
-        // console.log('>>>>>>>>>>>', token);
-        //from fetch send data in headers authorization:token to the /isVarify route  here i put a middleware called authenticate which verify the stored token in the browser to the secretkey
-        const response = await axios.get(
-          "https://notes-lelo-app-backend.vercel.app/api/v1/user/isVarify",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              authorization: token,
-            },
-          }
-        );
-        setLoading(false);
-        // console.log(">>>>>>>>>>>data", data);
-        setUserDetail(response.data);
-        setCurrentUser(response.data);
-
-        if (response.status == 401 || !response) {
-          navigate("/signIn");
-        }
-      } catch (error) {
-        console.error("Error in isAuthenticated:", error);
-        setLoading(false);
-
-        // Handle errors, such as redirecting to the login page
-      }
-    };
-
-    isAuthenticated();
     if (currentURL == "/chat") {
       setChatURL(true);
     }
-  }, [setChatURL, chatURL, navigate]);
+    console.log('>>>>>>>>>>>user', userDetail)
+  }, [setChatURL, chatURL, navigate, userDetail]);
+
+  useEffect(() => {
+    if (!isLoading && (!userDetail || isError)) {
+      navigate("/signIn");
+    }
+  },[userDetail, isLoading, isError])
+
   if (isLoading) {
     return (
       <>
         <h1 className="flex flex-1 justify-center  w-screen bgdark  items-center flex-col py-10 text-white">
           <Loading />
+        </h1>
+      </>
+    );
+  }
+  if (isError) {
+    return (
+      <>
+        <h1 className="flex flex-1 justify-center  w-screen bgdark  items-center flex-col py-10 text-white">
+          Something Went Wrong⚠️
         </h1>
       </>
     );
