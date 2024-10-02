@@ -3,7 +3,7 @@ import { Fragment, useRef, useState } from "react";
 import { IoCopy } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import useSWR from 'swr';
-import { HomePageGhost } from "./ghost/HomePageGhost";
+import { HomePageGhost } from "../../../../Components/shared/ghost/HomePageGhost";
 
 interface Group {
   _id: string;
@@ -22,7 +22,7 @@ export const GroupCard: React.FC<GroupCardProps> = ({ fetching }) => {
   const token = localStorage.getItem("useDataToken") || "";
 
   // Fetch groups using SWR
-  const { data, error } = useSWR<Group[]>('https://notes-lelo-app-backend.vercel.app/api/v1/group/all', async (url:any) => {
+  const { data, error } = useSWR<Group[]>('https://notes-lelo-app-backend.vercel.app/api/v1/group/all', async (url: any) => {
     try {
       const resp = await axios.get(url, {
         headers: {

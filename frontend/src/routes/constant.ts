@@ -6,7 +6,6 @@ import { NotificationPage } from "@/pages/users/Notification";
 import { Savedpage } from "@/pages/users/Saved";
 import { ProfilePage } from "@/pages/users/Profile";
 import { LibraryPage } from "@/pages/users/Library";
-import { GroupLayout } from "@/pages/users/Group";
 import  { GroupDemand } from "@/pages/users/Group";
 import { Notes } from '@/pages/users/Group';
 import { SignIn, SignUp } from "@/pages/users/auth";
@@ -42,21 +41,22 @@ const USER_ROUTES: RoutDocument[] = [
       href: "library",
       page: LibraryPage,
     },
+    
+  ];
+
+  const USER_GROUP_ROUTES: RoutDocument[] = [
+    
     {
-      href: "group",
-      page: GroupLayout,
-    },
-    {
-      href: "group/demand",
+      href: "demand",
       page: GroupDemand,
     },
     {
-      href: "group/notes",
+      href: "notes",
       page: Notes,
     },
     
   
-  ];
+  ]
 
   const USER_AUTH_ROUTES: RoutDocument[] = [
     {
@@ -73,5 +73,6 @@ const USER_ROUTES: RoutDocument[] = [
   export {
     USER_ROUTES,
     USER_AUTH_ROUTES,
+    USER_GROUP_ROUTES,
   }
   
