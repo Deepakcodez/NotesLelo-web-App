@@ -1,8 +1,7 @@
+import { Input } from "@/Components";
 import axios from "axios";
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import Lottie from "lottie-react";
-import FadeLoader from "react-spinners/FadeLoader"; 
 
 interface InputValue {
   email: string;
@@ -33,16 +32,13 @@ export const SignIn: React.FC = () => {
 
     // Basic validation
     if (email.trim() === "") {
-      console.log('>>>>>>>>>>> email')
+      console.log("Email is required");
     } else if (!email.includes("@")) {
-      console.log('>>>>>>>>>>> enter valid email')
-
+      console.log("Please enter a valid email");
     } else if (password.trim() === "") {
-      console.log('>>>>>>>>>>> enter valid email')
-
+      console.log("Password is required");
     } else if (password.trim().length < 6) {
-      console.log('>>>>>>>>>>> enter valid email')
-
+      console.log("Password should be at least 6 characters");
     } else {
       try {
         setIsLoading(true);
@@ -67,11 +63,9 @@ export const SignIn: React.FC = () => {
       } catch (error: any) {
         setIsLoading(false);
         if (error.response?.data?.message) {
-          console.log('>>>>>>>>>>> error',error.response?.data?.message)
-
+          console.log("Error:", error.response?.data?.message);
         } else {
-          console.log('>>>>>>>>>>> error')
-
+          console.log("Login error");
         }
       }
     }
@@ -90,64 +84,42 @@ export const SignIn: React.FC = () => {
         <h5 className="text-xs text-gray-400">
           Welcome back, Please enter your details.
         </h5>
-        <form>
+        <form onSubmit={loginHandler}>
           {/* Email Input */}
-          <label
-            htmlFor="email"
-            className="block text-left text-sm font-medium leading-6 text-white"
-          >
-            Email
-          </label>
-          <div className="mb-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 ">
-              <input
-                type="text"
-                name="email"
-                value={inputValue.email}
-                onChange={onchangeHandler}
-                className="block flex-1 border-0 text-white bg-transparent py-1.5 pl-1 bg-gray-700 rounded-md placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="please enter email"
-              />
-            </div>
-          </div>
+          <Input
+            label="Email"
+            type="text"
+            name="email"
+            value={inputValue.email}
+            onChange={onchangeHandler}
+            placeholder="Please enter email"
+          />
 
           {/* Password Input */}
-          <label
-            htmlFor="password"
-            className="block text-left text-sm font-medium leading-6 text-white"
-          >
-            Password
-          </label>
-          <div className="mb-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 ">
-              <input
-                type="password"
-                name="password"
-                value={inputValue.password}
-                onChange={onchangeHandler}
-                className="block flex-1 border-0 text-white bg-transparent py-1.5 pl-1 bg-gray-700 rounded-md placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder="enter password"
-              />
-            </div>
-          </div>
+          <Input
+            label="Password"
+            type="password"
+            name="password"
+            value={inputValue.password}
+            onChange={onchangeHandler}
+            placeholder="Enter password"
+          />
 
           {/* Login Button */}
           <button
             className="bg-blue-400 rounded h-[2rem] flex justify-normal items-center py-1.5 w-full mt-3 hover:bg-blue-500"
-            onClick={loginHandler}
+            type="submit"
             disabled={isLoading}
           >
             {isLoading ? (
-              <div className="flex justify-center items-center w-full">
-                <FadeLoader color="#ffffff" height={2} width={1}  />
-            </div>
+              <h1 className="w-full text-center">Loading...</h1>
             ) : (
               <h1 className="text-center w-full text-white">Login</h1>
             )}
           </button>
 
           <h5 className="mt-3 font-thin text-gray-400">
-            Haven't any account?{" "}
+            Don't have an account?{" "}
             <NavLink to="/signUp" className="text-blue-300">
               Create an account
             </NavLink>
@@ -157,8 +129,6 @@ export const SignIn: React.FC = () => {
 
       <div className="circle h-80 w-80 opacity-30 sm:opacity-50 rounded-full bg-blue-600 sm:bg-blue-600 absolute top-0 left-0 z-1 blur-3xl"></div>
       <div className="circle h-80 w-80 opacity-5 rounded-full sm:bg-red-400 absolute left-0 z-1 blur-3xl"></div>
-
     </>
   );
-}
-
+};
