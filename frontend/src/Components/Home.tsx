@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import Spline from '@splinetool/react-spline';
 import { createGroupContext } from "@/Context";
 import { GroupCard } from "../pages/users/Group/component/GroupCard";
-
+//home file
 const Home = () => {
   const { setCreateGroup } = useContext<any>(createGroupContext);
   const [isfetching, setFetching] = useState<boolean>(false);
