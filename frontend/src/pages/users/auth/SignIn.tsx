@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
+import FadeLoader from "react-spinners/FadeLoader"; 
 
 interface InputValue {
   email: string;
@@ -137,14 +138,16 @@ export const SignIn: React.FC = () => {
             disabled={isLoading}
           >
             {isLoading ? (
-              <h1>Loading...</h1>
+              <div className="flex justify-center items-center w-full">
+                <FadeLoader color="#ffffff" height={2} width={1}  />
+            </div>
             ) : (
               <h1 className="text-center w-full text-white">Login</h1>
             )}
           </button>
 
           <h5 className="mt-3 font-thin text-gray-400">
-            haven't any account?{" "}
+            Haven't any account?{" "}
             <NavLink to="/signUp" className="text-blue-300">
               Create an account
             </NavLink>
