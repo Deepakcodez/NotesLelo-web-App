@@ -1,11 +1,13 @@
-import { Input } from "@/Components"; 
-import  { useState, ChangeEvent, FormEvent, FC } from "react";
+import { Input } from "@/Components";
+import { useState, ChangeEvent, FormEvent, FC } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../../../App.css";
 import axios from "axios";
-import PulseLoader from "react-spinners/PulseLoader"; 
+import PulseLoader from "react-spinners/PulseLoader";
+import { toast } from "react-hot-toast";
 
-interface InputState {    // Define types for input state
+interface InputState {
+  // Define types for input state
   name: string;
   email: string;
   password: string;
@@ -19,7 +21,7 @@ const SignUp: FC = () => {
     name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
   const onchangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,26 +38,28 @@ const SignUp: FC = () => {
 
     // Form validation logic here
     if (name.trim() === "") {
-      console.log('>>>>>>>>>>>fix with react toast');
+      toast.error("Name is required");
     } else if (email.trim() === "") {
-      console.log('>>>>>>>>>>>fix with react toast');
+      toast.error("Email is required");
     } else if (!email.includes("@")) {
-      console.log('>>>>>>>>>>>fix with react toast');
+      toast.error("Please enter a valid email");
     } else if (password.trim() === "") {
-      console.log('>>>>>>>>>>>fix with react toast');
+      toast.error("Password is required");
     } else if (password.length < 6) {
-      console.log('>>>>>>>>>>>fix with react toast');
+      toast.error("Password should be at least 6 characters");
     } else if (confirmPassword.trim() === "") {
-      console.log('>>>>>>>>>>>fix with react toast');
+      toast.error("Confirm password is required");
     } else if (password !== confirmPassword) {
-      console.log('>>>>>>>>>>>fix with react toast');
+      toast.error("Passwords do not match");
     } else {
       try {
         setIsLoading(true);
         const response = await axios.post(
           "https://notes-lelo-app-backend.vercel.app/api/v1/user/register",
           inputValue,
-          { headers: { "Content-Type": "application/json" } }
+          {
+            headers: { "Content-Type": "application/json" },
+          }
         );
 
         if (response.status === 200) {
@@ -64,14 +68,16 @@ const SignUp: FC = () => {
             name: "",
             email: "",
             password: "",
-            confirmPassword: ""
+            confirmPassword: "",
           });
+          toast.success("Registration successful!"); // Notify user on successful registration
         } else {
-          console.error("Signup failed:", response.data.message);
+          toast.error("Signup failed: " + response.data.message);
         }
       } catch (error: any) {
-        const errorMessage = error.response?.data?.message || "An error occurred";
-        console.log('>>>>>>>>>>>fix with react toast', errorMessage);
+        const errorMessage =
+          error.response?.data?.message || "An error occurred";
+        toast.error(errorMessage); // Show error message from the server or a generic message
       } finally {
         setIsLoading(false);
       }
@@ -85,7 +91,9 @@ const SignUp: FC = () => {
           📃Notes lelo
           <h1 className="text-xs font-thin">Social media for students</h1>
         </h1>
-        <h3 className="text-2xl font-bold mb-1 bg-transparent text-white">Create a new account</h3>
+        <h3 className="text-2xl font-bold mb-1 bg-transparent text-white">
+          Create a new account
+        </h3>
         <h5 className="text-xs text-gray-400 bg-transparent">
           To use Notes lelo, Please enter your details.
         </h5>
@@ -144,7 +152,7 @@ const SignUp: FC = () => {
               <h1 className="text-center w-full text-white">Submit</h1>
             )}
           </button>
-          
+
           <h5 className="mt-3 font-thin text-gray-400">
             Already have an account?{" "}
             <NavLink to="/signIn" className="text-blue-300">
@@ -153,7 +161,7 @@ const SignUp: FC = () => {
           </h5>
         </form>
       </div>
-      
+
       <div className="circle h-80 w-80 opacity-30 sm:opacity-50 rounded-full bg-blue-600 sm:bg-blue-600 absolute top-0 left-0 z-1 blur-3xl"></div>
       <div className="circle h-80 w-80 opacity-5 rounded-full sm:bg-red-400 absolute left-0 z-1 blur-3xl"></div>
     </>
