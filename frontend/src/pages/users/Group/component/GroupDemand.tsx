@@ -74,7 +74,7 @@ export const GroupDemand: React.FC = () => {
               }}
               ref={scrollRef}
               className={`${
-                dmd.from === currentUser._id
+                dmd.demand.from === currentUser._id
                   ? "self-end"
                   : "self-start"
               } min-h-[10rem] max-h-[20rem] w-[90%] sm:w-[70%] md:w-[40%] bg-slate-600 rounded-lg px-1 border-gray-200`}
