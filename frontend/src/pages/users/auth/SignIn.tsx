@@ -2,6 +2,7 @@ import { Input } from "@/Components";
 import axios from "axios";
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import PulseLoader from "react-spinners/PulseLoader"; 
 
 interface InputValue {
   email: string;
@@ -107,12 +108,12 @@ export const SignIn: React.FC = () => {
 
           {/* Login Button */}
           <button
-            className="bg-blue-400 rounded h-[2rem] flex justify-normal items-center py-1.5 w-full mt-3 hover:bg-blue-500"
+            className="bg-blue-400 rounded h-[2rem] flex justify-center items-center py-1.5 w-full mt-3 hover:bg-blue-500"
             type="submit"
             disabled={isLoading}
           >
             {isLoading ? (
-              <h1 className="w-full text-center">Loading...</h1>
+              <PulseLoader color="#ffffff" size={8} margin={2} />
             ) : (
               <h1 className="text-center w-full text-white">Login</h1>
             )}
