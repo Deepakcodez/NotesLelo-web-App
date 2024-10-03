@@ -7,8 +7,7 @@ import { LiaComment } from "react-icons/lia";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import { motion } from "framer-motion";
 import useSWR, { mutate } from "swr";
-import Lottie from "lottie-react";
-import loaderBook from "../../../../assets/loaderbook.json";
+
 
 // Define the structure of a note
 interface Note {
@@ -188,7 +187,7 @@ export const Notes: React.FC = () => {
                 ref={scrollRef}
                 className={`${
                   noteData.notes.owner === currentUser._id ? "self-end" : "self-start"
-                } flex flex-col rounded-md h-[15rem] w-[85vw] sm:w-[25rem] w-[30rem] bg-slate-700 border-gray-200`}
+                } flex flex-col rounded-md h-[15rem] w-[85vw] sm:w-[25rem]  bg-slate-700 border-gray-200`}
                 style={{ border: "1px solid gray" }}
               >
                 <div className="h-[5rem] w-full text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl">
@@ -263,7 +262,7 @@ export const Notes: React.FC = () => {
             duration: 1,
             stiffness: 300,
           }}
-          className="h-[5rem] upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem] md:bottom-[5rem]"
+          className="  upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem] md:bottom-[5rem]"
           onClick={() => setUploadPage(true)}
         >
           <FaFileUpload />
