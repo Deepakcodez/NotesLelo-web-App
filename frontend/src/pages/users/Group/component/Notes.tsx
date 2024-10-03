@@ -263,7 +263,7 @@ export const Notes: React.FC = () => {
             duration: 1,
             stiffness: 300,
           }}
-          className="h-[5rem] upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem] md:bottom-[5rem]"
+          className=" upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem] md:bottom-[5rem]"
           onClick={() => setUploadPage(true)}
         >
           <FaFileUpload />
