@@ -18,11 +18,11 @@ export const Demand: React.FC = () => {
       setWarning(true);
       return;
     }
-
+    // https://notes-lelo-app-backend.vercel.app
     try {
       setPosting(true);
       const resp = await axios.post(
-        "https://notes-lelo-app-backend.vercel.app/api/v1/demand/post",
+        "http://localhost:8000/api/v1/demand/post",
         {
           textInput,
           groupId,
