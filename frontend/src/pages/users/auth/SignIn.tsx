@@ -2,6 +2,8 @@ import { Input } from "@/Components";
 import axios from "axios";
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import PulseLoader from "react-spinners/PulseLoader";
+import { toast } from "react-hot-toast";
 
 interface InputValue {
   email: string;
@@ -32,13 +34,13 @@ export const SignIn: React.FC = () => {
 
     // Basic validation
     if (email.trim() === "") {
-      console.log("Email is required");
+      toast.error("Email is required");
     } else if (!email.includes("@")) {
-      console.log("Please enter a valid email");
+      toast.error("Please enter a valid email");
     } else if (password.trim() === "") {
-      console.log("Password is required");
+      toast.error("Password is required");
     } else if (password.trim().length < 6) {
-      console.log("Password should be at least 6 characters");
+      toast.error("Password should be at least 6 characters");
     } else {
       try {
         setIsLoading(true);
@@ -57,15 +59,16 @@ export const SignIn: React.FC = () => {
           localStorage.setItem("useDataToken", response.data.data.token);
           setInputValue({ email: "", password: "" });
           navigate("/");
+          toast.success("Login successful!"); // Notify user on successful login
         }
 
         setIsLoading(false);
       } catch (error: any) {
         setIsLoading(false);
         if (error.response?.data?.message) {
-          console.log("Error:", error.response?.data?.message);
+          toast.error(`Error: ${error.response?.data?.message}`);
         } else {
-          console.log("Login error");
+          toast.error("Login error");
         }
       }
     }
@@ -107,12 +110,12 @@ export const SignIn: React.FC = () => {
 
           {/* Login Button */}
           <button
-            className="bg-blue-400 rounded h-[2rem] flex justify-normal items-center py-1.5 w-full mt-3 hover:bg-blue-500"
+            className="bg-blue-400 rounded h-[2rem] flex justify-center items-center py-1.5 w-full mt-3 hover:bg-blue-500"
             type="submit"
             disabled={isLoading}
           >
             {isLoading ? (
-              <h1 className="w-full text-center">Loading...</h1>
+              <PulseLoader color="#ffffff" size={8} margin={2} />
             ) : (
               <h1 className="text-center w-full text-white">Login</h1>
             )}
