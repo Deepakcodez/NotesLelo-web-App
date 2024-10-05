@@ -17,7 +17,6 @@ const LikeDislikeButons: React.FC<LikeDislikeButonsProps> = ({ dmd }) => {
   const [disliked, setDisliked] = useState<boolean>(
     dmd?.demand.dislike.includes(dmd.user._id)
   );
-  const [error, setError] = useState<string>(""); // Error state
 
   const handleLike = async () => {
     // Save previous state for reversion in case of error
