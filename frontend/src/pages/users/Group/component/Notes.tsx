@@ -7,8 +7,7 @@ import { LiaComment } from "react-icons/lia";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import { motion } from "framer-motion";
 import useSWR, { mutate } from "swr";
-import Lottie from "lottie-react";
-import loaderBook from "../../../../assets/loaderbook.json";
+
 
 // Define the structure of a note
 interface Note {
@@ -263,7 +262,11 @@ export const Notes: React.FC = () => {
             duration: 1,
             stiffness: 300,
           }}
+<<<<<<< HEAD
           className="h-16 w-16  upload absolute p-4 mt-[15rem] flex justify-center items-center text-2xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem] md:bottom-[5rem]"
+=======
+          className="  upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem] md:bottom-[5rem]"
+>>>>>>> main
           onClick={() => setUploadPage(true)}
         >
           <FaFileUpload />
