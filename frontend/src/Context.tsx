@@ -24,6 +24,10 @@ interface CreateGroupContextType {
   setShowLeftGroup: React.Dispatch<React.SetStateAction<boolean>>;
   showGroupMembers: boolean;
   setGroupMembers: React.Dispatch<React.SetStateAction<boolean>>;
+  isShowDeleteDemand: boolean;
+  setIsShowDeleteDemand: React.Dispatch<React.SetStateAction<boolean>>;
+  demandId: string;
+  setDemandId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 // Create the context with undefined as default
@@ -45,6 +49,8 @@ export const Context: React.FC<Props> = ({ children }) => {
   const [showInviteForm, setInviteForm] = useState<boolean>(false);
   const [showLeftGroup, setShowLeftGroup] = useState<boolean>(false);
   const [showGroupMembers, setGroupMembers] = useState<boolean>(false);
+  const [isShowDeleteDemand, setIsShowDeleteDemand] = useState<boolean>(false);
+  const[demandId, setDemandId] = useState<string>("")
 
   return (
     <createGroupContext.Provider
@@ -71,6 +77,11 @@ export const Context: React.FC<Props> = ({ children }) => {
         setShowLeftGroup,
         showGroupMembers,
         setGroupMembers,
+        isShowDeleteDemand,
+        setIsShowDeleteDemand,
+        demandId,
+        setDemandId,
+
       }}
     >
       {children}

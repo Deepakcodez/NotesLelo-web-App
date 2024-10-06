@@ -11,13 +11,8 @@ import moment from 'moment'
 
 
 export const GroupDemand: React.FC = () => {
-  const scrollRef = useRef<HTMLDivElement | null>(null);
   const groupId = localStorage.getItem("groupId") as string;
-
   const {setDemand } = useContext<any>(createGroupContext);
-
- // Ensure this runs when new demands are added
-
 
   const { data, error } = useSWR<any[]>(
     `https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`,

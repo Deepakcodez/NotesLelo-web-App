@@ -22,7 +22,7 @@ export const Demand: React.FC = () => {
     try {
       setPosting(true);
       const resp = await axios.post(
-        "http://localhost:8000/api/v1/demand/post",
+        "https://notes-lelo-app-backend.vercel.app/api/v1/demand/post",
         {
           textInput,
           groupId,

@@ -1,11 +1,13 @@
 import DemandButton from "./DemandButton";
 import LikeDislikeButons from "./LikeDislikeButons";
-import DeleteDemand from "./DeleteDemand";
 import DemandCard from "./DemandCard";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import DeleteDemandButton from "./DeleteDmdBrn";
 
 export {
-    DemandButton,
-    LikeDislikeButons,
-    DeleteDemand,
-    DemandCard,
-}
+  DemandButton,
+  LikeDislikeButons,
+  DeleteDemandButton,
+  DemandCard,
+  DeleteConfirmationModal,
+};
