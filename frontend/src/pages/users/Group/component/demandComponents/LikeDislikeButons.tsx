@@ -1,86 +1,72 @@
+import { useAuth } from "@/hooks";
 import { addDisLikeToDemand, addLikeToDemand } from "@/services";
 import { ArrowBigDown, ArrowBigUp } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-interface LikeDislikeButonsProps {
+interface LikeDislikeButtonsProps {
   dmd: any;
 }
 
-const LikeDislikeButons: React.FC<LikeDislikeButonsProps> = ({ dmd }) => {
-  // Local state for instant feedback
-  const [likeCount, setLikeCount] = useState<number>(dmd?.demand.like.length);
-  const [dislikeCount, setDislikeCount] = useState<number>(dmd?.demand.dislike.length);
-  const [liked, setLiked] = useState<boolean>(
-    dmd?.demand.like.includes(dmd.user._id)
-  );
-  const [disliked, setDisliked] = useState<boolean>(
-    dmd?.demand.dislike.includes(dmd.user._id)
-  );
+const LikeDislikeButtons: React.FC<LikeDislikeButtonsProps> = ({ dmd }) => {
+  const [liked, setLiked] = useState<boolean>(false);
+  const [disliked, setDisliked] = useState<boolean>(false);
+  const [likeCount, setLikeCount] = useState<number>(dmd?.demand.like.length || 0);
+  const [dislikeCount, setDislikeCount] = useState<number>(dmd?.demand.dislike.length || 0);
+  const { userDetail } = useAuth()
+
+  useEffect(() => {
+    if (dmd?.demand) {
+      setLiked(dmd?.demand.like.includes(userDetail?._id));
+      setDisliked(dmd?.demand.dislike.includes(userDetail?._id));
+      setLikeCount(dmd?.demand.like.length || 0);
+      setDislikeCount(dmd?.demand.dislike.length || 0);
+    }
+  }, [dmd, userDetail, liked, disliked])
 
   const handleLike = async () => {
-    // Save previous state for reversion in case of error
-    const prevLikeCount = likeCount;
-    const prevDislikeCount = dislikeCount;
-    const prevLiked = liked;
-    const prevDisliked = disliked;
-
-    // Update the UI instantly
-    if (liked) {
-      setLikeCount((prev) => prev - 1);
-    } else {
-      setLikeCount((prev) => prev + 1);
-      if (disliked) {
-        setDislikeCount((prev) => prev - 1);
-      }
-    }
-    setLiked(!liked);
-    setDisliked(false);
-
     try {
-      // Send request to server
-      await addLikeToDemand(dmd?.demand._id);
+      if (liked) {
+        // User is unliking
+        await addDisLikeToDemand(dmd?.demand._id); // Send request to remove like
+        setLikeCount((prevCount) => prevCount - 1);
+      } else {
+        // User is liking
+        await addLikeToDemand(dmd?.demand._id); // Send request to add like
+        setLikeCount((prevCount) => prevCount + 1);
+      }
+      setLiked(!liked); // Toggle liked state
+      if (disliked) {
+        // If currently disliked, remove dislike
+        setDisliked(false);
+        setDislikeCount((prevCount) => prevCount - 1);
+      }
     } catch (err) {
       console.error("Error liking the demand:", err);
       toast.error("Something went wrong");
-      // Revert to previous state in case of error
-      setLikeCount(prevLikeCount);
-      setDislikeCount(prevDislikeCount);
-      setLiked(prevLiked);
-      setDisliked(prevDisliked);
     }
   };
 
   const handleDislike = async () => {
-    // Save previous state for reversion in case of error
-    const prevLikeCount = likeCount;
-    const prevDislikeCount = dislikeCount;
-    const prevLiked = liked;
-    const prevDisliked = disliked;
-
-    // Update the UI instantly
-    if (disliked) {
-      setDislikeCount((prev) => prev - 1);
-    } else {
-      setDislikeCount((prev) => prev + 1);
-      if (liked) {
-        setLikeCount((prev) => prev - 1);
-      }
-    }
-    setDisliked(!disliked);
-    setLiked(false);
-
     try {
-      // Send request to server
-      await addDisLikeToDemand(dmd?.demand._id);
+      if (disliked) {
+        // User is un-disliking
+        await addDisLikeToDemand(dmd?.demand._id); // Send request to remove dislike
+        setDislikeCount((prevCount) => prevCount - 1);
+      } else {
+        // User is disliking
+        await addDisLikeToDemand(dmd?.demand._id); // Send request to add dislike
+        setDislikeCount((prevCount) => prevCount + 1);
+      }
+      setDisliked(!disliked); // Toggle disliked state
+      if (liked) {
+        // If currently liked, remove like
+        setLiked(false);
+        setLikeCount((prevCount) => prevCount - 1);
+      }
     } catch (err) {
       console.error("Error disliking the demand:", err);
       toast.error("Something went wrong");
-      // Revert to previous state in case of error
-      setLikeCount(prevLikeCount);
-      setDislikeCount(prevDislikeCount);
-      setLiked(prevLiked);
-      setDisliked(prevDisliked);
     }
   };
 
@@ -88,12 +74,7 @@ const LikeDislikeButons: React.FC<LikeDislikeButonsProps> = ({ dmd }) => {
     <div className="flex gap-4">
       <div className="flex items-center">
         {liked ? (
-          <ArrowBigUp
-            strokeWidth={1}
-            color="white"
-            fill="white"
-            onClick={handleLike}
-          />
+          <ArrowBigUp strokeWidth={1} color="white" fill="white" onClick={handleLike} />
         ) : (
           <ArrowBigUp strokeWidth={1} color="white" onClick={handleLike} />
         )}
@@ -103,12 +84,7 @@ const LikeDislikeButons: React.FC<LikeDislikeButonsProps> = ({ dmd }) => {
       </div>
       <div className="flex items-center">
         {disliked ? (
-          <ArrowBigDown
-            strokeWidth={1}
-            fill="white"
-            color="white"
-            onClick={handleDislike}
-          />
+          <ArrowBigDown strokeWidth={1} fill="white" color="white" onClick={handleDislike} />
         ) : (
           <ArrowBigDown strokeWidth={1} color="white" onClick={handleDislike} />
         )}
@@ -120,4 +96,4 @@ const LikeDislikeButons: React.FC<LikeDislikeButonsProps> = ({ dmd }) => {
   );
 };
 
-export default LikeDislikeButons;
+export default LikeDislikeButtons;

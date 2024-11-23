@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import useSWR from "swr";
 import Lottie from "lottie-react";
 import loaderBook from "../../../../assets/loaderbook.json";
-import { DeleteDemand, DemandButton, DemandCard, LikeDislikeButons } from './demandComponents'
+import { DemandButton, DemandCard, LikeDislikeButons } from './demandComponents'
 import moment from 'moment'
 
 
@@ -19,7 +19,6 @@ export const GroupDemand: React.FC = () => {
     async (url: string) => {
       try {
         const resp = await axios.get(url);
-        console.log(">>>>>>>>>>>", resp.data.data);
         return resp.data.data;
       } catch (error) {
         console.log(">>>>>>>>>>>", error);

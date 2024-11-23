@@ -4,10 +4,11 @@ const token = localStorage.getItem("useDataToken");
 const groupId = localStorage.getItem("groupId");
 
 const addDisLikeToDemand = (demandId: string) => {
-    // https://notes-lelo-app-backend.vercel.app/api/v1/demand/like
+  // https://notes-lelo-app-backend.vercel.app/api/v1/demand/like
+  const localUrl = " http://localhost:8000/api/v1/demand/dislike";
   return axios
     .post(
-      " https://notes-lelo-app-backend.vercel.app/api/v1/demand/dislike",
+      localUrl,
       { demandId },
       {
         headers: {
@@ -17,9 +18,9 @@ const addDisLikeToDemand = (demandId: string) => {
       }
     )
     .then((response) => {
-        mutate(
-            `https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`
-          );
+      mutate(
+        `https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`
+      );
       console.log(">>>>>>>>>>>", response.data);
     })
     .catch((error) => {
