@@ -1,85 +1,42 @@
-import { Fragment, useContext, useEffect, useRef, useState } from "react";
-import { FaFileUpload } from "react-icons/fa";
-import { createGroupContext } from "../../../../Context";
-import axios from "axios";
+import React, { useContext } from "react"
+import {motion} from 'framer-motion'
+import { createGroupContext } from "@/Context";
 import { BsHandThumbsUp, BsHandThumbsUpFill, BsDownload } from "react-icons/bs";
 import { LiaComment } from "react-icons/lia";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
-import { motion } from "framer-motion";
-import useSWR, { mutate } from "swr";
+import handleDownload from "@/utils/handleDownload";
+import { mutate } from "swr";
+import axios from "axios";
+import { useToken } from "@/hooks";
+import moment from "moment";
 
+
+
+interface Props{
+    data:any
+}
 // Define the structure of a note
 interface Note {
-  _id: string;
-  caption: string;
-  description: string;
-  pdf: { url: string }; // Assuming pdf has a url property
-  owner: string;
-  likes: Array<{ _id: string }>; // Assuming user object structure
-  saved: Array<{ _id: string }>; // Assuming user object structure
-}
+    _id: string;
+    caption: string;
+    description: string;
+    pdf: { url: string }; // Assuming pdf has a url property
+    owner: string;
+    likes: Array<{ _id: string }>; // Assuming user object structure
+    saved: Array<{ _id: string }>; // Assuming user object structure
+  }
+  
+  // Define the structure of the fetched note data
+  interface NoteData {
+    notes: Note;
+    user: { name: string }; // Adjust this structure as needed
+  }
 
-// Define the structure of the fetched note data
-interface NoteData {
-  notes: Note;
-  user: { name: string }; // Adjust this structure as needed
-}
-
-// Define the structure of the context
-interface GroupContext {
-  isUploadPage: boolean;
-  setUploadPage: (value: boolean) => void;
-  currentUser: { _id: string }; // Adjust this structure as needed
-}
-
-export const Notes: React.FC = () => {
-  const groupId = localStorage.getItem("groupId") as string; // Ensure groupId is a string
-  const { isUploadPage, setUploadPage, currentUser } = useContext(createGroupContext) as GroupContext;
-  const [notesData, setNotesData] = useState<NoteData[]>([]);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const token = localStorage.getItem("useDataToken");
-
-  const fetcher = async (url: string): Promise<NoteData[]> => {
-    const response = await axios.get(url, {
-      headers: {
-        "Content-Type": "application/json",
-        token: token,
-      },
-      withCredentials: true,
-    });
-    return response.data.data;
-  };
-
-  const { data, error } = useSWR<NoteData[]>(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`, fetcher);
-
-  useEffect(() => {
-    if (data) {
-      setNotesData(data);
-    }
-  }, [data]);
-
-  const handleDownload = async (fileUrl: string, fileName: string) => {
-    try {
-      const response = await axios.get(fileUrl, { responseType: "blob" });
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-
-      // Create a virtual anchor element
-      const anchor = document.createElement("a");
-      anchor.href = url;
-      anchor.download = fileName;
-
-      // Simulate a click on the anchor element to trigger the download
-      document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
-
-      // Release the Object URL
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error downloading file:", error);
-    }
-  };
+const NotesCard:React.FC<Props> = ({data}) => {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const {  currentUser } = useContext<any>(createGroupContext);
+  const groupId = localStorage.getItem("groupId") as string; 
+  const{token} = useToken();
 
   const likeClickHandler = async (notesId: string) => {
     // Optimistically update the cache
@@ -119,6 +76,8 @@ export const Notes: React.FC = () => {
     }
   };
 
+
+
   const saveHandler = async (notesId: string) => {
     // Optimistically update the cache
     mutate<NoteData[]>(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`, (currentData) => {
@@ -157,24 +116,12 @@ export const Notes: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    // Scroll to the bottom of the messages when they change
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [data]);
-
-  if (error) return <div>Error fetching data. Please try again later.</div>;
-  // if (!data) return (
-  //     <div className="flex h-[70vh] w-full justify-center items-center">
-  //         <Lottie className='h-[5rem]' animationData={loaderBook} loop={true} />
-  //     </div>
-  // );
 
   return (
     <>
-      <div className="chatContent flex flex-col gap-[7rem] overflow-y-scroll no-scrollbar w-full h-[calc(100vh-10.15rem)] py-3 pt-[3rem] px-6">
-        {data?.map((noteData, index) => {
+    {data?.map((noteData:any, index:number) => {
           return (
-            <Fragment key={index}>
+            <React.Fragment key={index}>
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -213,8 +160,8 @@ export const Notes: React.FC = () => {
                         likeClickHandler(noteData.notes._id);
                       }}
                     >
-                      {noteData.notes.likes.some((userdata) => userdata._id === currentUser._id) ? (
-                        <BsHandThumbsUpFill className="text-red-400" />
+                      {noteData.notes.likes.some((userdata:any) => userdata._id === currentUser._id) ? (
+                        <BsHandThumbsUpFill className="text-red-500" />
                       ) : (
                         <BsHandThumbsUp />
                       )}
@@ -228,7 +175,7 @@ export const Notes: React.FC = () => {
                         saveHandler(noteData.notes._id);
                       }}
                     >
-                      {noteData.notes.saved.some((user) => user._id === currentUser._id) ? (
+                      {noteData.notes.saved.some((user:any) => user._id === currentUser._id) ? (
                         <GoBookmarkFill />
                       ) : (
                         <GoBookmark />
@@ -247,8 +194,11 @@ export const Notes: React.FC = () => {
                     </div>
                   </motion.div>
                 </div>
+                <div className="flex justify-end px-2">
+                    <h1 className="text-white/25">{ moment(noteData.notes.createdAt).startOf('day').fromNow() }</h1>
+                </div>
               </motion.div>
-            </Fragment>
+            </React.Fragment>
           );
         })}
 
@@ -268,5 +218,6 @@ export const Notes: React.FC = () => {
         </motion.div>
       </div>
     </>
-  );
-};
+  )
+}
+export default NotesCard

@@ -7,6 +7,7 @@ import BottomBar from "../../Components/shared/BottomBar";
 import { CreateGroup, DeleteGroup, Demand, InviteUser, JoinGroup, LeftGroup, UploadFile } from "@/pages/users/Group";
 import { Loading } from "../../Components/shared/Loading";
 import { useAuth } from "@/hooks";
+import { DeleteConfirmationModal } from "@/pages/users/Group/component/demandComponents";
 
 function RootUserLayout() {
   const [chatURL, setChatURL] = useState<boolean>(false);
@@ -21,6 +22,8 @@ function RootUserLayout() {
     demand,
     showLeftGroup,
     setCurrentUser,
+    isShowDeleteDemand,
+    
   } = useContext<any>(createGroupContext);
 const {userDetail, isLoading, isError} = useAuth()
 
@@ -65,6 +68,7 @@ const {userDetail, isLoading, isError} = useAuth()
         {groupDeleteOpt && <DeleteGroup />}
         {demand && <Demand />}
         {isUploadPage && <UploadFile />}
+        {isShowDeleteDemand && <DeleteConfirmationModal />}
 
         <Navbar userDetail={userDetail} />
 

@@ -7,7 +7,7 @@ import InviteUser from "./component/InviteUser";
 import { LeftGroup } from "./component/LeftGroup";
 import { GroupDetails } from "./component/GroupDetails";
 import { GroupDemand } from "./component/GroupDemand";
-import { Notes } from "./component/Notes";
+import { Notes } from "./notes/Notes";
 import { GroupLayout } from "./component";
 
 export {

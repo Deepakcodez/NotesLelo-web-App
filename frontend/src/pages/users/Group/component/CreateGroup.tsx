@@ -53,7 +53,7 @@ export const CreateGroup: React.FC = () => {
         }
       );
 
-      if (response.status === 200) {
+      if (response.data || response.status === 200) {
         mutate("https://notes-lelo-app-backend.vercel.app/api/v1/group/all");
         setGroupDetail({
           title: "",
