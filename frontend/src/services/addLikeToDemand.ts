@@ -4,7 +4,7 @@ const token = localStorage.getItem("useDataToken");
 const groupId = localStorage.getItem("groupId");
 
 const addLikeToDemand = (demandId: string) => {
-    // https://notes-lelo-app-backend.vercel.app/api/v1/demand/like
+    
   return axios
     .post(
       "https://notes-lelo-app-backend.vercel.app/api/v1/demand/like",
