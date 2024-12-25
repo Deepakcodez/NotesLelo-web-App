@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import { createGroupContext } from "../../../../Context";
 import { GroupDetails } from "./GroupDetails";
+import { Chat } from "../chat";
 
 export const GroupLayout = () => {
   const location = useLocation();
@@ -129,11 +130,10 @@ export const GroupLayout = () => {
             className="bg-slate-600/25 w-1/2 text-center py-2 border-r-[1px]"
           >
             <h1
-              className={`${
-                location.pathname === "/group/demand"
+              className={`${location.pathname === "/group/demand"
                   ? "text-orange-400"
                   : "text-white"
-              } font-bold`}
+                } font-bold`}
             >
               Demand
             </h1>
@@ -143,17 +143,16 @@ export const GroupLayout = () => {
             className="bg-slate-600/25 w-1/2 text-center py-2 "
           >
             <h1
-              className={` ${
-                location.pathname === "/group/notes"
+              className={` ${location.pathname === "/group/notes"
                   ? "text-blue-400"
                   : "text-white"
-              }  font-bold`}
+                }  font-bold`}
             >
               Notes
             </h1>
           </NavLink>
         </div>
-
+        <Chat />
         <Outlet />
 
         {option && (
