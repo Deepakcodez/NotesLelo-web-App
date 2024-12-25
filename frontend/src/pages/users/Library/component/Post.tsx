@@ -51,12 +51,13 @@ const Posts: React.FC = () => {
         {posts.map((post) => (
           <div
             key={post._id}
-            className="bg-slate-700/25 bg-opacity-60 rounded-lg shadow-md transition-transform transform hover:scale-105"
+            className="bg-slate-700/25 bg-opacity-60 rounded-lg shadow-md p-4 flex flex-row justify-between items-start gap-4"
             style={{
-              animation: "fadeIn 1s ease-out forwards, slideUp 0.5s ease-out forwards",
+              animation: "fadeIn 1s ease-out forwards",
             }}
           >
-            <div className="p-4">
+            {/* Left Section: Notes */}
+            <div className="flex-1">
               <h2 className="text-xl text-white font-semibold mb-2">{post.caption}</h2>
               <p className="text-gray-400 mb-4">{post.description}</p>
 
@@ -70,21 +71,23 @@ const Posts: React.FC = () => {
                   View PDF
                 </a>
               )}
+            </div>
 
+            {/* Right Section: Likes and Comments */}
+            <div className="flex-shrink-0 w-1/4 text-right">
               <p className="mb-2 text-gray-400">
                 <span>❤️</span> {post.likes.length} Likes
               </p>
 
-              <div>
-                <strong className="text-white mb-1">Comments:</strong>
-                <ul className="list-disc list-inside">
-                  {post.comments.map((comment, index) => (
-                    <li key={index} className="text-gray-500">
-                      <strong className="font-medium">{comment.user}:</strong> {comment.Comment}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <strong className="text-white mb-1">Comments:</strong>
+              <ul className=" text-gray-500">
+                {post.comments.map((comment, index) => (
+                  <li key={index}>
+                    <strong className="font-medium">{comment.user}:</strong>{" "}
+                    {comment.Comment}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         ))}
