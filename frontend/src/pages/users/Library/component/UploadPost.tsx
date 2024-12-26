@@ -1,17 +1,18 @@
-import React, { useContext, useRef, useState } from "react";
-import { createGroupContext } from "../../../../Context";
+import React, { useRef, useState } from "react";
+
 import { MdDriveFolderUpload } from "react-icons/md";
 import axios from "axios";
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 
-export const UploadFile= ({isPublic}:{isPublic?:boolean | undefined}) => {
+export const UploadPublicPost = ({ setShowForm }: { setShowForm: React.Dispatch<React.SetStateAction<boolean>> }) => {
+
   const token = localStorage.getItem("useDataToken") || ""; // Provide a default empty string if null
-  const { setUploadPage } = useContext<any>(createGroupContext);
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [warning, setWarning] = useState<boolean>(false);
   const [warningMsg, setWarningMsg] = useState<string>("");
   const [isUploading, setIsUploading] = useState<boolean>(false);
-  const groupId = localStorage.getItem("groupId") || ""; // Provide a default empty string if null
+
   const [inputData, setInputData] = useState<{ caption: string; description: string }>({
     caption: "",
     description: "",
@@ -41,16 +42,16 @@ export const UploadFile= ({isPublic}:{isPublic?:boolean | undefined}) => {
     data.append("pdf", file);
     data.append("caption", inputData.caption);
     data.append("description", inputData.description);
-    data.append("groupId", groupId );
-    data.append("isPublic", isPublic?isPublic.toString(): "false" );
+
+
     setIsUploading(true);
     try {
 
       // const url = import.meta.env.URL
       const url = 'http://localhost:8000'
 
-      const response = await axios.post(
-        `${url}/api/v1/notes/upload-file`,
+      await axios.post(
+        `${url}/api/v1/notes/publicNotes`,
         data,
         {
           headers: {
@@ -61,9 +62,8 @@ export const UploadFile= ({isPublic}:{isPublic?:boolean | undefined}) => {
         }
       );
       setIsUploading(false);
-      setUploadPage(false);
+      setShowForm(false)
       mutate("https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes");
-      mutate(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`);
       // Handle the file upload response as needed
     } catch (error) {
       setIsUploading(false);
@@ -141,7 +141,7 @@ export const UploadFile= ({isPublic}:{isPublic?:boolean | undefined}) => {
             <button
               type="button" // Set type to button to prevent form submission
               className="bg-red-400 rounded md py-1.5 w-full mt-3 hover:bg-red-500 hover:text-white"
-              onClick={() => setUploadPage(false)}
+              onClick={() => setShowForm(false)}
             >
               Cancel
             </button>
