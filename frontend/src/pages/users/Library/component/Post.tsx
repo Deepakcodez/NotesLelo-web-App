@@ -7,8 +7,8 @@ import useSWR from "swr";
 
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-
-  const url = "https://notes-lelo-app-backend.vercel.app/api/v1/notes/publicNotes"
+  const baseURL = import.meta.env.VITE_BASE_URL as string;
+  const url = `${baseURL}/api/v1/notes/publicNotes`
   const fetcher = async (uri: string): Promise<any> => {
     const response = await axios.get(uri);
     return response.data.notes;
