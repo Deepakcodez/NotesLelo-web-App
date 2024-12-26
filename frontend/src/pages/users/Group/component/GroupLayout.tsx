@@ -154,7 +154,7 @@ export const GroupLayout = () => {
         </div>
         <Chat />
         <Outlet />
-
+        
         {option && (
           <div
             ref={optionModelRef}

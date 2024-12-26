@@ -49,32 +49,38 @@ export const Notes: React.FC = () => {
     return response.data.data;
   };
 
-  const { data, error } = useSWR<NoteData[]>(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`, fetcher);
+  // const url = import.meta.env.URL
+  const url = 'http://localhost:8000'
+
+  const { data, error, isLoading } = useSWR<NoteData[]>(`${url}/api/v1/notes/groupNotes/${groupId}`, fetcher);
 
   useEffect(() => {
+    console.log(data)
     if (data) {
       setNotesData(data);
     }
   }, [data]);
 
- 
+
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [data]);
-
+  if (isLoading) return <div>Loading</div>
   if (error) return <div>Error fetching data. Please try again later.</div>;
-  // if (!data) return (
-  //     <div className="flex h-[70vh] w-full justify-center items-center">
-  //         <Lottie className='h-[5rem]' animationData={loaderBook} loop={true} />
-  //     </div>
-  // );
+  if (!data) return (
+    <div className="flex h-[70vh] w-full justify-center items-center text-white">
+      NO DATA
+    </div>
+  );
 
   return (
     <>
       <div className="chatContent flex flex-col gap-[7rem] overflow-y-scroll no-scrollbar w-full h-[calc(100vh-10.15rem)] py-3 pt-[3rem] px-6">
-
-        <NotesCard data={data} />
+        {
+          data &&
+          <NotesCard data={data} />
+        }
 
         <motion.div
           initial={{ x: 40, opacity: 0 }}
