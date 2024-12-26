@@ -2,37 +2,31 @@ import React, { useEffect, useState } from "react";
 import { Post } from "../../../../types/types";
 import loaderBook from "../../../../assets/loaderbook.json";
 import Lottie from "lottie-react";
+import axios from "axios";
+import useSWR from "swr";
 
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+
+  const url = "https://notes-lelo-app-backend.vercel.app/api/v1/notes/publicNotes"
+  const fetcher = async (uri: string): Promise<any> => {
+    const response = await axios.get(uri);
+    return response.data.notes;
+  };
+
+  const { data, error, isLoading } = useSWR<any[]>(url, fetcher);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("src/data/data.json");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setPosts(data.posts.slice(0, 30));
-      } catch (error: any) {
-        setError(error.message);
-        console.error("Error fetching posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (data) {
+      setPosts(data);
+    }
+  }, [data]);
 
-    fetchData();
-  }, []);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <>
         <Lottie className="h-[5rem]" animationData={loaderBook} loop={true} />
-        <div className="text-white">Coming soon...</div>
       </>
     );
   }
