@@ -46,8 +46,8 @@ export const UploadFile= ({isPublic}:{isPublic?:boolean | undefined}) => {
     setIsUploading(true);
     try {
 
-      // const url = import.meta.env.URL
-      const url = 'http://localhost:8000'
+      const url =  import.meta.env.VITE_BASE_URL as string;
+      // const url = 'http://localhost:8000'
 
       const response = await axios.post(
         `${url}/api/v1/notes/upload-file`,

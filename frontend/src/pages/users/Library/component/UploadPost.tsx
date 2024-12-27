@@ -47,7 +47,7 @@ export const UploadPublicPost = ({ setShowForm }: { setShowForm: React.Dispatch<
     setIsUploading(true);
     try {
 
-      const url = import.meta.env.URL
+       const url = import.meta.env.VITE_BASE_URL as string;
       // const url = 'http://localhost:8000'
 
       await axios.post(
