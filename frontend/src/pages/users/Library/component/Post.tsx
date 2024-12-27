@@ -11,9 +11,7 @@ const Posts: React.FC = () => {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
   const baseURL = import.meta.env.VITE_BASE_URL as string;
-
-  const url = `${baseURL}/api/v1/notes/publicNotes`;
-
+  const url = `${baseURL}/api/v1/notes/publicNotes`
   const fetcher = async (uri: string): Promise<any> => {
     const response = await axios.get(uri);
     return response.data.notes;
