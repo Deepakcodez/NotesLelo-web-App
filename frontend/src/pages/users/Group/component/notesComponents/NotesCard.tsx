@@ -2,10 +2,14 @@ import React, { useContext } from "react";
 import { mutate } from "swr";
 import axios from "axios";
 import { motion } from "framer-motion";
-import NoteCard from "@/Components/Card";
+
 import { createGroupContext } from "@/Context";
 import { useToken } from "@/hooks";
 import handleDownload from "@/utils/handleDownload";
+import { BsDownload, BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
+import { LiaComment } from "react-icons/lia";
+import { GoBookmark, GoBookmarkFill } from "react-icons/go";
+import moment from "moment";
 
 interface Note {
   _id: string;
