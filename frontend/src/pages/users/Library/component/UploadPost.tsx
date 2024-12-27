@@ -47,11 +47,11 @@ export const UploadPublicPost = ({ setShowForm }: { setShowForm: React.Dispatch<
     setIsUploading(true);
     try {
 
-      // const url = import.meta.env.URL
-      const url = 'http://localhost:8000'
+      const url = import.meta.env.URL
+      // const url = 'http://localhost:8000'
 
       await axios.post(
-        `${url}/api/v1/notes/publicNotes`,
+        `https://notes-lelo-app-backend.vercel.app/api/v1/notes/publicNotes`,
         data,
         {
           headers: {

@@ -49,8 +49,8 @@ export const Notes: React.FC = () => {
     return response.data.data;
   };
 
-  // const url = import.meta.env.URL
-  const url = 'http://localhost:8000'
+  const url = import.meta.env.URL
+  // const url = 'http://localhost:8000'
 
   const { data, error, isLoading } = useSWR<NoteData[]>(`${url}/api/v1/notes/groupNotes/${groupId}`, fetcher);
 

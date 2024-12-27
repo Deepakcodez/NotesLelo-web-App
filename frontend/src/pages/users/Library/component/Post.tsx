@@ -2,31 +2,31 @@ import React, { useEffect, useState } from "react";
 import { Post } from "../../../../types/types";
 import loaderBook from "../../../../assets/loaderbook.json";
 import Lottie from "lottie-react";
-import { FaRegHeart, FaRegComment } from "react-icons/fa";
-import axios from "axios"; // Import axios
+import axios from "axios";
+import useSWR from "swr";
+import { FaRegComment, FaRegHeart } from "react-icons/fa";
 
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const url = import.meta.env.URL; 
-        const response = await axios.post(`${url}/api/v1/notes/publicNotes`, {});
-        setPosts(response.data.posts.slice(0, 30)); 
-      } catch (error: any) {
-        setError(error.message || "An error occurred while fetching data.");
-        console.error("Error fetching posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const baseURL = import.meta.env.VITE_BASE_URL as string;
 
-    fetchData();
-  }, []);
+  const url = `${baseURL}/api/v1/notes/publicNotes`;
+
+  const fetcher = async (uri: string): Promise<any> => {
+    const response = await axios.get(uri);
+    return response.data.notes;
+  };
+
+
+  const { data, error, isLoading } = useSWR<any[]>(url, fetcher);
+
+  useEffect(() => {
+    if (data) {
+      setPosts(data); 
+    }
+  }, [data]);
 
   const handleCommentClick = (post: Post) => {
     setSelectedPost(post);
@@ -36,19 +36,20 @@ const Posts: React.FC = () => {
     setSelectedPost(null);
   };
 
-  if (loading) {
+  // Loading state
+  if (isLoading) {
     return (
       <>
         <Lottie className="h-[5rem]" animationData={loaderBook} loop={true} />
-        <div className="text-white">Coming soon...</div>
       </>
     );
   }
 
+ 
   if (error) {
     return (
       <div className="text-center text-red-500 text-lg font-semibold mt-10">
-        Error: {error}
+        Error: {error.message}
       </div>
     );
   }
@@ -97,7 +98,8 @@ const Posts: React.FC = () => {
                 {/* Like Icon */}
                 <div className="flex items-center space-x-2 text-gray-400">
                   <FaRegHeart className="text-2xl cursor-pointer" />
-                  <span>{post.likes.length}</span> {/* Display the number of likes */}
+                  <span>{post.likes.length}</span>{" "}
+                  {/* Display the number of likes */}
                 </div>
 
                 {/* Comment Button */}
@@ -115,9 +117,7 @@ const Posts: React.FC = () => {
 
       {/* Sidebar for Comments */}
       {selectedPost && (
-        <div
-          className="fixed top-0 right-0 h-full w-[350px] bg-slate-900 text-white z-50 shadow-lg p-6 overflow-y-auto transition-transform transform translate-x-0"
-        >
+        <div className="fixed top-0 right-0 h-full w-[350px] bg-slate-900 text-white z-50 shadow-lg p-6 overflow-y-auto transition-transform transform translate-x-0">
           <button
             onClick={closeSidebar}
             className="text-gray-400 hover:text-white text-lg mb-4"
@@ -129,7 +129,10 @@ const Posts: React.FC = () => {
           <ul className="text-gray-400">
             {selectedPost.comments.map((comment, index) => (
               <li key={index} className="mb-2">
-                <strong className="font-medium text-white">{comment.user}:</strong> {comment.Comment}
+                <strong className="font-medium text-white">
+                  {comment.user}:
+                </strong>{" "}
+                {comment.Comment}
               </li>
             ))}
           </ul>
