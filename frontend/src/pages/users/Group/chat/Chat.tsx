@@ -95,7 +95,7 @@ const Chat: React.FC = () => {
                     {messages.map((msg, index) => (
                         <div
                             key={index}
-                            className={`p-2 rounded-md my-1 ${msg.sender === userDetail?.email ? "bg-blue-500 text-white" : "bg-gray-300 text-black"
+                            className={`p-2 rounded-md my-1  ${msg.sender === userDetail?.email ? "bg-blue-500 text-white" : "bg-gray-300 text-black"
                                 }`}
                         >
                             <strong>{msg.sender === userDetail?.email ? "You" : msg.sender}:</strong> {msg.message}

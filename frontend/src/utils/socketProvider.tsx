@@ -1,7 +1,8 @@
 import React, { createContext } from "react";
 import { io, Socket } from "socket.io-client";
-const URL = `http://localhost:8000`;
+// const URL = `http://localhost:8000`;
 const prodURL = import.meta.env.VITE_BASE_URL as string;
+const URL = import.meta.env.VITE_BASE_URL as string;
 
 
 const getServerUrl = () => {
