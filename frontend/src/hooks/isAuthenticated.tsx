@@ -16,8 +16,9 @@ export const useAuth = () => {
         setIsLoading(false);
         return;
       }
+      const url = import.meta.env.VITE_BASE_URL as string;
       const response = await axios.get(
-        "https://notes-lelo-app-backend.vercel.app/api/v1/user/isVarify",
+        `${url}/api/v1/user/isVarify`,
         {
           headers: {
             "Content-Type": "application/json",

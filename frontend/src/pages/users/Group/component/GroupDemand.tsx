@@ -12,10 +12,11 @@ import moment from 'moment'
 
 export const GroupDemand: React.FC = () => {
   const groupId = localStorage.getItem("groupId") as string;
-  const {setDemand } = useContext<any>(createGroupContext);
+  const { setDemand } = useContext<any>(createGroupContext);
+  const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const { data, error } = useSWR<any[]>(
-    `https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`,
+    `${base_url}/api/v1/demand/demands/${groupId}`,
     async (url: string) => {
       try {
         const resp = await axios.get(url);

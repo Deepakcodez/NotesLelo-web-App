@@ -15,9 +15,10 @@ export const GroupDetails: React.FC = () => {
   const token = localStorage.getItem("useDataToken") as string;
   const groupId = localStorage.getItem("groupId") as string;
   const { setGroupMembers } = useContext<any>(createGroupContext);
+  const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const { data, error } = useSWR<Member[]>(
-    `https://notes-lelo-app-backend.vercel.app/api/v1/group/members/${groupId}`,
+    `${base_url}/api/v1/group/members/${groupId}`,
     async (url: string) => {
       try {
         const resp = await axios.get(url, {

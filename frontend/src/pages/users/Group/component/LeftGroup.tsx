@@ -13,6 +13,7 @@ export const LeftGroup: React.FC = () => {
   const navigate = useNavigate();
   const id = localStorage.getItem("groupId") || ""; // Provide a default empty string if null
   const token = localStorage.getItem("useDataToken") || ""; // Provide a default empty string if null
+  const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setInputId(e.target.value);
@@ -25,7 +26,7 @@ export const LeftGroup: React.FC = () => {
       try {
         setIsLoadingBtn(true);
         await axios.delete(
-          `https://notes-lelo-app-backend.vercel.app/api/v1/group/left/${id}`,
+          `${base_url}/api/v1/group/left/${id}`,
           {
             headers: {
               "Content-Type": "application/json",

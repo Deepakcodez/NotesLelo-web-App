@@ -28,8 +28,10 @@ export const DeleteGroup: React.FC = () => {
     if (inputId.trim() === id) {
       try {
         setIsLoadingBtn(true);
+        const base_url = import.meta.env.VITE_BASE_URL as string;
+
         const response = await axios.delete(
-          `https://notes-lelo-app-backend.vercel.app/api/v1/group/delete/${id}`,
+          `${base_url}/api/v1/group/delete/${id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -39,12 +41,12 @@ export const DeleteGroup: React.FC = () => {
           }
         );
         mutate(
-          "https://notes-lelo-app-backend.vercel.app/api/v1/notification/latest_notification"
+          `${base_url}/api/v1/notification/latest_notification`
         );
         setIsLoadingBtn(false);
         navigate("/");
         setGroupDeleteOpt(false);
-      } catch (error:any) {
+      } catch (error: any) {
         setIsLoadingBtn(false);
         setWarning(error?.response?.data?.message || "An error occurred.");
       }

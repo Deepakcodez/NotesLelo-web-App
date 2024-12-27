@@ -1,8 +1,6 @@
 import axios from 'axios';
 import React, { Fragment } from 'react';
 import { format } from 'date-fns';
-import Lottie from "lottie-react";
-import loaderBook from '../../../../assets/loaderbook.json';
 import { motion } from 'framer-motion';
 import useSWR from 'swr';
 import { NotificationGhost } from '../../../../Components/shared/ghost/NotificationGhost';
@@ -20,9 +18,10 @@ interface NotificationData {
 
 const Notification: React.FC = () => {
   const token = localStorage.getItem("useDataToken");
+  const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const { data, error } = useSWR<NotificationData[]>(
-    'https://notes-lelo-app-backend.vercel.app/api/v1/notification/latest_notification',
+    `${base_url}/api/v1/notification/latest_notification`,
     async (url: any) => {
       try {
         const resp = await axios(url, {

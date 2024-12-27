@@ -41,8 +41,10 @@ export const CreateGroup: React.FC = () => {
 
     try {
       setIsLoading(true);
+      const base_url = import.meta.env.VITE_BASE_URL as string;
+
       const response = await axios.post(
-        "https://notes-lelo-app-backend.vercel.app/api/v1/group/create",
+        `${base_url}/api/v1/group/create`,
         GroupDetail,
         {
           headers: {
@@ -54,7 +56,7 @@ export const CreateGroup: React.FC = () => {
       );
 
       if (response.data || response.status === 200) {
-        mutate("https://notes-lelo-app-backend.vercel.app/api/v1/group/all");
+        mutate(`${base_url}/api/v1/group/all`);
         setGroupDetail({
           title: "",
           description: "",

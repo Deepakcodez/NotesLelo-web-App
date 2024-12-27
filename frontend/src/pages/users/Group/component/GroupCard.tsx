@@ -20,9 +20,10 @@ export const GroupCard: React.FC<GroupCardProps> = ({ fetching }) => {
   const userIdRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [enlargeIcon, setEnlargeIcon] = useState<number | null>(null);
   const token = localStorage.getItem("useDataToken") || "";
+  const base_url = import.meta.env.VITE_BASE_URL as string;
 
   // Fetch groups using SWR
-  const { data, error } = useSWR<Group[]>('https://notes-lelo-app-backend.vercel.app/api/v1/group/all', async (url: any) => {
+  const { data, error } = useSWR<Group[]>(`${base_url}/api/v1/group/all`, async (url: any) => {
     try {
       const resp = await axios.get(url, {
         headers: {

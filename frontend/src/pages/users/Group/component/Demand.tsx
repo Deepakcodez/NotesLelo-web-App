@@ -21,8 +21,10 @@ export const Demand: React.FC = () => {
     // https://notes-lelo-app-backend.vercel.app
     try {
       setPosting(true);
+      const base_url = import.meta.env.VITE_BASE_URL as string;
+
       const resp = await axios.post(
-        "https://notes-lelo-app-backend.vercel.app/api/v1/demand/post",
+        `${base_url}/api/v1/demand/post`,
         {
           textInput,
           groupId,
@@ -38,7 +40,7 @@ export const Demand: React.FC = () => {
       if (resp.data.status === 200) {
         setDemand(false);
         mutate(
-          `https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`
+          `${base_url}/api/v1/demand/demands/${groupId}`
         );
       }
     } catch (error) {
@@ -79,7 +81,7 @@ export const Demand: React.FC = () => {
             type="submit"
             className="bg-blue-400 rounded md py-1.5 w-full mt-3 hover:bg-blue-500 hover:text-white"
           >
-            {!isPosting ? "Post" : " Posting......." }
+            {!isPosting ? "Post" : " Posting......."}
           </button>
           <button
             type="button" // Set type to button to prevent form submission

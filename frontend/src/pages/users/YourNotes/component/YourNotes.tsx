@@ -22,6 +22,7 @@ const YourNotes: React.FC = () => {
   const { currentUser } = useContext<any>(createGroupContext);
   const [notesData, setNotesData] = useState<Note[]>([]);
   const [notesId, setNotesId] = useState<string>("");
+  const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const handleDownload = async (fileUrl: { url: string }, fileName: string) => {
     try {
@@ -47,7 +48,7 @@ const YourNotes: React.FC = () => {
   };
 
   const { data, error } = useSWR<Note[]>(
-    'https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes',
+    `${base_url}/api/v1/notes/your-notes`,
     async (url: string) => {
       try {
         const resp = await axios(url, {

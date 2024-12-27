@@ -31,6 +31,7 @@ export const GroupLayout = () => {
   const token = localStorage.getItem("useDataToken");
   const id = localStorage.getItem("groupId");
   const navigate = useNavigate();
+  const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const [groupData, setGroupData] = useState({
     title: "",
@@ -61,7 +62,7 @@ export const GroupLayout = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://notes-lelo-app-backend.vercel.app/api/v1/group/${id}`,
+        `${base_url}/api/v1/group/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -104,7 +105,7 @@ export const GroupLayout = () => {
 
   return (
     <Fragment>
-      <div className=" relative min-h-full h-fit w-fit min-w-full  flex flex-col ">
+      <div className=" relative min-h-full h-fit w-fit min-w-full  flex flex-col  ">
         <div className="navbar  bg-slate-700 shadow-lg w-full h-[3rem] flex items-center ">
           <ul className="flex h-full items-center justify-between px-5 w-full">
             <li className="font-bold text-white text-xl flex items-center gap-2  w-[15rem]">

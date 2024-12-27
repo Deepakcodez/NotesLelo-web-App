@@ -4,10 +4,11 @@ const token = localStorage.getItem("useDataToken");
 const groupId = localStorage.getItem("groupId");
 
 const addLikeToDemand = (demandId: string) => {
-    
+  const base_url = import.meta.env.VITE_BASE_URL as string;
+
   return axios
     .post(
-      "https://notes-lelo-app-backend.vercel.app/api/v1/demand/like",
+      `${base_url}/api/v1/demand/like`,
       { demandId },
       {
         headers: {
@@ -17,9 +18,7 @@ const addLikeToDemand = (demandId: string) => {
       }
     )
     .then((response) => {
-        mutate(
-            `http://localhost:8000/api/v1/demand/demands/${groupId}`
-          );
+      mutate(`${base_url}/api/v1/demand/demands/${groupId}`);
     })
     .catch((error) => {
       console.error("Error in addLikeToDemand:", error);

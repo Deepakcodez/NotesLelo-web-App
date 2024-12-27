@@ -10,6 +10,7 @@ const InviteUser: React.FC = () => {
   const token = localStorage.getItem("useDataToken") || ""; // Provide a default empty string if null
   const groupId = localStorage.getItem("groupId") || ""; // Provide a default empty string if null
   const [loading, setLoading] = useState<boolean>(false);
+  const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailValue({ email: e.target.value });
@@ -32,7 +33,7 @@ const InviteUser: React.FC = () => {
       } else {
         setLoading(true); // Set loading to true before making the request
         const response = await axios.post(
-          "https://notes-lelo-app-backend.vercel.app/api/v1/group/invite",
+          `${base_url}/api/v1/group/invite`,
           { email: emailValue.email, groupId },
           {
             headers: {
