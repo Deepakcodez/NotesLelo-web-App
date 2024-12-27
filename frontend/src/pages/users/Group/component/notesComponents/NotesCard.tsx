@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { mutate } from "swr";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -10,6 +10,7 @@ import { BsDownload, BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
 import { LiaComment } from "react-icons/lia";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import moment from "moment";
+import CommentSidebar from "@/Components/Comments";
 
 interface Note {
   _id: string;
@@ -37,6 +38,8 @@ const NotesCard: React.FC<Props> = ({ data }) => {
   const { token } = useToken();
 
   const base_url = import.meta.env.VITE_BASE_URL as string;
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to control sidebar visibility
 
   const likeClickHandler = async (notesId: string) => {
     mutate<NoteData[]>(
@@ -67,9 +70,7 @@ const NotesCard: React.FC<Props> = ({ data }) => {
           withCredentials: true,
         }
       );
-      mutate(
-        `${base_url}/api/v1/notes/groupNotes/${groupId}`
-      );
+      mutate(`${base_url}/api/v1/notes/groupNotes/${groupId}`);
     } catch (error) {
       console.error("Error updating like status:", error);
     }
@@ -85,9 +86,7 @@ const NotesCard: React.FC<Props> = ({ data }) => {
               (user) => user._id === currentUser._id
             );
             const updatedSaved = isUserSaved
-              ? note.notes.saved.filter(
-                (user) => user._id !== currentUser._id
-              )
+              ? note.notes.saved.filter((user) => user._id !== currentUser._id)
               : [...note.notes.saved, { _id: currentUser._id }];
 
             return { ...note, notes: { ...note.notes, saved: updatedSaved } };
@@ -106,17 +105,19 @@ const NotesCard: React.FC<Props> = ({ data }) => {
           withCredentials: true,
         }
       );
-      mutate(
-        `${base_url}/api/v1/notes/groupNotes/${groupId}`
-      );
+      mutate(`${base_url}/api/v1/notes/groupNotes/${groupId}`);
     } catch (error) {
       console.error("Error saving note:", error);
     }
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen); // Toggle the sidebar visibility
+  };
+
   return (
     <>
-      {data?.map((noteData:any, index:number) => (
+      {data?.map((noteData: any, index: number) => (
         <React.Fragment key={noteData.notes._id}>
           <motion.div
             initial={{ opacity: 0 }}
@@ -126,7 +127,6 @@ const NotesCard: React.FC<Props> = ({ data }) => {
               duration: 0.2,
               delay: index * 0.3,
             }}
-            ref={scrollRef}
             className={`${noteData.notes.owner === currentUser._id
               ? "self-end"
               : "self-start"
@@ -156,14 +156,17 @@ const NotesCard: React.FC<Props> = ({ data }) => {
                   onClick={() => likeClickHandler(noteData.notes._id)}
                 >
                   {noteData.notes.likes.some(
-                    (user:any) => user._id === currentUser._id
+                    (user: any) => user._id === currentUser._id
                   ) ? (
                     <BsHandThumbsUpFill className="text-red-500" />
                   ) : (
                     <BsHandThumbsUp />
                   )}
                 </motion.div>
-                <motion.div whileTap={{ scale: 0.75 }}>
+                <motion.div
+                  whileTap={{ scale: 0.75 }}
+                  onClick={toggleSidebar} // Open the sidebar when the comment icon is clicked
+                >
                   <LiaComment />
                 </motion.div>
                 <motion.div
@@ -171,7 +174,7 @@ const NotesCard: React.FC<Props> = ({ data }) => {
                   onClick={() => saveHandler(noteData.notes._id)}
                 >
                   {noteData.notes.saved.some(
-                    (user:any) => user._id === currentUser._id
+                    (user: any) => user._id === currentUser._id
                   ) ? (
                     <GoBookmarkFill />
                   ) : (
@@ -199,6 +202,9 @@ const NotesCard: React.FC<Props> = ({ data }) => {
           </motion.div>
         </React.Fragment>
       ))}
+      
+      {/* Add the CommentSidebar and pass the necessary props */}
+      <CommentSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
     </>
   );
 };
