@@ -11,7 +11,16 @@ interface CommentSidebarProps {
 }
 
 const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar }) => {
-  const [comments, setComments] = useState<Comment[]>([]);
+  // Dummy comments array
+  const initialComments: Comment[] = [
+    { id: 1, text: "This is a great post!" },
+    { id: 2, text: "I really enjoyed reading this. Thanks for sharing!" },
+    { id: 3, text: "Amazing content, keep it up!" },
+    { id: 4, text: "This was really helpful, thanks!" },
+  
+  ];
+
+  const [comments, setComments] = useState<Comment[]>(initialComments);
   const [newComment, setNewComment] = useState("");
 
   // Handle adding a new comment
@@ -28,7 +37,7 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar }
 
   return (
     <div
-      className={`fixed top-20 right-0 w-80 bg-slate-500/25 shadow-lg transition-transform duration-300 ${
+      className={`fixed top-20 right-0 w-80 h-[70%] bg-slate-500/25 shadow-lg transition-transform duration-300 ${
         isOpen ? "translate-x-0" : "translate-x-full"
       }`}
     >
