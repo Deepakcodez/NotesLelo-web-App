@@ -68,18 +68,17 @@ export const Notes: React.FC = () => {
   }, [data]);
   if (isLoading) return <div>Loading</div>
   if (error) return <div>Error fetching data. Please try again later.</div>;
-  if (!data) return (
-    <div className="flex h-[70vh] w-full justify-center items-center text-white text-sm">
-      Be a first notes provider
-    </div>
-  );
+
 
   return (
     <>
       <div className="chatContent flex flex-col gap-[7rem] overflow-y-scroll no-scrollbar w-full h-[calc(100vh-10.15rem)] py-3 pt-[3rem] px-6">
         {
-          data &&
-          <NotesCard data={data} />
+          data ?
+            <NotesCard data={data} scrollRef={scrollRef} /> :
+            <div className="flex h-[70vh] w-full justify-center items-center text-white text-sm">
+              Be a first notes provider
+            </div>
         }
 
         <motion.div
@@ -91,7 +90,7 @@ export const Notes: React.FC = () => {
             duration: 1,
             stiffness: 300,
           }}
-          className="  upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem] md:bottom-[5rem]"
+          className="upload absolute p-4 mt-[15rem] text-center text-xl rounded-full bg-lime-400 hover:bg-lime-500 shadow-md border-lime-600 border-2 self-end right-10 bottom-[3rem] md:bottom-[5rem]"
           onClick={() => setUploadPage(true)}
         >
           <FaFileUpload />

@@ -31,7 +31,7 @@ interface Props {
   data: NoteData[];
 }
 
-const NotesCard: React.FC<Props> = ({ data }) => {
+const NotesCard: React.FC<any> = ({ data, scrollRef }) => {
   const { currentUser } = useContext(createGroupContext);
   const groupId = localStorage.getItem("groupId") || "";
   const { token } = useToken();
