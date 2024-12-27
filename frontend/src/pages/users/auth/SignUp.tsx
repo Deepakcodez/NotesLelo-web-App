@@ -54,8 +54,9 @@ const SignUp: FC = () => {
     } else {
       try {
         setIsLoading(true);
+        const base_url = import.meta.env.VITE_BASE_URL as string;
         const response = await axios.post(
-          "https://notes-lelo-app-backend.vercel.app/api/v1/user/register",
+          `${base_url}/api/v1/user/register`,
           inputValue,
           {
             headers: { "Content-Type": "application/json" },

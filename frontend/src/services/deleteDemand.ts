@@ -3,12 +3,13 @@ import { mutate } from "swr";
 const token = localStorage.getItem("useDataToken");
 const groupId = localStorage.getItem("groupId");
 
-const deleteDemand = async(demandId: string) => {
-     console.log('>>>>>>>>>>>', demandId, groupId)
+const deleteDemand = async (demandId: string) => {
+  const base_url = import.meta.env.VITE_BASE_URL as string;
+
   return axios
     .post(
-      "https://notes-lelo-app-backend.vercel.app/api/v1/demand/delete",
-      { demandId, groupId},
+      `${base_url}/api/v1/demand/delete`,
+      { demandId, groupId },
       {
         headers: {
           "Content-Type": "application/json",
@@ -17,9 +18,7 @@ const deleteDemand = async(demandId: string) => {
       }
     )
     .then((response) => {
-        mutate(
-            `https://notes-lelo-app-backend.vercel.app/api/v1/demand/demands/${groupId}`
-          );
+      mutate(`${base_url}/api/v1/demand/demands/${groupId}`);
       console.log(">>>>>>>>>>>", response.data);
     })
     .catch((error) => {

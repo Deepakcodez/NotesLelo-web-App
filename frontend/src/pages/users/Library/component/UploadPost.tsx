@@ -12,6 +12,7 @@ export const UploadPublicPost = ({ setShowForm }: { setShowForm: React.Dispatch<
   const [warning, setWarning] = useState<boolean>(false);
   const [warningMsg, setWarningMsg] = useState<string>("");
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const [inputData, setInputData] = useState<{ caption: string; description: string }>({
     caption: "",
@@ -47,11 +48,10 @@ export const UploadPublicPost = ({ setShowForm }: { setShowForm: React.Dispatch<
     setIsUploading(true);
     try {
 
-      const url = import.meta.env.URL
-      // const url = 'http://localhost:8000'
+
 
       await axios.post(
-        `https://notes-lelo-app-backend.vercel.app/api/v1/notes/publicNotes`,
+        `${base_url}/api/v1/notes/publicNotes`,
         data,
         {
           headers: {
@@ -63,7 +63,7 @@ export const UploadPublicPost = ({ setShowForm }: { setShowForm: React.Dispatch<
       );
       setIsUploading(false);
       setShowForm(false)
-      mutate("https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes");
+      mutate(`${base_url}/api/v1/notes/your-notes`);
       // Handle the file upload response as needed
     } catch (error) {
       setIsUploading(false);

@@ -4,7 +4,7 @@ import { MdDriveFolderUpload } from "react-icons/md";
 import axios from "axios";
 import useSWR, { mutate } from "swr";
 
-export const UploadFile= ({isPublic}:{isPublic?:boolean | undefined}) => {
+export const UploadFile = ({ isPublic }: { isPublic?: boolean | undefined }) => {
   const token = localStorage.getItem("useDataToken") || ""; // Provide a default empty string if null
   const { setUploadPage } = useContext<any>(createGroupContext);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -12,6 +12,8 @@ export const UploadFile= ({isPublic}:{isPublic?:boolean | undefined}) => {
   const [warningMsg, setWarningMsg] = useState<string>("");
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const groupId = localStorage.getItem("groupId") || ""; // Provide a default empty string if null
+  const base_url = import.meta.env.VITE_BASE_URL as string;
+
   const [inputData, setInputData] = useState<{ caption: string; description: string }>({
     caption: "",
     description: "",
@@ -41,16 +43,15 @@ export const UploadFile= ({isPublic}:{isPublic?:boolean | undefined}) => {
     data.append("pdf", file);
     data.append("caption", inputData.caption);
     data.append("description", inputData.description);
-    data.append("groupId", groupId );
-    data.append("isPublic", isPublic?isPublic.toString(): "false" );
+    data.append("groupId", groupId);
+    data.append("isPublic", isPublic ? isPublic.toString() : "false");
     setIsUploading(true);
     try {
 
-      // const url = import.meta.env.URL
-      const url = 'http://localhost:8000'
+
 
       const response = await axios.post(
-        `${url}/api/v1/notes/upload-file`,
+        `${base_url}/api/v1/notes/upload-file`,
         data,
         {
           headers: {
@@ -62,8 +63,8 @@ export const UploadFile= ({isPublic}:{isPublic?:boolean | undefined}) => {
       );
       setIsUploading(false);
       setUploadPage(false);
-      mutate("https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes");
-      mutate(`https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`);
+      mutate(`${base_url}/api/v1/notes/your-notes`);
+      mutate(`${base_url}/api/v1/notes/groupNotes/${groupId}`);
       // Handle the file upload response as needed
     } catch (error) {
       setIsUploading(false);

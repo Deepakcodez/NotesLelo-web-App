@@ -44,8 +44,10 @@ export const SignIn: React.FC = () => {
     } else {
       try {
         setIsLoading(true);
+        const base_url = import.meta.env.VITE_BASE_URL as string;
+
         const response = await axios.post(
-          "https://notes-lelo-app-backend.vercel.app/api/v1/user/login",
+          `${base_url}/api/v1/user/login`,
           inputValue,
           {
             headers: {

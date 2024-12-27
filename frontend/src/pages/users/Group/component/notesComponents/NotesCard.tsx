@@ -40,9 +40,11 @@ const NotesCard: React.FC<any> = ({ data }) => {
   const groupId = localStorage.getItem("groupId") || "";
   const { token } = useToken();
 
+  const base_url = import.meta.env.VITE_BASE_URL as string;
+
   const likeClickHandler = async (notesId: string) => {
     mutate<NoteData[]>(
-      `https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`,
+      `${base_url}/api/v1/notes/groupNotes/${groupId}`,
       (currentData) =>
         currentData?.map((note) => {
           if (note.notes._id === notesId) {
@@ -62,7 +64,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
 
     try {
       await axios.put(
-        `https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/addLike/${notesId}`,
+        `${base_url}/api/v1/notes/groupNotes/addLike/${notesId}`,
         {},
         {
           headers: { "Content-Type": "application/json", token },
@@ -70,7 +72,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
         }
       );
       mutate(
-        `https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`
+        `${base_url}/api/v1/notes/groupNotes/${groupId}`
       );
     } catch (error) {
       console.error("Error updating like status:", error);
@@ -79,7 +81,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
 
   const saveHandler = async (notesId: string) => {
     mutate<NoteData[]>(
-      `https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`,
+      `${base_url}/api/v1/notes/groupNotes/${groupId}`,
       (currentData) =>
         currentData?.map((note) => {
           if (note.notes._id === notesId) {
@@ -88,8 +90,8 @@ const NotesCard: React.FC<any> = ({ data }) => {
             );
             const updatedSaved = isUserSaved
               ? note.notes.saved.filter(
-                  (user) => user._id !== currentUser._id
-                )
+                (user) => user._id !== currentUser._id
+              )
               : [...note.notes.saved, { _id: currentUser._id }];
 
             return { ...note, notes: { ...note.notes, saved: updatedSaved } };
@@ -101,7 +103,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
 
     try {
       await axios.post(
-        `https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/saveNotes/${notesId}`,
+        `${base_url}/api/v1/notes/groupNotes/saveNotes/${notesId}`,
         {},
         {
           headers: { "Content-Type": "application/json", token },
@@ -109,7 +111,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
         }
       );
       mutate(
-        `https://notes-lelo-app-backend.vercel.app/api/v1/notes/groupNotes/${groupId}`
+        `${base_url}/api/v1/notes/groupNotes/${groupId}`
       );
     } catch (error) {
       console.error("Error saving note:", error);
@@ -118,7 +120,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
 
   return (
     <>
-      {data?.map((noteData, index) => (
+      {data?.map((noteData:any, index:number) => (
         <React.Fragment key={noteData.notes._id}>
           <motion.div
             initial={{ opacity: 0 }}
@@ -129,11 +131,10 @@ const NotesCard: React.FC<any> = ({ data }) => {
               delay: index * 0.3,
             }}
             ref={scrollRef}
-            className={`${
-              noteData.notes.owner === currentUser._id
-                ? "self-end"
-                : "self-start"
-            } flex flex-col rounded-md h-[15rem] w-[85vw] sm:w-[25rem] bg-slate-700 border-gray-200`}
+            className={`${noteData.notes.owner === currentUser._id
+              ? "self-end"
+              : "self-start"
+              } flex flex-col rounded-md h-[15rem] w-[85vw] sm:w-[25rem] bg-slate-700 border-gray-200`}
             style={{ border: "1px solid gray" }}
           >
             <div className="h-[5rem] w-full text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl">
@@ -159,7 +160,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
                   onClick={() => likeClickHandler(noteData.notes._id)}
                 >
                   {noteData.notes.likes.some(
-                    (user) => user._id === currentUser._id
+                    (user:any) => user._id === currentUser._id
                   ) ? (
                     <BsHandThumbsUpFill className="text-red-500" />
                   ) : (
@@ -174,7 +175,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
                   onClick={() => saveHandler(noteData.notes._id)}
                 >
                   {noteData.notes.saved.some(
-                    (user) => user._id === currentUser._id
+                    (user:any) => user._id === currentUser._id
                   ) ? (
                     <GoBookmarkFill />
                   ) : (

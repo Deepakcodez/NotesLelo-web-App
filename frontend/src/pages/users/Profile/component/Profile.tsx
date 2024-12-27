@@ -10,6 +10,7 @@ import { BsDownload } from "react-icons/bs";
 import Lottie from "lottie-react";
 import loaderBook from '../../../../assets/loaderbook.json';
 import handleDownload from '@/utils/handleDownload';
+const base_url = import.meta.env.VITE_BASE_URL as string;
 
 
 // Define the structure of a note
@@ -53,7 +54,7 @@ const Profile: React.FC = () => {
   // Logout API
   const logout = async () => {
     try {
-      const resp = await axios.get(`https://notes-lelo-app-backend.vercel.app/api/v1/user/logout/${currentUser._id}`);
+      const resp = await axios.get(`${base_url}/api/v1/user/logout/${currentUser._id}`);
       console.log(resp);
       localStorage.removeItem("useDataToken");
       setProfileOptionModal(false);
@@ -75,7 +76,7 @@ const Profile: React.FC = () => {
     const fetchData = async () => {
       try {
         const resp = await axios.get(
-          'https://notes-lelo-app-backend.vercel.app/api/v1/notes/your-notes',
+          `${base_url}/api/v1/notes/your-notes`,
           {
             headers: {
               'Content-Type': 'application/json',

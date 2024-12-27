@@ -32,7 +32,7 @@ interface GroupContext {
 }
 
 export const Notes: React.FC = () => {
-  const groupId = localStorage.getItem("groupId") as string; // Ensure groupId is a string
+  const groupId = localStorage.getItem("groupId") as string;
   const { isUploadPage, setUploadPage, currentUser } = useContext(createGroupContext) as GroupContext;
   const [notesData, setNotesData] = useState<NoteData[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -49,7 +49,7 @@ export const Notes: React.FC = () => {
     return response.data.data;
   };
 
-  const url = import.meta.env.VITE_BASE_URL
+  const url = import.meta.env.VITE_BASE_URL as string;
   // const url = 'http://localhost:8000'
 
   const { data, error, isLoading } = useSWR<NoteData[]>(`${url}/api/v1/notes/groupNotes/${groupId}`, fetcher);
@@ -69,8 +69,8 @@ export const Notes: React.FC = () => {
   if (isLoading) return <div>Loading</div>
   if (error) return <div>Error fetching data. Please try again later.</div>;
   if (!data) return (
-    <div className="flex h-[70vh] w-full justify-center items-center text-white">
-      NO DATA
+    <div className="flex h-[70vh] w-full justify-center items-center text-white text-sm">
+      Be a first notes provider
     </div>
   );
 

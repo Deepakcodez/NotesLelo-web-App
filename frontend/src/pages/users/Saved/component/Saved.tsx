@@ -17,6 +17,7 @@ const Saved: React.FC = () => {
   const token = localStorage.getItem("useDataToken");
   const { currentUser } = useContext<any>(createGroupContext);
   const [loader, setLoader] = useState(true);
+  const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const handleDownload = async (fileUrl: string, fileName: string) => {
     try {
@@ -41,7 +42,7 @@ const Saved: React.FC = () => {
     }
   };
 
-  const { data, error } = useSWR<Note[]>('https://notes-lelo-app-backend.vercel.app/api/v1/notes/savedNotes', async (url: any) => {
+  const { data, error } = useSWR<Note[]>(`${base_url}/api/v1/notes/savedNotes`, async (url: any) => {
     try {
       const resp = await axios(url, {
         headers: {

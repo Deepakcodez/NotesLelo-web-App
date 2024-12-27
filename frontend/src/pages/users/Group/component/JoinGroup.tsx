@@ -12,6 +12,7 @@ export const JoinGroup: React.FC = () => {
   const navigate = useNavigate();
   const [groupId, setGroupId] = useState<string>("");
   const token = localStorage.getItem("useDataToken") || ""; // Provide a default empty string if null
+  const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGroupId(e.target.value);
@@ -28,7 +29,7 @@ export const JoinGroup: React.FC = () => {
     try {
       setIsLoadingBtn(true);
       const resp = await axios.post(
-        `https://notes-lelo-app-backend.vercel.app/api/v1/group/join`,
+        `${base_url}/api/v1/group/join`,
         { groupId },
         {
           headers: {
