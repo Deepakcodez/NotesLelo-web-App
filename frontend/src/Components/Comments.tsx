@@ -1,34 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { FaPaperPlane } from "react-icons/fa";
 
 interface Comment {
   id: number;
   text: string;
+  color: string;
+}
+
+interface Post {
+  _id: string;
+  name: string;
+  description: string;
+  caption: string;
 }
 
 interface CommentSidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
+  selectedPost: Post | null;
 }
 
-const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar }) => {
-  // Dummy comments array
+const getRandomColor = () => {
+  const colors = [
+    "#FF5733",
+    "#33FF57",
+    "#3357FF",
+    "#FF33A1",
+    "#FFC133",
+    "#8D33FF",
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
+};
+
+const CommentSidebar: React.FC<CommentSidebarProps> = ({
+  isOpen,
+  toggleSidebar,
+  selectedPost,
+}) => {
   const initialComments: Comment[] = [
-    { id: 1, text: "This is a great post!" },
-    { id: 2, text: "I really enjoyed reading this. Thanks for sharing!" },
-    { id: 3, text: "Amazing content, keep it up!" },
-    { id: 4, text: "This was really helpful, thanks!" },
-  
+    { id: 1, text: "This is a great post!", color: getRandomColor() },
+    {
+      id: 2,
+      text: "I really enjoyed reading this. Thanks for sharing!",
+      color: getRandomColor(),
+    },
+    { id: 3, text: "Amazing content, keep it up!", color: getRandomColor() },
+    {
+      id: 4,
+      text: "This was really helpful, thanks!",
+      color: getRandomColor(),
+    },
   ];
 
-  const [comments, setComments] = useState<Comment[]>(initialComments);
+  const [comments, setComments] = useState<Comment[]>(() => {
+    const savedComments = localStorage.getItem("comments");
+    return savedComments ? JSON.parse(savedComments) : initialComments;
+  });
+
   const [newComment, setNewComment] = useState("");
 
-  // Handle adding a new comment
+  useEffect(() => {
+    localStorage.setItem("comments", JSON.stringify(comments));
+  }, [comments]);
+
   const handleAddComment = () => {
     if (newComment.trim()) {
       const newCommentObj: Comment = {
         id: Date.now(),
         text: newComment,
+        color: getRandomColor(),
       };
       setComments([...comments, newCommentObj]);
       setNewComment("");
@@ -37,54 +77,94 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar }
 
   return (
     <div
-      className={`fixed top-20 right-0 w-80 h-[70%] bg-slate-500/25 shadow-lg transition-transform duration-300 ${
-        isOpen ? "translate-x-0" : "translate-x-full"
+      className={`fixed top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm flex justify-center items-center transition-opacity duration-300 z-50 ${
+        isOpen
+          ? "opacity-100 pointer-events-auto"
+          : "opacity-0 pointer-events-none"
       }`}
     >
-      <div className="flex flex-col h-full">
+      <div className="bg-slate-400/25 w-11/12 max-w-4xl rounded-lg shadow-xl overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-300">
-          <h2 className="text-lg text-white font-semibold">Comments</h2>
+        <div className="flex justify-between items-center bg-slate-700 text-white px-6 py-4">
+          <h2 className="text-xl font-semibold">
+            {selectedPost?.caption || "Post Details"}
+          </h2>
+          <h1 className="text-xl font-semibold text-white ">Comments</h1>
           <button
             onClick={toggleSidebar}
-            className="text-white hover:text-gray-700"
-            aria-label="Close Sidebar"
+            className="text-2xl font-bold hover:text-gray-300"
           >
-            ✖️
+            ×
           </button>
         </div>
 
-        {/* Comments List */}
-        <div className="flex-1 overflow-y-auto p-4">
-          {comments.length > 0 ? (
-            comments.map((comment) => (
-              <div
-                key={comment.id}
-                className="p-2 mb-2 bg-white rounded shadow-sm border border-gray-300"
+        <div className="flex flex-col md:flex-row">
+          {/* Post Details */}
+          <div className="w-full md:w-1/2 p-6 border-b md:border-b-0 md:border-r border-gray-200">
+            <h3 className="text-xl text-white font-semibold mb-4">
+              Post Description
+            </h3>
+            <p className="text-slate-400">
+              {selectedPost?.description || "No description available."}
+            </p>
+          </div>
+
+          {/* Comments Section */}
+          <div className="w-full md:w-[70%] p-6">
+           
+            <div
+              className="overflow-y-auto max-h-64 mb-4 space-y-3"
+              style={{ scrollbarWidth: "none" }}
+            >
+              <style>
+                {`
+                  .overflow-y-scroll::-webkit-scrollbar {
+                    display: none;
+                  }
+                `}
+              </style>
+              {comments.length > 0 ? (
+                comments.map((comment) => (
+                  <div
+                    key={comment.id}
+                    className="p-2 bg-slate-200 rounded-lg shadow-sm flex items-center space-x-3"
+                  >
+                    <div
+                      className="w-10 h-10 flex items-center justify-center rounded-full font-bold text-white"
+                      style={{ backgroundColor: comment.color }}
+                    >
+                      {comment.text.charAt(0).toUpperCase()}
+                    </div>
+                    <p className="text-gray-700">{comment.text}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500">No comments yet.</p>
+              )}
+            </div>
+
+            {/* Comment Input Section */}
+            <div className="flex items-center space-x-3">
+              
+
+              {/* Comment Input */}
+              <input
+                type="text"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Write a comment..."
+              />
+              {/* Send Button */}
+              <button
+                onClick={handleAddComment}
+                className="bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600 focus:outline-none"
+                aria-label="Send Comment"
               >
-                {comment.text}
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500">No comments yet. Be the first to comment!</p>
-          )}
-        </div>
-
-        {/* Add Comment */}
-        <div className="p-4 border-t border-gray-300">
-          <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            rows={3}
-            placeholder="Write a comment..."
-          />
-          <button
-            onClick={handleAddComment}
-            className="mt-2 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-          >
-            Post Comment
-          </button>
+                <FaPaperPlane />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
