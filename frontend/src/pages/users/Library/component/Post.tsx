@@ -5,15 +5,16 @@ import Lottie from "lottie-react";
 import axios from "axios";
 import useSWR from "swr";
 import NoteCard from "@/Components/Card";
-import CommentSidebar from "@/Components/Comments"; 
+import CommentSidebar from "@/Components/Comments";
 
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null); 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const baseURL = import.meta.env.VITE_BASE_URL as string;
   const url = `${baseURL}/api/v1/notes/publicNotes`;
+
   const fetcher = async (uri: string): Promise<any> => {
     const response = await axios.get(uri);
     return response.data.notes;
@@ -29,34 +30,27 @@ const Posts: React.FC = () => {
 
   const handleLike = (noteId: string) => {
     console.log(`Liked note with ID: ${noteId}`);
-    // Add like functionality here
   };
 
   const handleSave = (noteId: string) => {
     console.log(`Saved note with ID: ${noteId}`);
-    // Add save functionality here
   };
 
   const handleDownload = (url: string, name: string) => {
     console.log(`Downloading file: ${name} from URL: ${url}`);
-    // Add download functionality here
   };
 
   const handleCommentClick = (post: Post) => {
-    setSelectedPost(post); 
-    setIsSidebarOpen(true); 
+    setSelectedPost(post);
+    setIsSidebarOpen(true);
   };
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen); 
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   if (isLoading) {
-    return (
-      <>
-        <Lottie className="h-[5rem]" animationData={loaderBook} loop={true} />
-      </>
-    );
+    return <Lottie className="h-[5rem]" animationData={loaderBook} loop />;
   }
 
   if (error) {
@@ -87,21 +81,18 @@ const Posts: React.FC = () => {
               onLike={handleLike}
               onSave={handleSave}
               onDownload={handleDownload}
-              onComment={() => handleCommentClick(post)} 
+              onComment={() => handleCommentClick(post)}
             />
           ))}
         </div>
       </div>
 
-     
       {isSidebarOpen && selectedPost && (
-        <>
-        <h2>{posts._id}</h2>
         <CommentSidebar
-          isOpen={isSidebarOpen} 
-          toggleSidebar={toggleSidebar} 
+          isOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          selectedPost={selectedPost} 
         />
-        </>
       )}
     </div>
   );

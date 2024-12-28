@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { mutate } from "swr";
 import axios from "axios";
 import { motion } from "framer-motion";
-
 import { createGroupContext } from "@/Context";
 import { useToken } from "@/hooks";
 import handleDownload from "@/utils/handleDownload";
@@ -28,18 +27,16 @@ interface NoteData {
   user: { name: string };
 }
 
-interface Props {
-  data: NoteData[];
-}
-
-const NotesCard: React.FC<any> = ({ data, scrollRef }) => {
+const NotesCard: React.FC<any> = ({ data }) => {
   const { currentUser } = useContext(createGroupContext);
   const groupId = localStorage.getItem("groupId") || "";
   const { token } = useToken();
 
   const base_url = import.meta.env.VITE_BASE_URL as string;
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to control sidebar visibility
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
+  
+  const [selectedPost, setSelectedPost] = useState<Note | null>(null);
 
   const likeClickHandler = async (notesId: string) => {
     mutate<NoteData[]>(
@@ -112,7 +109,7 @@ const NotesCard: React.FC<any> = ({ data, scrollRef }) => {
   };
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen); // Toggle the sidebar visibility
+    setIsSidebarOpen(!isSidebarOpen); 
   };
 
   return (
@@ -165,7 +162,7 @@ const NotesCard: React.FC<any> = ({ data, scrollRef }) => {
                 </motion.div>
                 <motion.div
                   whileTap={{ scale: 0.75 }}
-                  onClick={toggleSidebar} // Open the sidebar when the comment icon is clicked
+                  onClick={toggleSidebar} 
                 >
                   <LiaComment />
                 </motion.div>
@@ -202,9 +199,13 @@ const NotesCard: React.FC<any> = ({ data, scrollRef }) => {
           </motion.div>
         </React.Fragment>
       ))}
-      
-      {/* Add the CommentSidebar and pass the necessary props */}
-      <CommentSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+    {isSidebarOpen && selectedPost && (
+    <CommentSidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        setSelectedPost={selectedPost} 
+    />
+)}
     </>
   );
 };
