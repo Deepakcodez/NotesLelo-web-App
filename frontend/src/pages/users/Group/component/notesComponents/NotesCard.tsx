@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { mutate } from "swr";
 import axios from "axios";
 import { motion } from "framer-motion";
-
 import { createGroupContext } from "@/Context";
 import { useToken } from "@/hooks";
 import handleDownload from "@/utils/handleDownload";
@@ -10,6 +9,7 @@ import { BsDownload, BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
 import { LiaComment } from "react-icons/lia";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import moment from "moment";
+import CommentSidebar from "@/Components/Comments";
 
 interface Note {
   _id: string;
@@ -27,16 +27,16 @@ interface NoteData {
   user: { name: string };
 }
 
-interface Props {
-  data: NoteData[];
-}
-
-const NotesCard: React.FC<any> = ({ data, scrollRef }) => {
+const NotesCard: React.FC<any> = ({ data }) => {
   const { currentUser } = useContext(createGroupContext);
   const groupId = localStorage.getItem("groupId") || "";
   const { token } = useToken();
 
   const base_url = import.meta.env.VITE_BASE_URL as string;
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
+  
+  const [selectedPost, setSelectedPost] = useState<Note | null>(null);
 
   const likeClickHandler = async (notesId: string) => {
     mutate<NoteData[]>(
@@ -67,9 +67,7 @@ const NotesCard: React.FC<any> = ({ data, scrollRef }) => {
           withCredentials: true,
         }
       );
-      mutate(
-        `${base_url}/api/v1/notes/groupNotes/${groupId}`
-      );
+      mutate(`${base_url}/api/v1/notes/groupNotes/${groupId}`);
     } catch (error) {
       console.error("Error updating like status:", error);
     }
@@ -85,9 +83,7 @@ const NotesCard: React.FC<any> = ({ data, scrollRef }) => {
               (user) => user._id === currentUser._id
             );
             const updatedSaved = isUserSaved
-              ? note.notes.saved.filter(
-                (user) => user._id !== currentUser._id
-              )
+              ? note.notes.saved.filter((user) => user._id !== currentUser._id)
               : [...note.notes.saved, { _id: currentUser._id }];
 
             return { ...note, notes: { ...note.notes, saved: updatedSaved } };
@@ -106,17 +102,19 @@ const NotesCard: React.FC<any> = ({ data, scrollRef }) => {
           withCredentials: true,
         }
       );
-      mutate(
-        `${base_url}/api/v1/notes/groupNotes/${groupId}`
-      );
+      mutate(`${base_url}/api/v1/notes/groupNotes/${groupId}`);
     } catch (error) {
       console.error("Error saving note:", error);
     }
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen); 
+  };
+
   return (
     <>
-      {data?.map((noteData:any, index:number) => (
+      {data?.map((noteData: any, index: number) => (
         <React.Fragment key={noteData.notes._id}>
           <motion.div
             initial={{ opacity: 0 }}
@@ -126,7 +124,6 @@ const NotesCard: React.FC<any> = ({ data, scrollRef }) => {
               duration: 0.2,
               delay: index * 0.3,
             }}
-            ref={scrollRef}
             className={`${noteData.notes.owner === currentUser._id
               ? "self-end"
               : "self-start"
@@ -156,14 +153,17 @@ const NotesCard: React.FC<any> = ({ data, scrollRef }) => {
                   onClick={() => likeClickHandler(noteData.notes._id)}
                 >
                   {noteData.notes.likes.some(
-                    (user:any) => user._id === currentUser._id
+                    (user: any) => user._id === currentUser._id
                   ) ? (
                     <BsHandThumbsUpFill className="text-red-500" />
                   ) : (
                     <BsHandThumbsUp />
                   )}
                 </motion.div>
-                <motion.div whileTap={{ scale: 0.75 }}>
+                <motion.div
+                  whileTap={{ scale: 0.75 }}
+                  onClick={toggleSidebar} 
+                >
                   <LiaComment />
                 </motion.div>
                 <motion.div
@@ -171,7 +171,7 @@ const NotesCard: React.FC<any> = ({ data, scrollRef }) => {
                   onClick={() => saveHandler(noteData.notes._id)}
                 >
                   {noteData.notes.saved.some(
-                    (user:any) => user._id === currentUser._id
+                    (user: any) => user._id === currentUser._id
                   ) ? (
                     <GoBookmarkFill />
                   ) : (
@@ -199,6 +199,13 @@ const NotesCard: React.FC<any> = ({ data, scrollRef }) => {
           </motion.div>
         </React.Fragment>
       ))}
+    {isSidebarOpen && selectedPost && (
+    <CommentSidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        setSelectedPost={selectedPost} 
+    />
+)}
     </>
   );
 };

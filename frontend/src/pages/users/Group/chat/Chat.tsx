@@ -5,8 +5,6 @@ import { ChevronDown, ChevronUp } from "lucide-react"
 import React, { useEffect } from "react"
 import toast from "react-hot-toast"
 
-
-
 const Chat: React.FC = () => {
     const [isShowChatBox, setIsShowChatBox] = React.useState(false)
     const { userDetail, isLoading, isError } = useAuth()
@@ -170,22 +168,20 @@ const Chat: React.FC = () => {
         >
             <header
                 draggable
-                // onDrag={handleDrag}
                 onClick={() => setIsShowChatBox(!isShowChatBox)}
-                className="flex flex-col items-center justify-center bg-slate-600/40 border-b border-slate-200/20 border-b-1 pb-2"
+                className="flex items-center justify-between bg-slate-600/60 border-b border-slate-200/30 p-3 cursor-pointer"
             >
+                <h1 className="text-white text-lg">Instant Chat</h1>
                 {
-                    isShowChatBox ?
-                        <ChevronUp color="white" /> :
+                    isShowChatBox ? 
+                        <ChevronUp color="white" /> : 
                         <ChevronDown color="white" />
                 }
-                <h1 className="text-white text-xs text-center ">Instant Chat</h1>
             </header>
 
-            {/* chat content */}
-
+            {/* Chat content */}
             {isShowChatBox && (
-                <div className="flex-1 overflow-y-auto p-2 no-scrollbar">
+                <div className="flex-1 overflow-y-auto p-3 no-scrollbar">
                     {messages.map((msg, index) => (
                         <div key={index}
                             className={`bg-slate-600 text-black p-2 mb-2  rounded-md ${userDetail?.email === msg.senderEmail ? "bg-slate-700 text-white self-end ms-3 " : "self-start me-3"}`} >
@@ -205,21 +201,23 @@ const Chat: React.FC = () => {
             )}
 
             {isShowChatBox && (
-                <div className="flex w-full items-center p-2">
+                <div className="flex items-center p-3 bg-slate-700/40 border-t border-slate-200/30">
                     <input
                         value={yourMessage}
                         onChange={(e) => setYourMessage(e.target.value)}
                         placeholder="Enter Message"
-                        className="flex-1 px-2 border border-slate-400 rounded-md"
+                        className="flex-1 px-4 py-2 rounded-md bg-slate-600 text-white border border-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
-                    <button onClick={sendMessage} className="bg-blue-600 text-white px-4 py-2 rounded-md ml-2">
+                    <button 
+                        onClick={sendMessage} 
+                        className="ml-3 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
+                    >
                         Send
                     </button>
                 </div>
             )}
-
-
         </div>
-    )
+    );
 }
-export default Chat
+
+export default Chat;
