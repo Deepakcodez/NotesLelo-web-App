@@ -23,7 +23,6 @@ const Posts: React.FC = () => {
 
   useEffect(() => {
     if (data) {
-      console.log('>>>>>>>>>>>', data)
       setPosts(data);
     }
   }, [data]);
