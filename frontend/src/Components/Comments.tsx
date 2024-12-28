@@ -52,6 +52,7 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, 
     }
   };
 
+
   const getAllComments = async () => {
     await getPostComments(postId);
     setComments(comments);
