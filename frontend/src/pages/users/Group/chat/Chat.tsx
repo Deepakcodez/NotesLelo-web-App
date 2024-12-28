@@ -1,29 +1,29 @@
 import { useAuth } from "@/hooks"
 import { useSocket } from "@/utils/socketProvider"
+import axios from "axios"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import React, { useEffect } from "react"
+import toast from "react-hot-toast"
 
 
 
 const Chat: React.FC = () => {
     const [isShowChatBox, setIsShowChatBox] = React.useState(false)
-    const [bottomPosition, setBottomPosition] = React.useState(0)
     const { userDetail, isLoading, isError } = useAuth()
     const groupId = localStorage.getItem("groupId");
     const [yourMessage, setYourMessage] = React.useState("")
-    const [messages, setMessages] = React.useState<{ sender: string; message: string }[]>(
-        JSON.parse(localStorage.getItem("chatMessages") || "[]")
-    );
+    const [messages, setMessages] = React.useState<
+        { message: string; senderName: string; senderEmail: string, id: any }[]
+    >([]);
     const chatBoxRef = React.useRef<HTMLDivElement>(null)
+    const base_url = import.meta.env.VITE_BASE_URL as string;
     const socket = useSocket()
+    const token = localStorage.getItem("useDataToken") || "";
+    const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
-    // const handleDrag = (e: React.DragEvent) => {
-    //     const newBottomPosition = Math.max(0, window.innerHeight - e.clientY - (chatBoxRef.current?.offsetHeight || 0))
-    //     setBottomPosition(newBottomPosition)
-    // }
-
-
-
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
 
     useEffect(() => {
         if (!userDetail) return;
@@ -36,13 +36,21 @@ const Chat: React.FC = () => {
         })
 
         // Listen for incoming messages
-        socket.on("receive:message", ({ sender, message }) => {
-            const newMessage = { sender, message };
+        socket.on("receive:message", async ({
+            id,
+            senderName,
+            senderEmail,
+            senderId,
+            message }) => {
             setMessages((prevMessages) => {
-                const updatedMessages = [...prevMessages, newMessage];
-                localStorage.setItem("chatMessages", JSON.stringify(updatedMessages));
-                return updatedMessages;
+                const isDuplicate = prevMessages.some((msg) => msg.id === id);
+                if (isDuplicate) return prevMessages;
+
+                return [...prevMessages, { id, senderName, senderEmail, message }];
             });
+
+
+            console.log('>>>>>>>>>>>', senderId, message, senderName)
         });
 
         return () => {
@@ -53,26 +61,112 @@ const Chat: React.FC = () => {
 
     }, [userDetail, socket, groupId])
 
+    const handleAIProcessing = async () => {
+        try {
+            const messageToAi = yourMessage.replace("@ai", "");
+            setYourMessage("");
+            const response = await axios.post(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${import.meta.env.VITE_GEMINI_KEY}`,
+                {
+                    contents: [
+                        {
+                            parts: [
+                                {
+                                    text: `you are a  brilliant teacher and you know everything each and every subject your task is to guide the student your task: ${messageToAi} write in short and simple language so that the student can understand easily`,
+                                },
+                            ],
+                        },
+                    ],
+                }
+            );
+            const aiMessage = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry I'm bussy text you later!";
+            console.log('>>>>>>>>>>>ai reply', aiMessage)
+
+
+            const uniqueId = Date.now();
+            const newMessage = {
+                id: uniqueId,
+                senderName: "@ai",
+                senderId: "67706ce65b920d5d542bdcad",
+                senderEmail: "noteslelo@ai.in",
+                message: aiMessage
+
+            };
+
+            // Update the state optimistically
+            setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+            socket.emit("send:message", { roomId: groupId, ...newMessage });
+
+
+        } catch (error) {
+            console.error("Error generating reply:", error);
+            toast.error("AI failed to answer")
+        }
+    }
+
+
     // Send a message
     const sendMessage = () => {
         if (!yourMessage.trim() || !userDetail) return;
+        const isAICommand = yourMessage.startsWith("@ai ");
 
-        const newMessage = { sender: userDetail.email, message: yourMessage };
-        setMessages((prevMessages) => {
-            const updatedMessages = [...prevMessages, newMessage];
-            localStorage.setItem("chatMessages", JSON.stringify(updatedMessages));
-            return updatedMessages;
-        });
+
+        const uniqueId = Date.now();
+        const newMessage = {
+            id: uniqueId,
+            senderName: userDetail.name,
+            senderId: userDetail._id,
+            senderEmail: userDetail.email,
+            message: yourMessage
+        };
+
+        // Update the state optimistically
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
 
         socket.emit("send:message", { roomId: groupId, ...newMessage });
-        setYourMessage("");
+
+        if (isAICommand) {
+            handleAIProcessing();
+        } else {
+            setYourMessage("");
+        }
+
     };
 
+    const getMessages = async () => {
+        try {
+            const resp = await axios.get(
+                `${base_url}/chat/getMessages/${groupId}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        token: token,
+                        withCredentials: true,
+                    },
+                }
+            );
 
+            const formattedMessages = resp.data.map((msg: any) => ({
+                message: msg.message,
+                senderName: msg.from.name,
+                senderEmail: msg.from.email,
+            }));
+            setMessages(formattedMessages);
+        } catch (error) {
+            toast.error("something went wrong")
+        }
+    }
+    useEffect(() => {
+        getMessages()
+    }, [])
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages, isShowChatBox]);
     return (
         <div
             ref={chatBoxRef}
-            className={`absolute z-50 bottom-${bottomPosition} right-12 md:w-[30%] w-[50%] rounded-t-lg bg-slate-800/60 border border-t-1 border-slate-200/20 ${isShowChatBox ? "h-[30rem]" : "h-[3rem]"} flex flex-col`}
+            className={`absolute z-50 bottom-0 md:right-12 md:w-[30%] w-[100%] rounded-t-lg bg-slate-800/60 border border-t-1 border-slate-200/20 ${isShowChatBox ? "h-[30rem]" : "h-[3rem]"} flex flex-col`}
         >
             <header
                 draggable
@@ -93,14 +187,20 @@ const Chat: React.FC = () => {
             {isShowChatBox && (
                 <div className="flex-1 overflow-y-auto p-2 no-scrollbar">
                     {messages.map((msg, index) => (
-                        <div
-                            key={index}
-                            className={`p-2 rounded-md my-1  ${msg.sender === userDetail?.email ? "bg-blue-500 text-white" : "bg-gray-300 text-black"
-                                }`}
-                        >
-                            <strong>{msg.sender === userDetail?.email ? "You" : msg.sender}:</strong> {msg.message}
+                        <div key={index}
+                            className={`bg-slate-600 text-black p-2 mb-2  rounded-md ${userDetail?.email === msg.senderEmail ? "bg-slate-700 text-white self-end ms-3 " : "self-start me-3"}`} >
+                            <div>
+                                <h1 className="font-semibold text-sm leading-none text-white">
+                                    {msg.senderName.charAt(0).toUpperCase() + msg.senderName.slice(1)}
+                                </h1>
+                                <h1 className="text-[.6rem] text-gray-400 leading-1">{msg.senderEmail}</h1>
+                            </div>
+                            <div className="font-semibold ps-3 pb-2 text-white">
+                                {msg.message}
+                            </div>
                         </div>
                     ))}
+                    <div ref={messagesEndRef} />
                 </div>
             )}
 
