@@ -135,7 +135,7 @@ const Chat: React.FC = () => {
     const getMessages = async () => {
         try {
             const resp = await axios.get(
-                `${base_url}/chat/getMessages/${groupId}`,
+                `${base_url}/api/v1/chat/getMessages/${groupId}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -173,8 +173,8 @@ const Chat: React.FC = () => {
             >
                 <h1 className="text-white text-lg">Instant Chat</h1>
                 {
-                    isShowChatBox ? 
-                        <ChevronUp color="white" /> : 
+                    isShowChatBox ?
+                        <ChevronUp color="white" /> :
                         <ChevronDown color="white" />
                 }
             </header>
@@ -208,8 +208,8 @@ const Chat: React.FC = () => {
                         placeholder="Enter Message"
                         className="flex-1 px-4 py-2 rounded-md bg-slate-600 text-white border border-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
-                    <button 
-                        onClick={sendMessage} 
+                    <button
+                        onClick={sendMessage}
                         className="ml-3 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
                     >
                         Send

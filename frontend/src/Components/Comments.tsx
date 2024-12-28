@@ -1,3 +1,4 @@
+import { getPostComments } from "@/services";
 import React, { useState, useEffect } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 
@@ -17,7 +18,8 @@ interface Post {
 interface CommentSidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
-  selectedPost: Post | null;
+  postId: string;
+
 }
 
 const getRandomColor = () => {
@@ -32,36 +34,11 @@ const getRandomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const CommentSidebar: React.FC<CommentSidebarProps> = ({
-  isOpen,
-  toggleSidebar,
-  selectedPost,
-}) => {
-  const initialComments: Comment[] = [
-    { id: 1, text: "This is a great post!", color: getRandomColor() },
-    {
-      id: 2,
-      text: "I really enjoyed reading this. Thanks for sharing!",
-      color: getRandomColor(),
-    },
-    { id: 3, text: "Amazing content, keep it up!", color: getRandomColor() },
-    {
-      id: 4,
-      text: "This was really helpful, thanks!",
-      color: getRandomColor(),
-    },
-  ];
-
-  const [comments, setComments] = useState<Comment[]>(() => {
-    const savedComments = localStorage.getItem("comments");
-    return savedComments ? JSON.parse(savedComments) : initialComments;
-  });
+const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, postId }) => {
 
   const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState<Comment[]>([]);
 
-  useEffect(() => {
-    localStorage.setItem("comments", JSON.stringify(comments));
-  }, [comments]);
 
   const handleAddComment = () => {
     if (newComment.trim()) {
@@ -75,13 +52,21 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({
     }
   };
 
+  const getAllComments = async () => {
+    await getPostComments(postId);
+    setComments(comments);
+  }
+  useEffect(() => {
+    if (isOpen) {
+
+    }
+  })
   return (
     <div
-      className={`fixed top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm flex justify-center items-center transition-opacity duration-300 z-50 ${
-        isOpen
-          ? "opacity-100 pointer-events-auto"
-          : "opacity-0 pointer-events-none"
-      }`}
+      className={`fixed top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm flex justify-center items-center transition-opacity duration-300 z-50 ${isOpen
+        ? "opacity-100 pointer-events-auto"
+        : "opacity-0 pointer-events-none"
+        }`}
     >
       <div className="bg-slate-400/25 w-11/12 max-w-4xl rounded-lg shadow-xl overflow-hidden">
         {/* Header */}
@@ -89,7 +74,7 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({
           <h2 className="text-xl font-semibold">
             {selectedPost?.caption || "Post Details"}
           </h2>
-          <h1 className="text-xl font-semibold text-white ">Comments</h1>
+
           <button
             onClick={toggleSidebar}
             className="text-2xl font-bold hover:text-gray-300"
@@ -111,7 +96,7 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({
 
           {/* Comments Section */}
           <div className="w-full md:w-[70%] p-6">
-           
+
             <div
               className="overflow-y-auto max-h-64 mb-4 space-y-3"
               style={{ scrollbarWidth: "none" }}
@@ -127,25 +112,29 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({
                 comments.map((comment) => (
                   <div
                     key={comment.id}
-                    className="p-2 bg-slate-200 rounded-lg shadow-sm flex items-center space-x-3"
+                    className="p-2 bg-slate-200 rounded-lg shadow-sm  items-center space-x-3 flex"
                   >
                     <div
-                      className="w-10 h-10 flex items-center justify-center rounded-full font-bold text-white"
+                      className="w-10 h-10 flex items-center justify-center rounded-full font-bold text-black"
                       style={{ backgroundColor: comment.color }}
                     >
                       {comment.text.charAt(0).toUpperCase()}
                     </div>
-                    <p className="text-gray-700">{comment.text}</p>
+                    <div>
+                      <h1 className="text-sm">Username Kumar</h1>
+                      <p className="text-gray-700">{comment.text}</p>
+
+                    </div>
                   </div>
                 ))
               ) : (
-                <p className="text-gray-500">No comments yet.</p>
+                <p className="text-gray-500 h-32">No comments yet.</p>
               )}
             </div>
 
             {/* Comment Input Section */}
             <div className="flex items-center space-x-3">
-              
+
 
               {/* Comment Input */}
               <input

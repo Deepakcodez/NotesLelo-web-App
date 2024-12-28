@@ -15,15 +15,15 @@ interface NoteCardProps {
   description: string;
   pdfUrl: string;
   owner: string;
-  likes: Array<{ _id: string }>;
-  saved: Array<{ _id: string }>;
+  likes: [] ;
+  saved: [];
   createdAt: string;
   currentUserId: string;
   userName: string;
   onLike: (noteId: string) => void;
   onSave: (noteId: string) => void;
   onDownload: (url: string, name: string) => void;
-  onComment: () => void; // Add onComment prop for comment button
+  onComment: () => void; 
 }
 
 const NoteCard: React.FC<NoteCardProps> = ({

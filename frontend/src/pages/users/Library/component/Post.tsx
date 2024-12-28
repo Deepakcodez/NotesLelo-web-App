@@ -23,6 +23,7 @@ const Posts: React.FC = () => {
 
   useEffect(() => {
     if (data) {
+      console.log('>>>>>>>>>>>', data)
       setPosts(data);
     }
   }, [data]);
@@ -79,7 +80,7 @@ const Posts: React.FC = () => {
               description={post.description}
               pdfUrl={post.pdf?.url || ""}
               owner={post.owner}
-              likes={post.likes}
+              likes={post.likes }
               saved={post.saved}
               createdAt={post.createdAt}
               currentUserId="currentUserIdPlaceholder"
@@ -95,13 +96,13 @@ const Posts: React.FC = () => {
 
      
       {isSidebarOpen && selectedPost && (
-        <>
-        <h2>{posts._id}</h2>
+        
         <CommentSidebar
           isOpen={isSidebarOpen} 
           toggleSidebar={toggleSidebar} 
+          postId={selectedPost?._id }
         />
-        </>
+        
       )}
     </div>
   );
