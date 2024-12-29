@@ -164,7 +164,7 @@ const Chat: React.FC = () => {
     return (
         <div
             ref={chatBoxRef}
-            className={`absolute z-50 bottom-0 md:right-12 md:w-[30%] w-[100%] rounded-t-lg bg-slate-800/60 border border-t-1 border-slate-200/20 ${isShowChatBox ? "h-[30rem]" : "h-[3rem]"} flex flex-col`}
+            className={`absolute z-50 bottom-0 md:right-12 md:w-[30%] w-[100%] rounded-t-lg bg-slate-800/60 border border-t-1 border-slate-200/20 ${isShowChatBox ? "h-[70vh]" : "h-[3rem]"} flex flex-col`}
         >
             <header
                 draggable

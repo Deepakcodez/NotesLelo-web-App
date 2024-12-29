@@ -81,7 +81,7 @@ export const GroupCard: React.FC<GroupCardProps> = ({ fetching }) => {
             className="card bg-slate-500/75 h-40 min-w-[auto] rounded-md shadow-lg border-[1px] border-t-slate-300 hover:border-t-slate-100 border-slate-400/50 hover:shadow-2xl hover:bg-slate-600 hover:scale-[1.009] outline-slate-200/5 outline-1 outline-offset-4 outline"
           >
             <div className="border-b-[1px] pt-2 rounded-t-md border-b-slate-400/70 bg-slate-700">
-              <h1 className="groupName px-4 font-bold text-white">
+              <h1 className=" w-24 px-4 font-bold text-white ">
                 {group.title.toUpperCase()}
               </h1>
               <div className="flex items-center justify-between px-4 pb-2">
