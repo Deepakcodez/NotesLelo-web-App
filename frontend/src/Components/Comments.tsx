@@ -1,4 +1,5 @@
-import { getPostComments } from "@/services";
+
+import getPostComments from "@/services/getPostComents";
 import React, { useState, useEffect } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 
@@ -19,7 +20,6 @@ interface CommentSidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
   postId: string;
-
 }
 
 const getRandomColor = () => {
@@ -35,10 +35,42 @@ const getRandomColor = () => {
 };
 
 const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, postId }) => {
-
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
+  // Fetch comments for the given post
+  const getAllComments = async () => {
+    try {
+      const fetchedComments = await getPostComments(postId);
+      const formattedComments = fetchedComments.map((comment: any) => ({
+        id: comment.id || Date.now(),
+        text: comment.text,
+        color: getRandomColor(),
+      }));
+      setComments(formattedComments);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
+
+  // Fetch post details (stubbed for now)
+  const fetchPostDetails = async () => {
+    // Replace with actual API call to fetch post details
+    setSelectedPost({
+      _id: postId,
+      name: "Sample Post",
+      description: "This is a sample description for the post.",
+      caption: "Sample Caption",
+    });
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchPostDetails();
+      getAllComments();
+    }
+  }, [isOpen]);
 
   const handleAddComment = () => {
     if (newComment.trim()) {
@@ -52,22 +84,11 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, 
     }
   };
 
-
-  const getAllComments = async () => {
-    // await getPostComments(postId);
-    setComments(comments);
-  }
-  useEffect(() => {
-    if (isOpen) {
-
-    }
-  })
   return (
     <div
-      className={`fixed top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm flex justify-center items-center transition-opacity duration-300 z-50 ${isOpen
-        ? "opacity-100 pointer-events-auto"
-        : "opacity-0 pointer-events-none"
-        }`}
+      className={`fixed top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm flex justify-center items-center transition-opacity duration-300 z-50 ${
+        isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+      }`}
     >
       <div className="bg-slate-400/25 w-11/12 max-w-4xl rounded-lg shadow-xl overflow-hidden">
         {/* Header */}
@@ -87,9 +108,7 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, 
         <div className="flex flex-col md:flex-row">
           {/* Post Details */}
           <div className="w-full md:w-1/2 p-6 border-b md:border-b-0 md:border-r border-gray-200">
-            <h3 className="text-xl text-white font-semibold mb-4">
-              Post Description
-            </h3>
+            <h3 className="text-xl text-white font-semibold mb-4">Post Description</h3>
             <p className="text-slate-400">
               {selectedPost?.description || "No description available."}
             </p>
@@ -97,23 +116,20 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, 
 
           {/* Comments Section */}
           <div className="w-full md:w-[70%] p-6">
-
             <div
               className="overflow-y-auto max-h-64 mb-4 space-y-3"
               style={{ scrollbarWidth: "none" }}
             >
-              <style>
-                {`
-                  .overflow-y-scroll::-webkit-scrollbar {
-                    display: none;
-                  }
-                `}
-              </style>
+              <style>{`
+                .overflow-y-scroll::-webkit-scrollbar {
+                  display: none;
+                }
+              `}</style>
               {comments.length > 0 ? (
                 comments.map((comment) => (
                   <div
                     key={comment.id}
-                    className="p-2 bg-slate-200 rounded-lg shadow-sm  items-center space-x-3 flex"
+                    className="p-2 bg-slate-200 rounded-lg shadow-sm items-center space-x-3 flex"
                   >
                     <div
                       className="w-10 h-10 flex items-center justify-center rounded-full font-bold text-black"
@@ -124,7 +140,6 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, 
                     <div>
                       <h1 className="text-sm">Username Kumar</h1>
                       <p className="text-gray-700">{comment.text}</p>
-
                     </div>
                   </div>
                 ))
@@ -135,9 +150,6 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, 
 
             {/* Comment Input Section */}
             <div className="flex items-center space-x-3">
-
-
-              {/* Comment Input */}
               <input
                 type="text"
                 value={newComment}
@@ -145,7 +157,6 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, 
                 className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Write a comment..."
               />
-              {/* Send Button */}
               <button
                 onClick={handleAddComment}
                 className="bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600 focus:outline-none"
