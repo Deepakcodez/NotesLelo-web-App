@@ -1,28 +1,25 @@
-import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
-import { createGroupContext } from '../../../../Context';
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { createGroupContext } from "../../../../Context";
 import { FaBook } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { BsDownload } from "react-icons/bs";
 import Lottie from "lottie-react";
-import loaderBook from '../../../../assets/loaderbook.json';
-import handleDownload from '@/utils/handleDownload';
+import loaderBook from "../../../../assets/loaderbook.json";
+import handleDownload from "@/utils/handleDownload";
 const base_url = import.meta.env.VITE_BASE_URL as string;
 
-
-// Define the structure of a note
 interface Note {
   caption: string;
   description: string;
-  pdf: { url: string }; // Assuming pdf has a url property
+  pdf: { url: string };
 }
 
-
 const Profile: React.FC = () => {
-  const {currentUser } = useContext<any>(createGroupContext);
+  const { currentUser } = useContext<any>(createGroupContext);
   const [notesData, setNotesData] = useState<Note[]>([]);
   const [loader, setLoader] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -32,7 +29,6 @@ const Profile: React.FC = () => {
   const token = localStorage.getItem("useDataToken");
 
   useEffect(() => {
-
     const handleClickOutside = (e: MouseEvent) => {
       if (
         popupRef.current &&
@@ -51,10 +47,9 @@ const Profile: React.FC = () => {
     };
   }, [popupRef, optionIconRef]);
 
-  // Logout API
   const logout = async () => {
     try {
-      const resp = await axios.get(`${base_url}/api/v1/user/logout/${currentUser._id}`);
+      const resp = await axios.get(`${base_url}/api/v1/user/logout/${currentUser?._id}`);
       console.log(resp);
       localStorage.removeItem("useDataToken");
       setProfileOptionModal(false);
@@ -64,112 +59,101 @@ const Profile: React.FC = () => {
     }
   };
 
-  // Signup
   const signup = () => {
     setProfileOptionModal(false);
     navigate("/signUp");
   };
 
-
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get(
-          `${base_url}/api/v1/notes/your-notes`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              token,
-            },
-            withCredentials: true,
-          }
-        );
-        console.log('>>>>>>>>>>>your notes', resp.data.data);
+        const resp = await axios.get(`${base_url}/api/v1/notes/your-notes`, {
+          headers: {
+            "Content-Type": "application/json",
+            token,
+          },
+          withCredentials: true,
+        });
+        console.log("Fetched notes:", resp.data.data);
         setNotesData(resp.data.data);
-        setLoader(false);
       } catch (error) {
-        console.log('>>>>>>>>>>>', error);
+        console.log("Error fetching notes:", error);
+      } finally {
+        setLoader(false);
       }
     };
 
-    fetchData();
-  }, [token]); // Add token as a dependency
+    if (token) fetchData();
+  }, [token]);
 
   if (!currentUser || !currentUser.name) {
-    // You can return a loading indicator or handle this case accordingly
     return (
-      <div className='h-screen w-full flex justify-center items-center overflow-y-scroll no-scrollbar'>
-        <Lottie className='h-[5rem]' animationData={loaderBook} loop={true} />
+      <div className="h-screen w-full flex justify-center items-center">
+        <Lottie className="h-[5rem]" animationData={loaderBook} loop={true} />
       </div>
     );
   }
 
   return (
-    <div className='h-full w-full relative overflow-y-scroll no-scrollbar pb-[5rem]'>
-      {/* Profile top */}
-      <div ref={optionIconRef} className='navbar h-8 w-full float-end flex justify-end items-center bg-slate-700/25'>
-        <HiOutlineDotsVertical className='text-xl mt-2 me-3 text-white' onClick={() => setProfileOptionModal(!profileOptionModal)} />
+    <div className="h-full w-full relative bg-gray-900 text-white">
+     <div className="bg-gradient-to-r from-cyan-500 to-blue-300 p-4 sm:p-6">
+  <div className="flex flex-col items-center gap-6 md:flex-row md:justify-between">
+    {/* Profile Picture and Name */}
+    <div className="flex items-center gap-4">
+      <div className="h-20 w-20 sm:h-24 sm:w-24 bg-orange-400 rounded-full flex justify-center items-center text-3xl sm:text-5xl font-bold">
+        {currentUser.name?.[0]?.toUpperCase() || ""}
       </div>
-      <div className='profileTop p-8 flex flex-col md:flex-row w-full bg-slate-700/25 justify-center'>
-        <div className='h-full flex flex-col gap-3 items-center justify-center'>
-          <div className='dp flex justify-center items-center text-7xl h-[10rem] w-[10rem] md:h-[10rem] md:w-[10rem] rounded-full bg-orange-400'>
-            <h1 className='text-white'>{currentUser ? currentUser.name[0].toUpperCase() : "!"}</h1>
-          </div>
-          <h1 className='text-white'>{currentUser ? currentUser.name.toUpperCase() : "User"}</h1>
-        </div>
-        <div className='stats flex gap-7 justify-center items-center h-full w-full md:w-[50%] bg-slate-60'>
-          <div className='flex flex-col justify-center items-center gap-1'>
-            <h1 className='text-white text-4xl font-semibold'>{currentUser.posts.length}</h1>
-            <FaBook className='text-green-400 text-3xl' />
-            <h1 className='text-white'>Notes</h1>
-          </div>
-          <div className='flex flex-col justify-center items-center gap-1'>
-            <h1 className='text-white text-4xl font-semibold'>{currentUser?.likesOnOwnNotes?.length}</h1>
-            <FaHeart className='text-red-400 text-3xl' />
-            <h1 className='text-white'>Likes</h1>
-          </div>
-          <div className='flex flex-col justify-center items-center gap-1'>
-            <h1 className='text-white text-4xl font-semibold'>{currentUser?.ownNotesSaves?.length}</h1>
-            <FaBookmark className='text-blue-400 text-3xl' />
-            <h1 className='text-white'>Saves</h1>
-          </div>
-        </div>
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold">
+          {currentUser.name?.toUpperCase() || "User"}
+        </h1>
+        <p className="text-gray-300 text-sm sm:text-base">
+          Welcome to your profile!
+        </p>
       </div>
-      <div className='bg-slate-700/75 border-b border-slate-500'>
-        <h1 className='text-center text-white font-bold'>Notes</h1>
-      </div>
+    </div>
 
-      {/* Notes portion */}
-      <div className='h-auto w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-center p-4 pt-6'>
-        {notesData?.map((notes, index) => (
-          <Fragment key={index}>
-            <div className='bg-slate-800 rounded-md' style={{ border: "1px solid gray" }}>
-              <div className='h-[5rem] w-full text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl'>NOTESLELO</div>
-              <div className='px-2'>
-                <div className='flex justify-between'>
-                  <h1 className='bg text-lg font-bold tracking-tight text-gray-900 dark:text-white'>{notes.caption}</h1>
-                  <h1 className='text-sm text-gray-500'>{currentUser.name}</h1>
-                </div>
-                <h1 className='mb-3 overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400'>{notes.description}</h1>
-              </div>
-              <div className='footer flex justify-end px-3 py-2 text-white'>
-                <div className='bg-cyan-400 rounded-lg border-gray-300 border-2'
-                  onClick={() => { handleDownload(notes.pdf.url, notes?.caption); }} // Accessing pdf.url
-                >
-                  <div className='text-green-900 p-1 flex gap-2'><span>Download</span><BsDownload className='text-xl' /></div>
-                </div>
-              </div>
-            </div>
-          </Fragment>
-        ))}
+    {/* Stats Section */}
+    <div className="flex flex-wrap gap-6 justify-center md:justify-end mt-4 md:mt-0  mr-8">
+      <div className="text-center ">
+        <h1 className="text-3xl sm:text-4xl font-bold">
+          {currentUser.posts?.length || 0}
+        </h1>
+        <FaBook className="mx-auto text-3xl sm:text-4xl text-green-600 mt-2" />
+        <p className="text-white text-sm sm:text-base">Notes</p>
       </div>
+      <div className="text-center">
+        <h1 className="text-3xl sm:text-4xl font-bold">
+          {currentUser.likesOnOwnNotes?.length || 0}
+        </h1>
+        <FaHeart className="mx-auto text-3xl sm:text-4xl text-red-500 mt-2" />
+        <p className="text-white text-sm sm:text-base">Likes</p>
+      </div>
+      <div className="text-center">
+        <h1 className="text-3xl sm:text-4xl font-bold">
+          {currentUser.ownNotesSaves?.length || 0}
+        </h1>
+        <FaBookmark className="mx-auto text-3xl sm:text-4xl text-blue-500 mt-2" />
+        <p className="text-white text-sm sm:text-base">Saves</p>
+      </div>
+    </div>
+  </div>
 
-      {/* Modal */}
+  {/* Options Icon */}
+  <div
+    ref={optionIconRef}
+    className="absolute top-4 right-4 sm:top-6 sm:right-6 cursor-pointer"
+    onClick={() => setProfileOptionModal(!profileOptionModal)}
+  >
+    <HiOutlineDotsVertical className="text-2xl sm:text-3xl" />
+  </div>
+</div>
+
+
       {profileOptionModal && (
         <div
           ref={popupRef}
-          className="popup absolute z-30 bg-slate-500 text-white shadow-lg py-1 w-[10rem] top-8 end-10 rounded-sm"
+          className="popup absolute z-30 bg-slate-500 text-white shadow-lg py-1 w-[10rem] top-8 right-6 rounded-sm md:w-[12rem]"
         >
           <ul className="flex flex-col items-center">
             <li className="hover:bg-slate-600 w-full py-3 cursor-pointer ps-4">
@@ -184,6 +168,43 @@ const Profile: React.FC = () => {
           </ul>
         </div>
       )}
+
+      <div className="p-6 flex flex-col lg:flex-row gap-6">
+        <div className="flex-1">
+          <h2 className="text-2xl font-bold mb-4 border-b border-gray-700 pb-2">Your Notes</h2>
+          {loader ? (
+            <div className="flex justify-center">
+              <Lottie className="h-[5rem]" animationData={loaderBook} loop={true} />
+            </div>
+          ) : notesData.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {notesData.map((notes, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700"
+                >
+                  <h3 className="text-xl font-bold">{notes.caption}</h3>
+                  <p className="text-gray-400 mt-2">{notes.description}</p>
+                  <div
+                    className="mt-4 py-2 px-4 bg-blue-500 rounded-lg text-center cursor-pointer"
+                    onClick={() => handleDownload(notes.pdf.url, notes.caption)}
+                  >
+                    <BsDownload className="inline-block mr-2 text-white" />
+                    Download
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-gray-400">No notes found.</p>
+          )}
+        </div>
+
+        <div className="w-full lg:w-[20%] bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700">
+          <h2 className="text-2xl font-bold mb-4">Badges</h2>
+          <p className="text-gray-400">Earn badges!!</p>
+        </div>
+      </div>
     </div>
   );
 };
