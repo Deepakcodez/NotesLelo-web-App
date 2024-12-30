@@ -37,9 +37,18 @@ const Posts: React.FC = () => {
     // Add save functionality here
   };
 
-  const handleDownload = (url: string, name: string) => {
-    console.log(`Downloading file: ${name} from URL: ${url}`);
-    // Add download functionality here
+  const handleDownload = async(url: string, name: string) => {
+    try {
+      const response = await axios.get(url, { responseType: "blob" });
+      const blob = new Blob([response.data], { type: response.headers["content-type"] });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = name;
+      link.click();
+      console.log(`Downloaded file: ${name} from URL: ${url}`);
+    } catch (error) {
+      console.error("Error downloading the file", error);
+    }
   };
 
   const handleCommentClick = (post: Post) => {
@@ -71,7 +80,12 @@ const Posts: React.FC = () => {
     <div className="relative">
       <div className="p-6">
         <div className="grid grid-cols-1 mt-6 gap-6 max-h-[80vh] overflow-y-auto hide-scrollbar">
-          {posts.map((post) => (
+          {posts.map((post , index) => (
+             <div
+             key={post._id}
+             className={`transition duration-500 ease-in-out transform opacity-0 translate-y-6 animate-fade-in`}
+             style={{ animationDelay: `${index * 0.1}s` }}
+           >
             <NoteCard
               key={post._id}
               noteId={post._id}
@@ -83,12 +97,14 @@ const Posts: React.FC = () => {
               saved={post.saved}
               createdAt={post.createdAt}
               currentUserId="currentUserIdPlaceholder"
-              userName={post.user?.name || "Unknown"}
+              userName={post.owner || "Unknown"}
               onLike={handleLike}
               onSave={handleSave}
               onDownload={handleDownload}
               onComment={() => handleCommentClick(post)} 
             />
+      </div>
+
           ))}
         </div>
       </div>
