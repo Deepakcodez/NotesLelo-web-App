@@ -84,7 +84,11 @@ const Posts: React.FC = () => {
              <div
              key={post._id}
              className={`transition duration-500 ease-in-out transform opacity-0 translate-y-6 animate-fade-in`}
-             style={{ animationDelay: `${index * 0.1}s` }}
+             style={{ 
+               animation: `slideInFromLeft 0.5s ease-in-out`,
+                animationDelay: `${index * 0.1}s`,
+                animationFillMode: "forwards",
+              }}
            >
             <NoteCard
               key={post._id}
@@ -97,7 +101,7 @@ const Posts: React.FC = () => {
               saved={post.saved}
               createdAt={post.createdAt}
               currentUserId="currentUserIdPlaceholder"
-              userName={post.owner || "Unknown"}
+              userName={post.user?.name || "Unknown"}
               onLike={handleLike}
               onSave={handleSave}
               onDownload={handleDownload}
