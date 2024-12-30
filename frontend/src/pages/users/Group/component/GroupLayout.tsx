@@ -108,12 +108,12 @@ export const GroupLayout = () => {
       <div className=" relative min-h-full h-fit w-fit min-w-full  flex flex-col  ">
         <div className="navbar  bg-slate-700 truncate shadow-lg w-full h-[3rem] flex items-center ">
           <ul className="flex h-full items-center justify-between px-5 w-full">
-            <li className="font-bold text-white text-xl flex items-center gap-2  w-[15rem]">
+            <li className="font-bold text-white text-xl flex items-center gap-2  w-9/12 md:w-8/12 truncate">
               <Link to="/" className="text-3xl md:hidden">
                 <MdChevronLeft />
               </Link>
               {groupData.title ? (
-                groupData.title.toUpperCase()
+                <p className="truncate md-w-12/12  text-ellipsis">{groupData.title.toUpperCase()}</p>
               ) : (
                 <div className="bg-slate-500/25 w-[13rem] h-[1.5rem] rounded-md animate-pulse duration-1000"></div>
               )}
@@ -132,8 +132,8 @@ export const GroupLayout = () => {
           >
             <h1
               className={`${location.pathname === "/group/demand"
-                  ? "text-orange-400"
-                  : "text-white"
+                ? "text-orange-400"
+                : "text-white"
                 } font-bold`}
             >
               Demand
@@ -145,8 +145,8 @@ export const GroupLayout = () => {
           >
             <h1
               className={` ${location.pathname === "/group/notes"
-                  ? "text-blue-400"
-                  : "text-white"
+                ? "text-blue-400"
+                : "text-white"
                 }  font-bold`}
             >
               Notes
@@ -155,7 +155,7 @@ export const GroupLayout = () => {
         </div>
         <Chat />
         <Outlet />
-        
+
         {option && (
           <div
             ref={optionModelRef}
