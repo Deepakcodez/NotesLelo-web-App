@@ -28,7 +28,7 @@ interface NoteData {
 }
 
 const NotesCard: React.FC<any> = ({ data }) => {
-  const { currentUser } = useContext(createGroupContext);
+  const { currentUser } = useContext<any>(createGroupContext);
   const groupId = localStorage.getItem("groupId") || "";
   const { token } = useToken();
 

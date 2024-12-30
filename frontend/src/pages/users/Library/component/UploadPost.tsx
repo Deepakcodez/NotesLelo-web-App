@@ -63,6 +63,7 @@ export const UploadPublicPost = ({ setShowForm }: { setShowForm: React.Dispatch<
       setIsUploading(false);
       setShowForm(false)
       mutate(`${base_url}/api/v1/notes/your-notes`);
+      mutate(`${base_url}/api/v1/notes/publicNotes`);
       // Handle the file upload response as needed
     } catch (error) {
       setIsUploading(false);
