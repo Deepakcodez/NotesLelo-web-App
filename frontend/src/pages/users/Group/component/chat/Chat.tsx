@@ -30,8 +30,6 @@ const Chat: React.FC = () => {
                 <h1 className="text-white text-xs text-center">Instant Chat</h1>
             </header>
 
-            {/* chat content */}
-
         </div>
     )
 }

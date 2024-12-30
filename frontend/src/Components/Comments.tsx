@@ -1,7 +1,10 @@
-
-import getPostComments from "@/services/getPostComents";
-import React, { useState, useEffect } from "react";
+import { createGroupContext } from "@/Context";
+import { useToken } from "@/hooks";
+import axios from "axios";
+import { X } from "lucide-react";
+import React, { useState, useEffect, useContext } from "react";
 import { FaPaperPlane } from "react-icons/fa";
+import { mutate } from "swr";
 
 interface Comment {
   id: number;
@@ -20,6 +23,8 @@ interface CommentSidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
   postId: string;
+  post: any;
+
 }
 
 const getRandomColor = () => {
@@ -34,141 +39,157 @@ const getRandomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, postId }) => {
-  const [newComment, setNewComment] = useState("");
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, postId, post }) => {
 
-  // Fetch comments for the given post
-  const getAllComments = async () => {
+  const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState<any>([]);
+  const { token } = useToken();
+  const { currentUser } = useContext<any>(createGroupContext);
+  const base_url = import.meta.env.VITE_BASE_URL as string;
+
+ 
+  
+
+
+  const handleAddComment = async () => {
+    if (!newComment.trim()) {
+      alert("Comment cannot be empty");
+      return;
+    }
+
+    const newCommentObject = {
+      user: {
+        _id: currentUser._id,
+        name: currentUser.name,
+      },
+      Comment: newComment,
+    };
+
+    // Optimistic update
+    setComments((prevComments: any) => [...prevComments, newCommentObject]);
+    setNewComment("");
+
     try {
-      const fetchedComments = await getPostComments(postId);
-      const formattedComments = fetchedComments.map((comment: any) => ({
-        id: comment.id || Date.now(),
-        text: comment.text,
-        color: getRandomColor(),
-      }));
-      setComments(formattedComments);
+      const bodyData = {
+        userId: currentUser._id,
+        comment: newComment,
+        postId,
+      };
+
+      await axios.post(
+        `${base_url}/api/v1/notes/comment`,
+        bodyData,
+        {
+          headers: { "Content-Type": "application/json", token },
+          withCredentials: true,
+        }
+      );
+
+      // Revalidate SWR cache to sync state with the server
+      mutate(`${base_url}/api/v1/notes/publicNotes`);
     } catch (error) {
-      console.error("Error fetching comments:", error);
+      console.error("Error adding comment:", error);
+
+      // Rollback optimistic update
+      setComments((prevComments: any) =>
+        prevComments.filter(
+          (comment: any) => comment.Comment !== newCommentObject.Comment
+        )
+      );
     }
   };
 
-  // Fetch post details (stubbed for now)
-  const fetchPostDetails = async () => {
-    // Replace with actual API call to fetch post details
-    setSelectedPost({
-      _id: postId,
-      name: "Sample Post",
-      description: "This is a sample description for the post.",
-      caption: "Sample Caption",
-    });
-  };
 
+  const getAllComments = async () => {
+    const getPostComments = async (postId: string) => {
+      const base_url = import.meta.env.VITE_BASE_URL as string;
+      let resp;
+      try {
+        resp = await axios.get(`${base_url}/api/v1/notes/comment/${postId}`);
+      } catch {
+        (error: any) => {
+          console.error("Error in addDislikeLikeToDemand:", error);
+          throw error;
+        };
+      }
+    
+      return resp?.data.comments;
+    };
+    const respComments = await getPostComments(postId);
+    if (respComments) {
+      setComments(respComments.reverse())
+    }
+    
+  }
   useEffect(() => {
     if (isOpen) {
-      fetchPostDetails();
-      getAllComments();
+      getAllComments()
     }
-  }, [isOpen]);
-
-  const handleAddComment = () => {
-    if (newComment.trim()) {
-      const newCommentObj: Comment = {
-        id: Date.now(),
-        text: newComment,
-        color: getRandomColor(),
-      };
-      setComments([...comments, newCommentObj]);
-      setNewComment("");
-    }
-  };
-
+  }, [])
   return (
     <div
-      className={`fixed top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm flex justify-center items-center transition-opacity duration-300 z-50 ${
-        isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-      }`}
+      className={` absolute top-20 left-5 right-5 bottom-36 md:relative md:top-0 md:left-0  md:w-full md:h-full   backdrop-blur-lg flex justify-center items-center transition-opacity duration-300 z-50  ${isOpen
+        ? "opacity-100 pointer-events-auto"
+        : "opacity-0 pointer-events-none"
+        }`}
     >
-      <div className="bg-slate-400/25 w-11/12 max-w-4xl rounded-lg shadow-xl overflow-hidden">
-        {/* Header */}
-        <div className="flex justify-between items-center bg-slate-700 text-white px-6 py-4">
-          <h2 className="text-xl font-semibold">
-            {selectedPost?.caption || "Post Details"}
-          </h2>
+      <div className="md:bg-slate-400/25 bg-slate-800/80 h-full w-full flex flex-col justify-between  pb-6 rounded-lg shadow-xl overflow-hidden border border-slate-200/10  ">
+        <div className="flex justify-between  p-6 w-full border-b border-gray-500">
+          <h1 className="text-2xl font-semibold   text-white w-full truncate">{post.caption}</h1>
+          <X color="white" onClick={toggleSidebar} />
+        </div>
 
+        {/* Comments Section */}
+        <div className="w-full h-[27rem] flex flex-col justify-between  px-6  ">
+          <div
+            className="overflow-y-scroll no-scrollbar  mb-4 space-y-3  bg-red-40 ">
+  
+            {comments.length > 0 ? (
+              comments.map((comment: any) => (
+                <div
+                  key={comment.user._id}
+                  className="p-2 bg-slate-200 rounded-lg shadow-sm  items-center space-x-3 flex"
+                >
+                  <div
+                    className="w-10 h-10 flex items-center justify-center rounded-full font-bold text-black " >
+                    {comment?.user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <h1 className="text-sm">{comment?.user.name || "Unknown"} </h1>
+                    <p className="text-gray-700">{comment.Comment}</p>
+
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500 h-32">No comments yet.</p>
+            )}
+          </div>
+
+        </div>
+        {/* Comment Input Section */}
+        <div className="flex  space-x-3 items-end  px-6">
+          {/* Comment Input */}
+          <input
+            type="text"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Write a comment..."
+          />
+          {/* Send Button */}
           <button
-            onClick={toggleSidebar}
-            className="text-2xl font-bold hover:text-gray-300"
+            onClick={handleAddComment}
+            className="bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600 focus:outline-none"
+            aria-label="Send Comment"
           >
-            ×
+            <FaPaperPlane />
           </button>
         </div>
 
-        <div className="flex flex-col md:flex-row">
-          {/* Post Details */}
-          <div className="w-full md:w-1/2 p-6 border-b md:border-b-0 md:border-r border-gray-200">
-            <h3 className="text-xl text-white font-semibold mb-4">Post Description</h3>
-            <p className="text-slate-400">
-              {selectedPost?.description || "No description available."}
-            </p>
-          </div>
-
-          {/* Comments Section */}
-          <div className="w-full md:w-[70%] p-6">
-            <div
-              className="overflow-y-auto max-h-64 mb-4 space-y-3"
-              style={{ scrollbarWidth: "none" }}
-            >
-              <style>{`
-                .overflow-y-scroll::-webkit-scrollbar {
-                  display: none;
-                }
-              `}</style>
-              {comments.length > 0 ? (
-                comments.map((comment) => (
-                  <div
-                    key={comment.id}
-                    className="p-2 bg-slate-200 rounded-lg shadow-sm items-center space-x-3 flex"
-                  >
-                    <div
-                      className="w-10 h-10 flex items-center justify-center rounded-full font-bold text-black"
-                      style={{ backgroundColor: comment.color }}
-                    >
-                      {comment.text.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                      <h1 className="text-sm">Username Kumar</h1>
-                      <p className="text-gray-700">{comment.text}</p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-gray-500 h-32">No comments yet.</p>
-              )}
-            </div>
-
-            {/* Comment Input Section */}
-            <div className="flex items-center space-x-3">
-              <input
-                type="text"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Write a comment..."
-              />
-              <button
-                onClick={handleAddComment}
-                className="bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600 focus:outline-none"
-                aria-label="Send Comment"
-              >
-                <FaPaperPlane />
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
+
   );
 };
 
