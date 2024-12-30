@@ -1,4 +1,4 @@
-// src/types.ts
+
 
 export interface Post {
     _id: string;
@@ -10,7 +10,8 @@ export interface Post {
     } | null;
     owner: string;
     to?: string | null;
-    likes: { user: string }[];
+    likes: [];
+    saved: []
     comments: { user: string; Comment: string }[];
     createdAt: string;
     updatedAt: string;
