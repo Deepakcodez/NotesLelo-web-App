@@ -2,22 +2,24 @@ import { createGroupContext } from "@/Context";
 import { useToken } from "@/hooks";
 import axios from "axios";
 import { X } from "lucide-react";
+import moment from "moment";
 import React, { useState, useEffect, useContext } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 import { mutate } from "swr";
+import { motion } from "framer-motion"; 
 
-interface Comment {
-  id: number;
-  text: string;
-  color: string;
-}
+// interface Comment {
+//   id: number;
+//   text: string;
+//   color: string;
+// }
 
-interface Post {
-  _id: string;
-  name: string;
-  description: string;
-  caption: string;
-}
+// interface Post {
+//   _id: string;
+//   name: string;
+//   description: string;
+//   caption: string;
+// }
 
 interface CommentSidebarProps {
   isOpen: boolean;
@@ -47,11 +49,7 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, 
   const { currentUser } = useContext<any>(createGroupContext);
   const base_url = import.meta.env.VITE_BASE_URL as string;
 
- 
-  
-
-
-  const handleAddComment = async () => {
+const handleAddComment = async () => {
     if (!newComment.trim()) {
       alert("Comment cannot be empty");
       return;
@@ -127,6 +125,12 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, 
     }
   }, [])
   return (
+    <motion.div
+    className={`absolute top-20 left-5 right-5 bottom-36 md:relative md:top-0 md:left-0 md:w-full md:h-full backdrop-blur-lg flex justify-center items-center transition-opacity duration-300 z-50`}
+    initial={{ x: "100%" }} // Start from the right (off-screen)
+    animate={{ x: isOpen ? 0 : "100%" }} // Slide in or out based on isOpen
+    transition={{ type: "spring", stiffness: 300, damping: 30 }} // Smooth animation
+  >
     <div
       className={` absolute top-20 left-5 right-5 bottom-36 md:relative md:top-0 md:left-0  md:w-full md:h-full   backdrop-blur-lg flex justify-center items-center transition-opacity duration-300 z-50  ${isOpen
         ? "opacity-100 pointer-events-auto"
@@ -148,16 +152,20 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, 
               comments.map((comment: any) => (
                 <div
                   key={comment.user._id}
-                  className="p-2 bg-slate-200 rounded-lg shadow-sm  items-center space-x-3 flex"
+                  className="p-2 bg-slate-200 rounded-lg shadow-sm mt-6 items-center space-x-3 flex"
                 >
                   <div
-                    className="w-10 h-10 flex items-center justify-center rounded-full font-bold text-black " >
+                    className="w-10 h-10 flex items-center justify-center rounded-full font-bold text-black "
+                    style={{ backgroundColor: getRandomColor() }}  >
                     {comment?.user.name.charAt(0).toUpperCase()}
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <h1 className="text-sm">{comment?.user.name || "Unknown"} </h1>
                     <p className="text-gray-700">{comment.Comment}</p>
 
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    {moment(comment.createdAt).format("h:mm A")}
                   </div>
                 </div>
               ))
@@ -189,6 +197,7 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, 
 
       </div>
     </div>
+    </motion.div>
 
   );
 };
