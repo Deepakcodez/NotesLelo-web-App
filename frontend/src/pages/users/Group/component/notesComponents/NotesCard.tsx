@@ -34,8 +34,8 @@ const NotesCard: React.FC<any> = ({ data }) => {
 
   const base_url = import.meta.env.VITE_BASE_URL as string;
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
-  
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const [selectedPost, setSelectedPost] = useState<Note | null>(null);
 
   const likeClickHandler = async (notesId: string) => {
@@ -108,12 +108,15 @@ const NotesCard: React.FC<any> = ({ data }) => {
     }
   };
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen); 
+  const toggleSidebar = (note: Note | null) => {
+    setSelectedPost(note);
+    setIsSidebarOpen(!isSidebarOpen);
+    document.body.style.overflow = isSidebarOpen ? "auto" : "hidden";
   };
 
   return (
     <>
+    
       {data?.map((noteData: any, index: number) => (
         <React.Fragment key={noteData.notes._id}>
           <motion.div
@@ -124,10 +127,11 @@ const NotesCard: React.FC<any> = ({ data }) => {
               duration: 0.2,
               delay: index * 0.3,
             }}
-            className={`${noteData.notes.owner === currentUser._id
-              ? "self-end"
-              : "self-start"
-              } flex flex-col rounded-md h-[15rem] w-[85vw] sm:w-[25rem] bg-slate-700 border-gray-200`}
+            className={`${
+              noteData.notes.owner === currentUser._id
+                ? "self-end"
+                : "self-start"
+            } flex flex-col rounded-md h-[15rem] w-[85vw] sm:w-[25rem] bg-slate-700 border-gray-200`}
             style={{ border: "1px solid gray" }}
           >
             <div className="h-[5rem] w-full text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl">
@@ -162,10 +166,11 @@ const NotesCard: React.FC<any> = ({ data }) => {
                 </motion.div>
                 <motion.div
                   whileTap={{ scale: 0.75 }}
-                  onClick={toggleSidebar} 
+                  onClick={() => toggleSidebar(noteData.notes)}
                 >
                   <LiaComment />
                 </motion.div>
+
                 <motion.div
                   whileTap={{ scale: 0.75 }}
                   onClick={() => saveHandler(noteData.notes._id)}
@@ -199,13 +204,21 @@ const NotesCard: React.FC<any> = ({ data }) => {
           </motion.div>
         </React.Fragment>
       ))}
-    {isSidebarOpen && selectedPost && (
-    <CommentSidebar
-        isOpen={isSidebarOpen}
-        toggleSidebar={toggleSidebar}
-        setSelectedPost={selectedPost} 
-    />
-)}
+   {isSidebarOpen && selectedPost && (
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 100 }}
+          transition={{ ease: "easeOut", duration: 0.5 }}
+        >
+          <CommentSidebar
+            isOpen={isSidebarOpen}
+            toggleSidebar={() => toggleSidebar(null)}
+            postId={selectedPost._id}
+            post={selectedPost}
+          />
+        </motion.div>
+      )}
     </>
   );
 };

@@ -5,7 +5,7 @@ import Lottie from "lottie-react";
 import axios from "axios";
 import useSWR, { mutate } from "swr";
 import CommentSidebar from "@/Components/Comments";
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import { BsDownload, BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
 import { LiaComment } from "react-icons/lia";
 import moment from "moment";
@@ -13,8 +13,6 @@ import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import { createGroupContext } from "@/Context";
 import { useToken } from "@/hooks";
 import handleDownload from "@/utils/handleDownload";
-
-
 
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<any[]>([]);
@@ -42,12 +40,16 @@ const Posts: React.FC = () => {
     // Optimistically update the UI
     const updatedPosts = posts.map((post) => {
       if (post._id === notesId) {
-        const userLiked = post.likes.some((user: any) => user._id === currentUser._id);
+        const userLiked = post.likes.some(
+          (user: any) => user._id === currentUser._id
+        );
         if (userLiked) {
           // Remove like
           return {
             ...post,
-            likes: post.likes.filter((user: any) => user._id !== currentUser._id),
+            likes: post.likes.filter(
+              (user: any) => user._id !== currentUser._id
+            ),
           };
         } else {
           // Add like
@@ -83,12 +85,16 @@ const Posts: React.FC = () => {
       setPosts((prevPosts) => {
         return prevPosts.map((post) => {
           if (post._id === notesId) {
-            const userLiked = post.likes.some((user: any) => user._id === currentUser._id);
+            const userLiked = post.likes.some(
+              (user: any) => user._id === currentUser._id
+            );
             if (!userLiked) {
               // Remove like if it was optimistically added
               return {
                 ...post,
-                likes: post.likes.filter((user: any) => user._id !== currentUser._id),
+                likes: post.likes.filter(
+                  (user: any) => user._id !== currentUser._id
+                ),
               };
             } else {
               // Add like back if it was optimistically removed
@@ -103,7 +109,6 @@ const Posts: React.FC = () => {
       });
     }
   };
-
 
   const handleSave = async (noteId: string) => {
     // Optimistically update the UI
@@ -179,7 +184,6 @@ const Posts: React.FC = () => {
     }
   };
 
-
   const handleCommentClick = (post: any) => {
     setSelectedPost(post);
     setIsSidebarOpen(!isSidebarOpen);
@@ -206,14 +210,12 @@ const Posts: React.FC = () => {
   }
 
   return (
-
     <div className="p-6  pb-32 md:pb-4 relative w-full  flex  ">
       <div className="flex flex-col  items-center  w-full mt-6 gap-6 max-h-[80vh] overflow-y-auto hide-scrollbar  ">
         {posts.map((noteData: any) => (
           <React.Fragment key={noteData._id}>
-
             <div
-              className={` flex flex-col md:w-1/2  w-full rounded-md h-[15rem] w- bg-slate-700/50 border-gray-200 `}
+              className={` flex flex-col md:w-1/2  w-full rounded-md h-[15rem]  bg-slate-700/50 border-gray-200 `}
               style={{ border: "1px solid gray" }}
             >
               <div className="h-[5rem] w-full text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl">
@@ -226,7 +228,6 @@ const Posts: React.FC = () => {
                   </h1>
                   <h1 className="text-sm text-gray-500 ">
                     {noteData.owner?.name.toUpperCase()}
-
                   </h1>
                 </div>
                 <h1 className="mb-3 overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400">
@@ -247,10 +248,9 @@ const Posts: React.FC = () => {
                     ) : (
                       <BsHandThumbsUp />
                     )}
-                    {
-                      noteData.likes.length > 0 &&
+                    {noteData.likes.length > 0 && (
                       <p className="text-xs">{noteData.likes.length}</p>
-                    }
+                    )}
                   </motion.div>
                   <motion.div
                     whileTap={{ scale: 0.75 }}
@@ -258,10 +258,9 @@ const Posts: React.FC = () => {
                     className="flex items-center gap-1"
                   >
                     <LiaComment />
-                    {
-                      noteData?.comments.length > 0 &&
+                    {noteData?.comments.length > 0 && (
                       <p className="text-xs">{noteData.comments.length}</p>
-                    }
+                    )}
                   </motion.div>
                   <motion.div
                     whileTap={{ scale: 0.75 }}
@@ -275,10 +274,9 @@ const Posts: React.FC = () => {
                     ) : (
                       <GoBookmark />
                     )}
-                    {
-                      noteData.saved.length > 0 &&
+                    {noteData.saved.length > 0 && (
                       <p className="text-xs">{noteData.saved.length}</p>
-                    }
+                    )}
                   </motion.div>
                 </div>
                 <motion.div
@@ -299,25 +297,20 @@ const Posts: React.FC = () => {
                 </h1>
               </div>
             </div>
-
-
-
           </React.Fragment>
         ))}
       </div>
 
-
       {isSidebarOpen && selectedPost && (
+     
         <CommentSidebar
           isOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
           postId={selectedPost?._id}
           post={selectedPost}
-
         />
-
+       
       )}
-
     </div>
   );
 };
