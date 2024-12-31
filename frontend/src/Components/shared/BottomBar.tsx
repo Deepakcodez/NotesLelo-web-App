@@ -9,7 +9,7 @@ const BottomBar: React.FC = () => {
   const urlLocation = location.pathname;
 
   return (
-    <section className={`bottombar ${urlLocation === "/chat" && "hidden"} md:hidden fixed bottom-0 w-full`}>
+    <section className={`bottombar ${urlLocation === "/chat" && "hidden"} md:hidden fixed bottom-0 w-full z-[9999999] `}>
       <div className="flex justify-around bg-slate-800 py-4 px-3 border-t-[1px] border-slate-700">
         <NavLink
           to={"/"}
