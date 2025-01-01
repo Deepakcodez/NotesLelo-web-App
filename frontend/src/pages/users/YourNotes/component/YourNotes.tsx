@@ -103,10 +103,10 @@ const YourNotes: React.FC = () => {
                   <div className='h-[5rem] w-full text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl'>NOTESLELO</div>
                   <div className='px-2'>
                     <div className='flex justify-between'>
-                      <h1 className='text-md font-bold tracking-tight text-gray-900 truncate'>{notes.caption}</h1>
+                      <h1 className='text-md font-bold tracking-tight text-white truncate'>{notes.caption}</h1>
                       <h1 className='text-sm text-gray-500'>{currentUser.name}</h1>
                     </div>
-                    <h1 className='mb-3 overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700'>{notes.description}</h1>
+                    <h1 className='mb-3 overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-slate-300'>{notes.description}</h1>
                   </div>
                   <div className='footer flex justify-end px-3 py-2 text-white'>
                     <div className='bg-cyan-400 rounded-lg border-gray-300 border-2'

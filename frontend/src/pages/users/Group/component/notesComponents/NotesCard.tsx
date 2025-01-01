@@ -186,7 +186,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
               </div>
               <motion.div
                 whileTap={{ scale: 0.85 }}
-                className="bg-cyan-400 rounded-lg border-gray-300 border-2 hover:bg-cyan-500 hover:shadow-md"
+                className="bg-cyan-400 rounded-lg border-gray-300 text-white border-2 hover:bg-cyan-500 hover:shadow-md"
                 onClick={() =>
                   handleDownload(noteData.notes.pdf.url, noteData.notes.caption)
                 }
