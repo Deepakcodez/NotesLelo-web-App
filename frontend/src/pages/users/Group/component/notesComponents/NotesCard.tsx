@@ -206,6 +206,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
       ))}
    {isSidebarOpen && selectedPost && (
         <motion.div
+        className="absolute w-full "
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 100 }}
