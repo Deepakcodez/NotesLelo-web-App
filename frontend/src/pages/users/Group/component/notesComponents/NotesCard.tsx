@@ -10,6 +10,7 @@ import { LiaComment } from "react-icons/lia";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import moment from "moment";
 import CommentSidebar from "@/Components/Comments";
+import NotesComment from "./NotesComment";
 
 interface Note {
   _id: string;
@@ -212,7 +213,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
           exit={{ opacity: 0, y: 100 }}
           transition={{ ease: "easeOut", duration: 0.5 }}
         >
-          <CommentSidebar
+          <NotesComment
             isOpen={isSidebarOpen}
             toggleSidebar={() => toggleSidebar(null)}
             postId={selectedPost._id}
