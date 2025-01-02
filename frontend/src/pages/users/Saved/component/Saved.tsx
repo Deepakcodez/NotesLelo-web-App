@@ -16,7 +16,6 @@ interface Note {
 const Saved: React.FC = () => {
   const token = localStorage.getItem("useDataToken");
   const { currentUser } = useContext<any>(createGroupContext);
-  const [loader, setLoader] = useState(true);
   const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const handleDownload = async (fileUrl: string, fileName: string) => {
@@ -42,7 +41,7 @@ const Saved: React.FC = () => {
     }
   };
 
-  const { data, error } = useSWR<Note[]>(`${base_url}/api/v1/notes/savedNotes`, async (url: any) => {
+  const { data, error } = useSWR<Note[]>(`http://localhost:8000/api/v1/notes/savedNotes`, async (url: any) => {
     try {
       const resp = await axios(url, {
         headers: {
