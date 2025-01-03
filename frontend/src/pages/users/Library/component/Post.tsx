@@ -13,6 +13,9 @@ import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import { createGroupContext } from "@/Context";
 import { useToken } from "@/hooks";
 import handleDownload from "@/utils/handleDownload";
+import { Delete } from "lucide-react";
+import { deletePost } from "@/services";
+import { Link } from "react-router-dom";
 
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<any[]>([]);
@@ -22,7 +25,7 @@ const Posts: React.FC = () => {
   const { token } = useToken();
 
   const baseURL = import.meta.env.VITE_BASE_URL as string;
-  const url = `${baseURL}/api/v1/notes/publicNotes`;
+  const url = `http://localhost:8000/api/v1/notes/publicNotes`;
   const fetcher = async (uri: string): Promise<any> => {
     const response = await axios.get(uri);
     return response.data.notes;
@@ -142,7 +145,7 @@ const Posts: React.FC = () => {
     try {
       // Make API call to update save status on the server
       await axios.post(
-        `${baseURL}/api/v1/notes/groupNotes/saveNotes/${noteId}`,
+        `http://localhost:8000/api/v1/notes/groupNotes/saveNotes/${noteId}`,
         {},
         {
           headers: { "Content-Type": "application/json", token },
@@ -193,6 +196,10 @@ const Posts: React.FC = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const deleteNote = async (noteId: string) => {
+    await deletePost(noteId)
+  }
+
   if (isLoading) {
     return (
       <>
@@ -215,9 +222,17 @@ const Posts: React.FC = () => {
         {posts.map((noteData: any) => (
           <React.Fragment key={noteData._id}>
             <div
-              className={` flex flex-col md:w-1/2  w-full rounded-md h-[15rem]  bg-slate-700/50 border-gray-200 `}
+              className={`  flex flex-col md:w-1/2  w-full rounded-md h-[15rem]  bg-slate-700/50 border-gray-200 relative `}
               style={{ border: "1px solid gray" }}
             >
+              {
+                noteData.owner._id === currentUser._id &&
+                <div onClick={() => deleteNote(noteData._id)}
+                  className="absolute top-0 right-0 p-2 ">
+                  <Delete className="text-gray-700" />
+                </div>
+              }
+
               <div className="h-[5rem] w-full text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl">
                 NOTESLELO
               </div>
@@ -226,9 +241,10 @@ const Posts: React.FC = () => {
                   <h1 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
                     {noteData.caption}
                   </h1>
-                  <h1 className="text-sm text-gray-500 ">
+                  <Link to={`/profile/${noteData.owner._id}`} 
+                  className="text-sm text-gray-500 hover:text-gray-300">
                     {noteData.owner?.name.toUpperCase()}
-                  </h1>
+                  </Link>
                 </div>
                 <h1 className="mb-3 overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400">
                   {noteData.description}
@@ -302,14 +318,14 @@ const Posts: React.FC = () => {
       </div>
 
       {isSidebarOpen && selectedPost && (
-     
+
         <CommentSidebar
           isOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
           postId={selectedPost?._id}
           post={selectedPost}
         />
-       
+
       )}
     </div>
   );

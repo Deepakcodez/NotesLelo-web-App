@@ -34,7 +34,7 @@ const USER_ROUTES: RoutDocument[] = [
       page: Savedpage,
     },
     {
-      href: "profile",
+      href: "profile/:userId",
       page: ProfilePage,
     },
     {

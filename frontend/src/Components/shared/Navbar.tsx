@@ -1,6 +1,5 @@
 import { useContext, useEffect, useRef, useState, MouseEvent } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
 import { GoPlus } from "react-icons/go";
 import { Context, createGroupContext } from "../../Context";
 import logo from "../../assets/logo.png";
@@ -19,13 +18,13 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = (props) => {
   const location = useLocation();
   const urlLocation = location.pathname;
-  const { name, email } = props.userDetail; // Destructure the props
+  const { name, } = props.userDetail; // Destructure the props
   const [avatarSign, setAvatarSign] = useState<string | undefined>();
   const [ispopUp, setPopUp] = useState<boolean>(false);
-  const { isCreateGroup, setCreateGroup } = useContext<any>(createGroupContext);
+  const { setCreateGroup } = useContext<any>(createGroupContext);
   const logoRef = useRef<HTMLDivElement | null>(null);
   const popupRef = useRef<HTMLDivElement | null>(null);
-  const { joinGroup, setJoinGroup } = useContext<any>(createGroupContext);
+  const {  setJoinGroup, currentUser } = useContext<any>(createGroupContext);
 
   const navigate = useNavigate();
 
@@ -60,7 +59,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
   };
 
   const profileClick = () => {
-    navigate("profile");
+    navigate(`profile/${currentUser._id}`);
   };
 
   useEffect(() => {

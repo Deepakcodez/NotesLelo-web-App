@@ -1,9 +1,12 @@
 import addLikeToDemand from "./addLikeToDemand";
 import addDisLikeToDemand from "./addDislikeToDemand";
 import deleteDemand from "./deleteDemand";
-
-export{
-    addLikeToDemand,
-    addDisLikeToDemand,
-    deleteDemand,
-}
+import deletePost from "./deletepost";
+import getUserById from "./getuser";
+export {
+  addLikeToDemand,
+  addDisLikeToDemand,
+  deleteDemand,
+  deletePost,
+  getUserById,
+};

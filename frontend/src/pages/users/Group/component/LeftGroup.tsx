@@ -26,7 +26,7 @@ export const LeftGroup: React.FC = () => {
       try {
         setIsLoadingBtn(true);
         await axios.delete(
-          `${base_url}/api/v1/group/left/${id}`,
+          `http://localhost:8000/api/v1/group/left/${id}`,
           {
             headers: {
               "Content-Type": "application/json",

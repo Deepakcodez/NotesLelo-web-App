@@ -52,7 +52,7 @@ export const Notes: React.FC = () => {
   const url = import.meta.env.VITE_BASE_URL as string;
   // const url = 'http://localhost:8000'
 
-  const { data, error, isLoading } = useSWR<NoteData[]>(`${url}/api/v1/notes/groupNotes/${groupId}`, fetcher);
+  const { data, error, isLoading } = useSWR<NoteData[]>(`http://localhost:8000/api/v1/notes/groupNotes/${groupId}`, fetcher);
 
   useEffect(() => {
     console.log(data)

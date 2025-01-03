@@ -3,13 +3,13 @@ import { mutate } from "swr";
 const token = localStorage.getItem("useDataToken");
 const groupId = localStorage.getItem("groupId");
 
-const deleteDemand = async (demandId: string) => {
+const deletePost = async (postId: string) => {
   const base_url = import.meta.env.VITE_BASE_URL as string;
 
   return axios
     .post(
-      `http://localhost:8000/api/v1/demand/delete`,
-      { demandId, groupId },
+      `http://localhost:8000/api/v1/notes/delete`,
+      { postId, groupId },
       {
         headers: {
           "Content-Type": "application/json",
@@ -27,4 +27,4 @@ const deleteDemand = async (demandId: string) => {
     });
 };
 
-export default deleteDemand;
+export default deletePost;

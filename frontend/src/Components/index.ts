@@ -1,3 +1,3 @@
 import Input from "./Input";
-
-export { Input };
+import DeleteNotePopup from "./shared/DeleteNotePopUp";
+export { Input, DeleteNotePopup };

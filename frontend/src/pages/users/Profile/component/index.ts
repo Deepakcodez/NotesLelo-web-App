@@ -1,7 +1,4 @@
 import Profile from "./Profile";
+import Badge from "./Badge";
 
-
-
-export{
-    Profile,
-}
+export { Profile, Badge };

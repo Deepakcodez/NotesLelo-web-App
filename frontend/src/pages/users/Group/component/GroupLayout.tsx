@@ -62,7 +62,7 @@ export const GroupLayout = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `${base_url}/api/v1/group/${id}`,
+        `http://localhost:8000/api/v1/group/${id}`,
         {
           headers: {
             "Content-Type": "application/json",

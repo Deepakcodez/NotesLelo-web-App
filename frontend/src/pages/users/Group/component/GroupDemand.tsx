@@ -16,7 +16,7 @@ export const GroupDemand: React.FC = () => {
   const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const { data, error } = useSWR<any[]>(
-    `${base_url}/api/v1/demand/demands/${groupId}`,
+    `http://localhost:8000/api/v1/demand/demands/${groupId}`,
     async (url: string) => {
       try {
         const resp = await axios.get(url);

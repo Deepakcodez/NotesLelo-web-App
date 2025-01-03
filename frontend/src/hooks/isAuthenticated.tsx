@@ -18,7 +18,7 @@ export const useAuth = () => {
       }
       const url = import.meta.env.VITE_BASE_URL as string;
       const response = await axios.get(
-        `${url}/api/v1/user/isVarify`,
+        `http://localhost:8000/api/v1/user/isVarify`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -26,6 +26,9 @@ export const useAuth = () => {
           },
         }
       );
+      console.log('====================================');
+      console.log(response);
+      console.log('====================================');
       setUserDetail(response.data.data);
       setIsLoading(false);
 
@@ -33,7 +36,7 @@ export const useAuth = () => {
         setIsError(true);
       }
     } catch (error: any) {
-      console.error("Error in isAuthenticated:", error);
+      console.info("Error in isAuthenticated:", error);
       setIsLoading(false);
       setIsError(true);
     }
@@ -41,7 +44,7 @@ export const useAuth = () => {
 
   useEffect(() => {
     isAuthenticated();
-  }, [isAuthenticated]); // Use the memoized `isAuthenticated`
+  }, []); // Use the memoized `isAuthenticated`
 
   // Memoize the return values to prevent unnecessary re-renders
   return useMemo(

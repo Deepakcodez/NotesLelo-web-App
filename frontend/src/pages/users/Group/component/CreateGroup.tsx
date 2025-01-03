@@ -44,7 +44,7 @@ export const CreateGroup: React.FC = () => {
       const base_url = import.meta.env.VITE_BASE_URL as string;
 
       const response = await axios.post(
-        `${base_url}/api/v1/group/create`,
+        `http://localhost:8000/api/v1/group/create`,
         GroupDetail,
         {
           headers: {

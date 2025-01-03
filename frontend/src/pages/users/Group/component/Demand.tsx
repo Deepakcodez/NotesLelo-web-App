@@ -40,7 +40,7 @@ export const Demand: React.FC = () => {
       if (resp.data.status === 200) {
         setDemand(false);
         mutate(
-          `${base_url}/api/v1/demand/demands/${groupId}`
+          `http://localhost:8000/api/v1/demand/demands/${groupId}`
         );
       }
     } catch (error) {

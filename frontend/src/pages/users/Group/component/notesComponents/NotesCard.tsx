@@ -9,8 +9,10 @@ import { BsDownload, BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
 import { LiaComment } from "react-icons/lia";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import moment from "moment";
-import CommentSidebar from "@/Components/Comments";
 import NotesComment from "./NotesComment";
+import { Delete } from "lucide-react";
+import { deletePost } from "@/services";
+import { Link } from "react-router-dom";
 
 interface Note {
   _id: string;
@@ -41,7 +43,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
 
   const likeClickHandler = async (notesId: string) => {
     mutate<NoteData[]>(
-      `${base_url}/api/v1/notes/groupNotes/${groupId}`,
+      `http://localhost:8000/api/v1/notes/groupNotes/${groupId}`,
       (currentData) =>
         currentData?.map((note) => {
           if (note.notes._id === notesId) {
@@ -61,14 +63,14 @@ const NotesCard: React.FC<any> = ({ data }) => {
 
     try {
       await axios.put(
-        `${base_url}/api/v1/notes/groupNotes/addLike/${notesId}`,
+        `http://localhost:8000/api/v1/notes/groupNotes/addLike/${notesId}`,
         {},
         {
           headers: { "Content-Type": "application/json", token },
           withCredentials: true,
         }
       );
-      mutate(`${base_url}/api/v1/notes/groupNotes/${groupId}`);
+      mutate(`http://localhost:8000/api/v1/notes/groupNotes/${groupId}`);
     } catch (error) {
       console.error("Error updating like status:", error);
     }
@@ -76,7 +78,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
 
   const saveHandler = async (notesId: string) => {
     mutate<NoteData[]>(
-      `${base_url}/api/v1/notes/groupNotes/${groupId}`,
+      `http://localhost:8000/api/v1/notes/groupNotes/${groupId}`,
       (currentData) =>
         currentData?.map((note) => {
           if (note.notes._id === notesId) {
@@ -96,14 +98,14 @@ const NotesCard: React.FC<any> = ({ data }) => {
 
     try {
       await axios.post(
-        `${base_url}/api/v1/notes/groupNotes/saveNotes/${notesId}`,
+        `http://localhost:8000/api/v1/notes/groupNotes/saveNotes/${notesId}`,
         {},
         {
           headers: { "Content-Type": "application/json", token },
           withCredentials: true,
         }
       );
-      mutate(`${base_url}/api/v1/notes/groupNotes/${groupId}`);
+      mutate(`http://localhost:8000/api/v1/notes/groupNotes/${groupId}`);
     } catch (error) {
       console.error("Error saving note:", error);
     }
@@ -115,9 +117,13 @@ const NotesCard: React.FC<any> = ({ data }) => {
     document.body.style.overflow = isSidebarOpen ? "auto" : "hidden";
   };
 
+  const DeleteNote = async (postid: string) => {
+    deletePost(postid)
+  }
+
   return (
     <>
-    
+
       {data?.map((noteData: any, index: number) => (
         <React.Fragment key={noteData.notes._id}>
           <motion.div
@@ -128,24 +134,30 @@ const NotesCard: React.FC<any> = ({ data }) => {
               duration: 0.2,
               delay: index * 0.3,
             }}
-            className={`${
-              noteData.notes.owner === currentUser._id
-                ? "self-end"
-                : "self-start"
-            } flex flex-col rounded-md h-[15rem] w-[85vw] sm:w-[25rem] bg-slate-700 border-gray-200`}
+            className={`${noteData.notes.owner === currentUser._id
+              ? "self-end"
+              : "self-start"
+              } flex flex-col rounded-md h-[15rem] w-[85vw] sm:w-[25rem] bg-slate-700 border-gray-200 relative`}
             style={{ border: "1px solid gray" }}
           >
+            {
+              noteData.notes.owner.toString() === currentUser._id.toString() &&
+              <div onClick={() => DeleteNote(noteData.notes._id)} className="absolute top-0 right-0 p-2 ">
+                <Delete className="text-gray-700" />
+              </div>
+            }
             <div className="h-[5rem] w-full text-blue-300/50 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md font-bold flex justify-center items-center text-2xl">
               NOTESLELO
             </div>
+
             <div className="px-2">
               <div className="flex justify-between">
                 <h1 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
                   {noteData.notes.caption}
                 </h1>
-                <h1 className="text-sm text-gray-500 ">
+                <Link to={`/profile/${noteData.user._id}`} className="text-sm text-gray-500 ">
                   {noteData.user?.name.toUpperCase()}
-                </h1>
+                </Link>
               </div>
               <h1 className="mb-3 overflow-y-scroll no-scrollbar h-[3rem] w-full font-normal text-gray-700 dark:text-gray-400">
                 {noteData.notes.description}
@@ -205,13 +217,14 @@ const NotesCard: React.FC<any> = ({ data }) => {
           </motion.div>
         </React.Fragment>
       ))}
-   {isSidebarOpen && selectedPost && (
+      {isSidebarOpen && selectedPost && (
         <motion.div
-        className="absolute w-full "
+          className="absolute top-0 right-0 w-full  "
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 100 }}
           transition={{ ease: "easeOut", duration: 0.5 }}
+          
         >
           <NotesComment
             isOpen={isSidebarOpen}

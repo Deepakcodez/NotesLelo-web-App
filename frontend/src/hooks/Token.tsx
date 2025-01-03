@@ -10,6 +10,7 @@ export const useToken = () => {
     if (storedToken !== token) {
       setToken(storedToken);
     }
+    console.log('>>>>>>>>>>>', token)
   }, [token]);
 
   const saveToken = (newToken: string) => {

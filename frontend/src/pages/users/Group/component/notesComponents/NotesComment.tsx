@@ -76,7 +76,7 @@ const NotesComment: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, po
       };
 
       await axios.post(
-        `${base_url}/api/v1/notes/comment`,
+        `http://localhost:8000/api/v1/notes/comment`,
         bodyData,
         {
           headers: { "Content-Type": "application/json", token },
@@ -104,7 +104,7 @@ const NotesComment: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, po
       const base_url = import.meta.env.VITE_BASE_URL as string;
       let resp;
       try {
-        resp = await axios.get(`${base_url}/api/v1/notes/comment/${postId}`);
+        resp = await axios.get(`http://localhost:8000/api/v1/notes/comment/${postId}`);
         setError(false)
       } catch {
         (error: any) => {
@@ -134,7 +134,7 @@ const NotesComment: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, po
       initial={{ y: "100%", opacity: 0 }}
       animate={isOpen ? { y: 0, opacity: 1 } : { y: "100%", opacity: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      className={`absolute top-20 left-5 right-5 bottom-36 md:relative md:top-0 md:left-0 md:w-full md:h-full backdrop-blur-lg flex justify-center items-center transition-opacity duration-300 z-50 ${
+      className={`absolute top-12 left-5 right-5 bottom-36 md:relative md:top-0 md:left-0 md:w-full md:h-full backdrop-blur-lg flex justify-center items-center transition-opacity duration-300 z-50 ${
         isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
       }`}
     >

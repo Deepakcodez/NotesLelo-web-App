@@ -50,7 +50,7 @@ export const UploadFile = ({ isPublic }: { isPublic?: boolean | undefined }) => 
 
 
       const response = await axios.post(
-        `${base_url}/api/v1/notes/upload-file`,
+        `http://localhost:8000/api/v1/notes/upload-file`,
         data,
         {
           headers: {
