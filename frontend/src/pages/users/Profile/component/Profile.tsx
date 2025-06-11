@@ -34,8 +34,6 @@ const Profile: React.FC = () => {
   const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
   const base_url = import.meta.env.VITE_BASE_URL as string;
 
-
-
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -57,7 +55,7 @@ const Profile: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const resp = await axios.get(`http://localhost:8000/api/v1/notes/your-notes`, {
+      const resp = await axios.get(`${base_url}/api/v1/notes/your-notes`, {
         headers: {
           "Content-Type": "application/json",
           token,
@@ -74,18 +72,13 @@ const Profile: React.FC = () => {
   };
 
   useEffect(() => {
-
-
     if (token) fetchData();
   }, [token]);
 
-
-
-
-  const handleDelete = () => {    
+  const handleDelete = () => {
     console.log("Note deleted!");
     setShowDeletePopup(false);
-    deletePost(selectedNoteId!)
+    deletePost(selectedNoteId!);
   };
 
   const handleCancel = () => {
@@ -93,15 +86,14 @@ const Profile: React.FC = () => {
     setShowDeletePopup(false); // Close the popup
   };
 
-
   const fetchUser = async () => {
     try {
-      const resp = await getUserById(userId)
+      const resp = await getUserById(userId);
       setUserToShow(resp);
     } catch {
-      toast.error("User not found")
+      toast.error("User not found");
     }
-  }
+  };
   useEffect(() => {
     if (userId && currentUser) {
       if (userId === currentUser._id.toString()) {
@@ -114,17 +106,13 @@ const Profile: React.FC = () => {
     }
   }, [userId, currentUser]);
 
-
   useEffect(() => {
-
     if (userToShow) {
-
       const calculatedRank = calculateUserRank(userToShow);
       console.log(calculatedRank);
       setRank(calculatedRank.rank);
     }
-  }, [userToShow])
-
+  }, [userToShow]);
 
   if (!userToShow) {
     return (
@@ -134,22 +122,19 @@ const Profile: React.FC = () => {
     );
   }
 
-
   return (
     <div className="  w-full relative bg-gray-900 text-white  ">
-      {
-        showDeletePopup &&
+      {showDeletePopup && (
         <DeleteNotePopup
           handleDelete={handleDelete}
           handleCancel={handleCancel}
         />
-      }
+      )}
       <ProfileAnalytic
         setProfileOptionModal={setProfileOptionModal}
         optionIconRef={optionIconRef}
         profileOptionModal={profileOptionModal}
         userData={userToShow}
-
       />
       <div className="w-full h-[calc(100vh-240px)]    grid grid-cols-12   ">
         <div className="col-span-9    overflow-y-scroll  no-scrollbar ">
@@ -165,14 +150,12 @@ const Profile: React.FC = () => {
         </div>
       </div>
 
-
       {profileOptionModal && (
         <OptionModal
           setProfileOptionModal={setProfileOptionModal}
           popupRef={popupRef}
         />
       )}
-
     </div>
   );
 };
