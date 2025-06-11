@@ -18,13 +18,13 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = (props) => {
   const location = useLocation();
   const urlLocation = location.pathname;
-  const { name, } = props.userDetail; // Destructure the props
+  const { name } = props.userDetail; // Destructure the props
   const [avatarSign, setAvatarSign] = useState<string | undefined>();
   const [ispopUp, setPopUp] = useState<boolean>(false);
   const { setCreateGroup } = useContext<any>(createGroupContext);
   const logoRef = useRef<HTMLDivElement | null>(null);
   const popupRef = useRef<HTMLDivElement | null>(null);
-  const {  setJoinGroup, currentUser } = useContext<any>(createGroupContext);
+  const { setJoinGroup, currentUser } = useContext<any>(createGroupContext);
 
   const navigate = useNavigate();
 
@@ -42,9 +42,9 @@ const Navbar: React.FC<NavbarProps> = (props) => {
         setPopUp(false);
       }
     };
-  
+
     window.addEventListener("click", handleClickOutside);
-  
+
     return () => {
       window.removeEventListener("click", handleClickOutside);
     };
@@ -118,7 +118,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
           )}
 
           <div
-            onClick={profileClick}
+            // onClick={profileClick}
             className="h-10 w-10 rounded-full bg-blue-300 items-center justify-center flex text-white font-semibold text-2xl"
           >
             {avatarSign}

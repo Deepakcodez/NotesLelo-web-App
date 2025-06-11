@@ -138,12 +138,12 @@ const Profile: React.FC = () => {
       />
       <div className="w-full h-[calc(100vh-240px)]    grid grid-cols-12   ">
         <div className="col-span-9    overflow-y-scroll  no-scrollbar ">
-          {/* <Notes
+          <Notes
             notesData={notesData}
             loader={loader}
             setShowDeletePopup={setShowDeletePopup}
             setSelectedNoteId={setSelectedNoteId}
-          /> */}
+          />
         </div>
         <div className="col-span-3 p-4 ">
           <Badge rank={rank} />
