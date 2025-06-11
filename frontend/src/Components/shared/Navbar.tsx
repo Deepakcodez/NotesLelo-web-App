@@ -118,7 +118,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
           )}
 
           <div
-            // onClick={profileClick}
+            onClick={profileClick}
             className="h-10 w-10 rounded-full bg-blue-300 items-center justify-center flex text-white font-semibold text-2xl"
           >
             {avatarSign}
