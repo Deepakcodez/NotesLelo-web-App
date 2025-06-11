@@ -18,7 +18,7 @@ const OptionModal: React.FC<OptionModalProps> = ({ setProfileOptionModal, popupR
 
         try {
             localStorage.removeItem("useDataToken");
-            const resp = await axios.get(`http://localhost:8000/api/v1/user/logout/${currentUser?._id}`);
+            const resp = await axios.get(`${base_url}/api/v1/user/logout/${currentUser?._id}`);
             setProfileOptionModal(false);
             navigate("/signIn");
         } catch (error) {

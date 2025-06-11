@@ -18,7 +18,7 @@ export const GroupDetails: React.FC = () => {
   const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const { data, error } = useSWR<Member[]>(
-    `http://localhost:8000/api/v1/group/members/${groupId}`,
+    `${base_url}/api/v1/group/members/${groupId}`,
     async (url: string) => {
       try {
         const resp = await axios.get(url, {

@@ -76,7 +76,7 @@ const NotesComment: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, po
       };
 
       await axios.post(
-        `http://localhost:8000/api/v1/notes/comment`,
+        `${base_url}/api/v1/notes/comment`,
         bodyData,
         {
           headers: { "Content-Type": "application/json", token },
@@ -104,7 +104,7 @@ const NotesComment: React.FC<CommentSidebarProps> = ({ isOpen, toggleSidebar, po
       const base_url = import.meta.env.VITE_BASE_URL as string;
       let resp;
       try {
-        resp = await axios.get(`http://localhost:8000/api/v1/notes/comment/${postId}`);
+        resp = await axios.get(`${base_url}/api/v1/notes/comment/${postId}`);
         setError(false)
       } catch {
         (error: any) => {

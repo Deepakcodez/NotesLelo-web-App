@@ -43,7 +43,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
 
   const likeClickHandler = async (notesId: string) => {
     mutate<NoteData[]>(
-      `http://localhost:8000/api/v1/notes/groupNotes/${groupId}`,
+      `${base_url}/api/v1/notes/groupNotes/${groupId}`,
       (currentData) =>
         currentData?.map((note) => {
           if (note.notes._id === notesId) {
@@ -63,14 +63,14 @@ const NotesCard: React.FC<any> = ({ data }) => {
 
     try {
       await axios.put(
-        `http://localhost:8000/api/v1/notes/groupNotes/addLike/${notesId}`,
+        `${base_url}/api/v1/notes/groupNotes/addLike/${notesId}`,
         {},
         {
           headers: { "Content-Type": "application/json", token },
           withCredentials: true,
         }
       );
-      mutate(`http://localhost:8000/api/v1/notes/groupNotes/${groupId}`);
+      mutate(`${base_url}/api/v1/notes/groupNotes/${groupId}`);
     } catch (error) {
       console.error("Error updating like status:", error);
     }
@@ -78,7 +78,7 @@ const NotesCard: React.FC<any> = ({ data }) => {
 
   const saveHandler = async (notesId: string) => {
     mutate<NoteData[]>(
-      `http://localhost:8000/api/v1/notes/groupNotes/${groupId}`,
+      `${base_url}/api/v1/notes/groupNotes/${groupId}`,
       (currentData) =>
         currentData?.map((note) => {
           if (note.notes._id === notesId) {
@@ -98,14 +98,14 @@ const NotesCard: React.FC<any> = ({ data }) => {
 
     try {
       await axios.post(
-        `http://localhost:8000/api/v1/notes/groupNotes/saveNotes/${notesId}`,
+        `${base_url}/api/v1/notes/groupNotes/saveNotes/${notesId}`,
         {},
         {
           headers: { "Content-Type": "application/json", token },
           withCredentials: true,
         }
       );
-      mutate(`http://localhost:8000/api/v1/notes/groupNotes/${groupId}`);
+      mutate(`${base_url}/api/v1/notes/groupNotes/${groupId}`);
     } catch (error) {
       console.error("Error saving note:", error);
     }

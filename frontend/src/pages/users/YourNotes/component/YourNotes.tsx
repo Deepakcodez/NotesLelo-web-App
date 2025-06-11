@@ -48,7 +48,7 @@ const YourNotes: React.FC = () => {
   };
 
   const { data, error } = useSWR<Note[]>(
-    `http://localhost:8000/api/v1/notes/your-notes`,
+    `${base_url}/api/v1/notes/your-notes`,
     async (url: string) => {
       try {
         const resp = await axios(url, {

@@ -8,7 +8,7 @@ const addLikeToDemand = (demandId: string) => {
 
   return axios
     .post(
-      `http://localhost:8000/api/v1/demand/like`,
+      `${base_url}/api/v1/demand/like`,
       { demandId },
       {
         headers: {

@@ -33,7 +33,7 @@ const InviteUser: React.FC = () => {
       } else {
         setLoading(true); // Set loading to true before making the request
         const response = await axios.post(
-          `http://localhost:8000/api/v1/group/invite`,
+          `${base_url}/api/v1/group/invite`,
           { email: emailValue.email, groupId },
           {
             headers: {

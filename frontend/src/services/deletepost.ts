@@ -8,7 +8,7 @@ const deletePost = async (postId: string) => {
 
   return axios
     .post(
-      `http://localhost:8000/api/v1/notes/delete`,
+      `${base_url}/api/v1/notes/delete`,
       { postId, groupId },
       {
         headers: {
@@ -18,7 +18,7 @@ const deletePost = async (postId: string) => {
       }
     )
     .then((response) => {
-      mutate(`http://localhost:8000/api/v1/demand/demands/${groupId}`);
+      mutate(`${base_url}/api/v1/demand/demands/${groupId}`);
       console.log(">>>>>>>>>>>", response.data);
     })
     .catch((error) => {

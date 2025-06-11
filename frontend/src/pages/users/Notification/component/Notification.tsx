@@ -21,7 +21,7 @@ const Notification: React.FC = () => {
   const base_url = import.meta.env.VITE_BASE_URL as string;
 
   const { data, error } = useSWR<NotificationData[]>(
-    `http://localhost:8000/api/v1/notification/latest_notification`,
+    `${base_url}/api/v1/notification/latest_notification`,
     async (url: any) => {
       try {
         const resp = await axios(url, {

@@ -31,7 +31,7 @@ export const DeleteGroup: React.FC = () => {
         const base_url = import.meta.env.VITE_BASE_URL as string;
 
         const response = await axios.delete(
-          `http://localhost:8000/api/v1/group/delete/${id}`,
+          `${base_url}/api/v1/group/delete/${id}`,
           {
             headers: {
               "Content-Type": "application/json",

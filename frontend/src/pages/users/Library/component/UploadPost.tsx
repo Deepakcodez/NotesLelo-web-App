@@ -50,7 +50,7 @@ export const UploadPublicPost = ({ setShowForm }: { setShowForm: React.Dispatch<
 
 
       await axios.post(
-        `http://localhost:8000/api/v1/notes/publicNotes`,
+        `${base_url}/api/v1/notes/publicNotes`,
         data,
         {
           headers: {
@@ -62,8 +62,8 @@ export const UploadPublicPost = ({ setShowForm }: { setShowForm: React.Dispatch<
       );
       setIsUploading(false);
       setShowForm(false)
-      mutate(`http://localhost:8000/api/v1/notes/your-notes`);
-      mutate(`http://localhost:8000/api/v1/notes/publicNotes`);
+      mutate(`${base_url}/api/v1/notes/your-notes`);
+      mutate(`${base_url}/api/v1/notes/publicNotes`);
       // Handle the file upload response as needed
     } catch (error) {
       setIsUploading(false);

@@ -29,7 +29,7 @@ export const JoinGroup: React.FC = () => {
     try {
       setIsLoadingBtn(true);
       const resp = await axios.post(
-        `http://localhost:8000/api/v1/group/join`,
+        `${base_url}/api/v1/group/join`,
         { groupId },
         {
           headers: {

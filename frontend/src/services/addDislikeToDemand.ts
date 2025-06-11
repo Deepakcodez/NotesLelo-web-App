@@ -7,7 +7,7 @@ const addDisLikeToDemand = (demandId: string) => {
  
   const base_url = import.meta.env.VITE_BASE_URL as string;
 
-  const Url = `http://localhost:8000/api/v1/demand/dislike`;
+  const Url = `${base_url}/api/v1/demand/dislike`;
   return axios
     .post(
       Url,

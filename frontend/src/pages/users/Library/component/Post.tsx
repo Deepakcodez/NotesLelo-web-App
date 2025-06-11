@@ -25,7 +25,7 @@ const Posts: React.FC = () => {
   const { token } = useToken();
 
   const baseURL = import.meta.env.VITE_BASE_URL as string;
-  const url = `http://localhost:8000/api/v1/notes/publicNotes`;
+  const url = `${baseURL}/api/v1/notes/publicNotes`;
   const fetcher = async (uri: string): Promise<any> => {
     const response = await axios.get(uri);
     return response.data.notes;
@@ -145,7 +145,7 @@ const Posts: React.FC = () => {
     try {
       // Make API call to update save status on the server
       await axios.post(
-        `http://localhost:8000/api/v1/notes/groupNotes/saveNotes/${noteId}`,
+        `${baseURL}/api/v1/notes/groupNotes/saveNotes/${noteId}`,
         {},
         {
           headers: { "Content-Type": "application/json", token },
