@@ -44,7 +44,7 @@ export const CreateGroup: React.FC = () => {
       const base_url = import.meta.env.VITE_BASE_URL as string;
 
       const response = await axios.post(
-        `http://localhost:8000/api/v1/group/create`,
+        `${base_url}/api/v1/group/create`,
         GroupDetail,
         {
           headers: {
@@ -79,7 +79,10 @@ export const CreateGroup: React.FC = () => {
       <div className="w-[70%] bg-slate-700 px-5 py-5 rounded-lg shadow-lg border-[1px] border-slate-600 md:w-[30rem]">
         <form onSubmit={createHandler}>
           {/* Group name  */}
-          <label htmlFor="title" className="block text-left text-sm font-medium leading-6 text-white">
+          <label
+            htmlFor="title"
+            className="block text-left text-sm font-medium leading-6 text-white"
+          >
             Group Name
           </label>
           <div className="mb-2">
@@ -95,7 +98,10 @@ export const CreateGroup: React.FC = () => {
           </div>
 
           {/* Description */}
-          <label htmlFor="description" className="block text-left text-sm font-medium leading-6 text-white">
+          <label
+            htmlFor="description"
+            className="block text-left text-sm font-medium leading-6 text-white"
+          >
             Description{" "}
             <span className="text-[.8rem] font-thin">*optional</span>
           </label>
@@ -116,7 +122,11 @@ export const CreateGroup: React.FC = () => {
             className="bg-blue-400 rounded h-[2rem] flex justify-normal items-center py-1.5 w-full mt-3 hover:bg-blue-500"
           >
             {isLoading ? (
-              <Lottie className="h-[5rem] w-full" animationData={loadingAnimation} loop={true} />
+              <Lottie
+                className="h-[5rem] w-full"
+                animationData={loadingAnimation}
+                loop={true}
+              />
             ) : (
               <h1 className="text-center w-full text-white">Submit</h1>
             )}

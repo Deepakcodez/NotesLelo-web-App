@@ -18,7 +18,7 @@ export const useAuth = () => {
       }
       const url = import.meta.env.VITE_BASE_URL as string;
       const response = await axios.get(
-        `http://localhost:8000/api/v1/user/isVarify`,
+        `${url}/api/v1/user/isVarify`,
         {
           headers: {
             "Content-Type": "application/json",

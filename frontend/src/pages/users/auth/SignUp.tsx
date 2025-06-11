@@ -56,7 +56,7 @@ const SignUp: FC = () => {
         setIsLoading(true);
         const base_url = import.meta.env.VITE_BASE_URL as string;
         const response = await axios.post(
-          `http://localhost:8000/api/v1/user/register`,
+          `${base_url}/api/v1/user/register`,
           inputValue,
           {
             headers: { "Content-Type": "application/json" },
